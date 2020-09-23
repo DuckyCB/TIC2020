@@ -39,6 +39,7 @@ public class JavaFxApplication extends Application {
         Parent root = fxWeaver.loadView(MainMenuController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+        primaryStage.setMaximized(true);
         primaryStage.show();
 
     }
