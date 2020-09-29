@@ -1,4 +1,4 @@
-package uy.edu.um.tic1;
+package uy.edu.um.tic1.scenes;
 
 
 import javafx.event.ActionEvent;
@@ -8,9 +8,10 @@ import javafx.scene.control.MenuItem;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uy.edu.um.tic1.JavaFxApplication;
 
 @Component
-@FxmlView("/uy/edu/um/tic1/mainMenu.fxml")
+@FxmlView("/uy/edu/um/tic1/scenes/mainMenu.fxml")
 public class MainMenuController {
 
     @Autowired

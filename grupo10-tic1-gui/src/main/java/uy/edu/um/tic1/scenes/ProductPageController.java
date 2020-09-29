@@ -1,4 +1,4 @@
-package uy.edu.um.tic1.product;
+package uy.edu.um.tic1.scenes;
 
 
 import javafx.event.ActionEvent;
@@ -18,7 +18,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-@FxmlView("/uy/edu/um/tic1/product/productPage.fxml")
+@FxmlView("/uy/edu/um/tic1/scenes/productPage.fxml")
 public class ProductPageController implements Initializable {
 
     @Autowired
@@ -27,26 +27,24 @@ public class ProductPageController implements Initializable {
     public ProductPageController() {
     }
 
-    // Estos valores determinan lo que se va a mostrar en Product Page
-    private Image constImage;
-    private String constName;
-    private String constBrand;
-    private String constPrice;
+    private static Image constImage;
+    private static String constName;
+    private static String constBrand;
+    private static String constPrice;
 
-    public void setConstImage(Image constImage) {
-        this.constImage = constImage;
+    public static void setConstImage(Image image) {
+        constImage = image;
     }
-    public void setConstName(String constName) {
-        this.constName = constName;
+    public static void setConstName(String name) {
+        constName = name;
     }
-    public void setConstBrand(String constBrand) {
-        this.constBrand = constBrand;
+    public static void setConstBrand(String brand) {
+        constBrand = brand;
     }
-    public void setConstPrice(String constPrice) {
-        this.constPrice = constPrice;
+    public static void setConstPrice(String price) {
+        constPrice = price;
     }
 
-    // Esta funcion determina las cosas al inicio de la carga del Stage
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         productImage.setImage(constImage);
