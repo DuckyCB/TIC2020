@@ -1,4 +1,4 @@
-package uy.edu.um.tic1;
+package uy.edu.um.tic1.categories;
 
 
 import javafx.event.ActionEvent;
@@ -8,10 +8,11 @@ import javafx.scene.control.MenuItem;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uy.edu.um.tic1.JavaFxApplication;
 
 @Component
-@FxmlView("/uy/edu/um/tic1/mainMenu.fxml")
-public class MainMenuController {
+@FxmlView("/uy/edu/um/tic1/categories/hombreRemeras.fxml")
+public class HombreRemerasController {
 
     @Autowired
     JavaFxApplication javaFxApplication;
@@ -43,7 +44,6 @@ public class MainMenuController {
 
     @FXML
     void hombreRemera(ActionEvent event) {
-        javaFxApplication.hombreRemeras();
     }
 
     @FXML
@@ -52,9 +52,9 @@ public class MainMenuController {
 
     @FXML
     void inicioPressed(ActionEvent event) {
+        javaFxApplication.inicioPressed();
     }
 
-    public MainMenuController() {
+    public HombreRemerasController() {
     }
-
 }
