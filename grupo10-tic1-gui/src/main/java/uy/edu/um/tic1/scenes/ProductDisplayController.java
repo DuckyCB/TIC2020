@@ -2,12 +2,12 @@ package uy.edu.um.tic1.scenes;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.SwipeEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 
@@ -17,13 +17,42 @@ import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.JavaFxApplication;
 import uy.edu.um.tic1.product.Products;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 
 @Component
-@FxmlView("productDisplay.fxml")
-public class ProductDisplayController {
+@FxmlView("/uy/edu/um/tic1/scenes/productDisplay.fxml")
+public class ProductDisplayController implements Initializable {
 
     @Autowired
     JavaFxApplication javaFxApplication;
+
+    private static Image constImage;
+    private static String constName;
+    private static String constBrand;
+    private static String constPrice;
+
+    public static void setConstImage(Image image) {
+        constImage = image;
+    }
+    public static void setConstName(String name) {
+        constName = name;
+    }
+    public static void setConstBrand(String brand) {
+        constBrand = brand;
+    }
+    public static void setConstPrice(String price) {
+        constPrice = price;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        productImage.setImage(constImage);
+        productName.setText(constName);
+        productBrand.setText(constBrand);
+        productPrice.setText(constPrice);
+    }
 
     public void setProduct(Products product) {
         this.product = product;
@@ -32,26 +61,24 @@ public class ProductDisplayController {
     private Products product;
 
     @FXML
+    private Button inicio;
+    @FXML
+    private Button carrito;
+    @FXML
     private MenuItem hombreRemeraButton;
-
     @FXML
     private MenuItem hombrePantalonButton;
-
     @FXML
     private MenuItem hombreBuzoButton;
 
     @FXML
-    private Button carrito;
-
-    @FXML
-    private Button inicio;
-
-    @FXML
-    private MenuButton size;
-    @FXML
-    private ImageView image;
+    private ImageView productImage;
     @FXML
     private Label productName;
+    @FXML
+    private Label productBrand;
+    @FXML
+    private Label productPrice;
     @FXML
     private MenuButton quantity;
     @FXML
@@ -61,7 +88,7 @@ public class ProductDisplayController {
     @FXML
     private Button compare;
     @FXML
-    private Label price;
+    private MenuButton size;
     @FXML
     private Label description;
     @FXML
@@ -105,8 +132,4 @@ public class ProductDisplayController {
     }
 
 
-    public void start() {
-        productName.setText(product.getName());
-        price.setText(product.getPrice().toString());
-    }
 }

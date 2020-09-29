@@ -13,10 +13,9 @@ import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
-import uy.edu.um.tic1.categories.HombreBuzosController;
 import uy.edu.um.tic1.scenes.ComparatorPageController;
-import uy.edu.um.tic1.scenes.ProductPageController;
 import uy.edu.um.tic1.product.Products;
+import uy.edu.um.tic1.scenes.ProductDisplayController;
 import uy.edu.um.tic1.scenes.ProductListingController;
 import uy.edu.um.tic1.scenes.MainMenuController;
 
@@ -69,14 +68,10 @@ public class JavaFxApplication extends Application {
 
     }
 
-    public void productPage(String image, String name, String brand, String price) {
+    public void productDisplayPage(String name) {
 
-        ProductPageController.setConstImage(new Image(image));
-        ProductPageController.setConstName(name);
-        ProductPageController.setConstBrand(brand);
-        ProductPageController.setConstPrice(price);
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(ProductPageController.class);
+        Parent root = fxWeaver.loadView(ProductDisplayController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Hombre - Pantalones - "+name);
