@@ -29,7 +29,7 @@
             </AnchorPane>
          </content>
       </ScrollPane>
-      <AnchorPane layoutX="540.0" minWidth="500.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #202020;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="menuPane" layoutX="540.0" minWidth="500.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #202020;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <StackPane layoutX="489.0" layoutY="-50.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -56,7 +56,7 @@
                </children>
             </StackPane>
             <Button fx:id="inicio" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#inicioPressed" text="Inicio" AnchorPane.leftAnchor="15.0" />
-            <Button fx:id="carrito" layoutX="1214.0" layoutY="13.0" mnemonicParsing="false" onAction="#carritoPressed" text="Carrito" AnchorPane.rightAnchor="15.0" />
+            <Button fx:id="carrito" layoutX="1214.0" layoutY="13.0" mnemonicParsing="false" onAction="#carritoPressed" text="Carrito" AnchorPane.rightAnchor="100.0" />
          </children>
       </AnchorPane>
    </children>

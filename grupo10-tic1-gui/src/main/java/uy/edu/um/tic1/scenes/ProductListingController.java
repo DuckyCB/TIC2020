@@ -2,15 +2,12 @@ package uy.edu.um.tic1.scenes;
 
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Font;
@@ -92,7 +89,7 @@ public class ProductListingController implements Initializable {
                     ProductDisplayController.setConstName(productName.getText());
                     ProductDisplayController.setConstBrand(productBrand.getText());
                     ProductDisplayController.setConstPrice(productPrice.getText());
-                    javaFxApplication.productDisplayPage(productName.getText());
+                    javaFxApplication.sceneProductDisplay(productName.getText());
                 });
 
                 //flowPaneListing.setPadding(new Insets(5,5,5,5));

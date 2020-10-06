@@ -6,9 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.SwipeEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.AnchorPane;
 
 
 import net.rgielen.fxweaver.core.FxmlView;
@@ -72,47 +70,42 @@ public class ProductDisplayController implements Initializable {
     private MenuItem hombreBuzoButton;
 
     @FXML
+    private AnchorPane backgroundPane;
+
+    @FXML
     private ImageView productImage;
     @FXML
     private Label productName;
     @FXML
     private Label productBrand;
     @FXML
+    private MenuButton menuQuantity;
+    @FXML
+    private MenuButton menuSize;
+    @FXML
     private Label productPrice;
-    @FXML
-    private MenuButton quantity;
-    @FXML
-    private TableView table;
     @FXML
     private Button addToCart;
     @FXML
     private Button compare;
     @FXML
-    private MenuButton size;
+    private Label productDescription;
+
+
     @FXML
-    private Label description;
-    @FXML
-    private Pane MiniProductDisplay1;
-    @FXML
-    private Pane MiniProductDisplay0;
-    @FXML
-    private Pane MiniProductDisplay2;
-    @FXML
-    void addToCart(MouseEvent event) {
-    }
-    @FXML
-    void addToCompare(MouseEvent event) {
-    }
-    @FXML
-    void nextImage(SwipeEvent event) {
-    }
-    @FXML
-    void previousImage(SwipeEvent event) {
-    }
-    @FXML
-    void zoomImage(MouseEvent event) {
+    void addToCartPressed(ActionEvent event) {
+
     }
 
+    @FXML
+    void carritoPressed(ActionEvent event) {
+
+    }
+
+    @FXML
+    void comparePressed(ActionEvent event) {
+
+    }
 
     @FXML
     void hombreBuzo(ActionEvent event) {
@@ -128,7 +121,7 @@ public class ProductDisplayController implements Initializable {
     }
     @FXML
     void inicioPressed(ActionEvent event) {
-        javaFxApplication.inicioPressed();
+        javaFxApplication.sceneMainMenu();
     }
 
 
