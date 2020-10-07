@@ -129,7 +129,7 @@ public class ComparatorPageController implements Initializable {
 
     @FXML
     void inicioPressed(ActionEvent event) {
-        javaFxApplication.inicioPressed();
+        javaFxApplication.sceneMainMenu();
     }
 
     void updateProductB() {

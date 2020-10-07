@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uy.edu.um.tic1.scenes.user.LogInController">
+    <children>
+        <AnchorPane layoutX="540.0" minWidth="500.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #202020;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <StackPane layoutX="489.0" layoutY="-50.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                <Button fx:id="inicio" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#inicioPressed" text="Inicio" AnchorPane.leftAnchor="15.0" />
+            </children>
+        </AnchorPane>
+      <StackPane layoutX="466.0" layoutY="269.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="1280.0">
+               <children>
+                  <PasswordField fx:id="passwordField" layoutX="567.0" layoutY="350.0" promptText="contraseña" />
+                  <Label layoutX="501.0" layoutY="202.0" text="Iniciar Sesion">
+                     <font>
+                        <Font name="System Bold" size="45.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="userField" layoutX="567.0" layoutY="303.0" promptText="usuario" />
+                  <Button fx:id="logInButton" layoutX="582.0" layoutY="410.0" mnemonicParsing="false" onAction="#logInPressed" style="-fx-background-color: #CDCDCD;" text="INGRESAR">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Button>
+                  <Label layoutX="552.0" layoutY="552.0" text="No tienes cuenta?" textFill="#757575">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="registerButton" layoutX="678.0" layoutY="550.0" mnemonicParsing="false" onAction="#registerPressed" style="-fx-background-color: #e2e2e2;" text="Registrarse" />
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+    </children>
+</AnchorPane>

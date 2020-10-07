@@ -18,6 +18,9 @@ import uy.edu.um.tic1.product.Products;
 import uy.edu.um.tic1.scenes.ProductDisplayController;
 import uy.edu.um.tic1.scenes.ProductListingController;
 import uy.edu.um.tic1.scenes.MainMenuController;
+import uy.edu.um.tic1.scenes.user.LogInController;
+import uy.edu.um.tic1.scenes.user.RegisterFirstController;
+import uy.edu.um.tic1.scenes.user.RegisterSecondController;
 
 @Component
 public class JavaFxApplication extends Application {
@@ -57,7 +60,7 @@ public class JavaFxApplication extends Application {
         Platform.exit();
     }
 
-    public void inicioPressed(){
+    public void sceneMainMenu(){
 
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(MainMenuController.class);
@@ -68,18 +71,29 @@ public class JavaFxApplication extends Application {
 
     }
 
-    public void productDisplayPage(String name) {
+    private void sceneListing(String productsClass) {
+
+        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
+        Parent root = fxWeaver.loadView(ProductListingController.class);
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle(productsClass);
+        primaryStage.show();
+
+    }
+
+    public void sceneProductDisplay(String productName) {
 
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(ProductDisplayController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Hombre - Pantalones - "+name);
+        primaryStage.setTitle("Hombre - Pantalones - "+productName);
         primaryStage.show();
 
     }
 
-    public void comparator(String image, String name, String brand, String price, Boolean comparatorA) {
+    public void sceneComparator(String image, String name, String brand, String price, Boolean comparatorA) {
         if (comparatorA) {
             ComparatorPageController.setImageA(new Image(image));
             ComparatorPageController.setNameA(name);
@@ -101,15 +115,37 @@ public class JavaFxApplication extends Application {
 
     }
 
-
-    private void productListing(String productsClass) {
+    public void sceneLogIn() {
 
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(ProductListingController.class);
+        Parent root = fxWeaver.loadView(LogInController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle(productsClass);
+        primaryStage.setTitle("Ingresar");
         primaryStage.show();
+
+    }
+
+    public void sceneRegister(Boolean first) {
+
+        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
+        Parent root;
+
+        if (first) {
+
+            root = fxWeaver.loadView(RegisterFirstController.class);
+
+        } else {
+
+            root = fxWeaver.loadView(RegisterSecondController.class);
+
+        }
+
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Register");
+        primaryStage.show();
+
 
     }
 
@@ -122,7 +158,7 @@ public class JavaFxApplication extends Application {
         Products product3 = new Products(new ImageView("/uy/edu/um/tic1/images/Men/Jean/lightBlue.jpg"), "Jean Light Blue", "Levi's", "429,99 $UY");
         Products.getProducts().push(product3);
         Products.setProductsCategory("P A N T A L O N E S");
-        productListing("Hombre - Pantalones");
+        sceneListing("Hombre - Pantalones");
 
     }
 
@@ -137,7 +173,7 @@ public class JavaFxApplication extends Application {
         Products product4 = new Products(new ImageView("/uy/edu/um/tic1/images/Men/Shirt/pink.jpg"), "Remera Pink", "Levi's", "249,99 $UY");
         Products.getProducts().push(product4);
         Products.setProductsCategory("R E M E R A S");
-        productListing("Hombre - Remeras");
+        sceneListing("Hombre - Remeras");
 
     }
 
@@ -150,41 +186,8 @@ public class JavaFxApplication extends Application {
         Products product3 = new Products(new ImageView("/uy/edu/um/tic1/images/Men/Sweatshirt/white.jpg"), "Canguro White", "Levi's", "599,99 $UY");
         Products.getProducts().push(product3);
         Products.setProductsCategory("B U Z O S");
-        productListing("Hombre - Buzos");
+        sceneListing("Hombre - Buzos");
 
     }
-
-    /*public void hombrePantalones(){
-
-        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(HombrePantalonesController.class);
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Hombre - Pantalones");
-        primaryStage.show();
-
-    }
-
-    public void hombreBuzos(){
-
-        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(HombreBuzosController.class);
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Hombre - Buzos");
-        primaryStage.show();
-
-    }
-
-    public void hombreRemeras(){
-
-        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(HombreRemerasController.class);
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Hombre - Remeras");
-        primaryStage.show();
-
-    }*/
 
 }
