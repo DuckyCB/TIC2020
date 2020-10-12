@@ -15,16 +15,16 @@ public class StockRestController {
     @Autowired
     private StockController stockController;
 
-    @PostMapping
-    public void addStock(@RequestParam Integer product_id,
-                         @RequestParam Integer store_id,
-                         @RequestParam Integer stock){
-
-        stockController.addStock(product_id, store_id, stock);
-
-
-
-    }
+//    @PostMapping
+//    public void addStock(@RequestParam Integer product_id,
+//                         @RequestParam Integer store_id,
+//                         @RequestParam Integer stock){
+//
+//        stockController.addStock(product_id, store_id, stock);
+//
+//
+//
+//    }
 
 
 

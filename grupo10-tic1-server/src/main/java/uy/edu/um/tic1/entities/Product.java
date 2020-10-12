@@ -1,16 +1,15 @@
 package uy.edu.um.tic1.entities;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import uy.edu.um.tic1.entities.sizecolor.SizeAndColor;
 
 
 import javax.persistence.*;
-import java.awt.Color;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -37,15 +36,14 @@ public class Product {
     private Double price;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-            @JoinTable(name = "product_size",
+            @JoinTable(name = "product_size_color",
             joinColumns = @JoinColumn(name = "product_id"),
-            foreignKey = @ForeignKey(name = "fk_prodsize_prod"),
-            inverseJoinColumns = @JoinColumn(name = "size"),
-            inverseForeignKey = @ForeignKey(name = "fk_prodsize_size"))
-    List<Size> size;
+            foreignKey = @ForeignKey(name = "fk_productsize_product"),
+            inverseJoinColumns = @JoinColumn(name = "size_color"),
+            inverseForeignKey = @ForeignKey(name = "fk_productsizecolor_sizecolor"))
 
-    @Column(length = 6)
-    private String color;
+    Set<SizeAndColor> sizeAndColor;
+
 
     private Character gender;
 

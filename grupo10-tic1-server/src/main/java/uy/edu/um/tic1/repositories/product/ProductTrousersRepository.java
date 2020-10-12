@@ -10,7 +10,7 @@ import java.util.List;
 public interface ProductTrousersRepository extends ProductRepository<Trousers> {
 
 
-    @Query("select p from Trousers t, Product p, Stock s where t.id = p.id and p.id = s.id.productId group by (t.id) having sum(s.stock) >= 1 ")
+    @Query("select p from Trousers t, Product p, Stock s where t.id = p.id and p.id = s.product.id group by (t.id) having sum(s.stock) >= 1 ")
     List<Product> findAllTrousersWithStock();
 
 }

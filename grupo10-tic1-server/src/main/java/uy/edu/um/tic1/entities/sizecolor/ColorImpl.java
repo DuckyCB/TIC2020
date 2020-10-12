@@ -1,5 +1,4 @@
-package uy.edu.um.tic1.entities;
-
+package uy.edu.um.tic1.entities.sizecolor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,12 +12,9 @@ import javax.persistence.Id;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class Size {
+public class ColorImpl {
 
     @Id
-    @Column(length = 5)
-    private String size;
-
-
+    @Column(length = 10)
+    private String color;
 }
