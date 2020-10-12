@@ -12,6 +12,8 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.JavaFxApplication;
+import uy.edu.um.tic1.product.ProductRequest;
+import uy.edu.um.tic1.product.Products;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -70,17 +72,17 @@ public class MainMenuController implements Initializable {
 
     @FXML
     void hombreBuzo(ActionEvent event) {
-        javaFxApplication.hombreBuzos();
+        javaFxApplication.sceneListing(ProductRequest.listBuzos());
     }
 
     @FXML
     void hombrePantalon(ActionEvent event) {
-        javaFxApplication.hombrePantalones();
+        javaFxApplication.sceneListing(ProductRequest.listPants());
     }
 
     @FXML
     void hombreRemera(ActionEvent event) {
-        javaFxApplication.hombreRemeras();
+        javaFxApplication.sceneListing(ProductRequest.listShirts());
     }
 
     @FXML

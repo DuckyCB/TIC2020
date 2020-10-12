@@ -1,4 +1,4 @@
-package uy.edu.um.tic1.scenes;
+package uy.edu.um.tic1.scenes.admin.store;
 
 
 import javafx.event.ActionEvent;
@@ -6,16 +6,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,27 +16,33 @@ import uy.edu.um.tic1.JavaFxApplication;
 import uy.edu.um.tic1.entity.PaneProduct;
 import uy.edu.um.tic1.product.ProductRequest;
 import uy.edu.um.tic1.product.Products;
+import uy.edu.um.tic1.scenes.ProductDisplayController;
 
 import java.net.URL;
 import java.util.EmptyStackException;
 import java.util.ResourceBundle;
 
 @Component
-@FxmlView("/uy/edu/um/tic1/scenes/productListing.fxml")
-public class ProductListingController implements Initializable {
+@FxmlView("/uy/edu/um/tic1/scenes/admin/brand/adminStore.fxml")
+public class AdminStoreController implements Initializable {
 
     @Autowired
     JavaFxApplication javaFxApplication;
 
-    public ProductListingController() {
-    }
+    @FXML
+    private Button inicio;
+    @FXML
+    private Button buttonNewProduct;
+    @FXML
+    private Button buttonProductManager;
+
+    @FXML
+    private FlowPane flowPaneProducts;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         for (Products product: ProductRequest.productsList) {
-
-            sceneName.setText(product.getName());
 
             Pane pane = PaneProduct.paneGeneric(product.getImage(), product.getName(), product.getBrand(), product.getPrice(), product.getColors(), product.getSizes());
             // Por aca no se si cambiar las cosas y directamente referenciar la prenda con su id en lugar de tomar uno a uno los atributos
@@ -56,57 +55,31 @@ public class ProductListingController implements Initializable {
                 javaFxApplication.sceneProductDisplay(finalProduct.getName());
             });
 
-            flowPaneListing.setPadding(new Insets(5,5,5,5));
-            flowPaneListing.setVgap(5);
-            flowPaneListing.setHgap(5);
-            flowPaneListing.getChildren().add(pane);
+            flowPaneProducts.setPadding(new Insets(5,5,5,5));
+            flowPaneProducts.setVgap(5);
+            flowPaneProducts.setHgap(5);
+            flowPaneProducts.getChildren().add(pane);
 
         }
 
     }
 
-    @FXML
-    private FlowPane flowPaneListing;
 
     @FXML
-    private MenuItem hombreRemeraButton;
+    void pressedNewProduct(ActionEvent event) {
 
-    @FXML
-    private MenuItem hombrePantalonButton;
-
-    @FXML
-    private MenuItem hombreBuzoButton;
-
-    @FXML
-    private Button inicio;
-
-    @FXML
-    private Button carrito;
-
-    @FXML
-    private Label sceneName;
-
-    @FXML
-    void hombreBuzo(ActionEvent event) {
-        javaFxApplication.sceneListing(ProductRequest.listBuzos());
     }
 
     @FXML
-    void hombrePantalon(ActionEvent event) {
-        javaFxApplication.sceneListing(ProductRequest.listPants());
+    void pressedProductManager(ActionEvent event) {
+
     }
 
-    @FXML
-    void hombreRemera(ActionEvent event) {
-        javaFxApplication.sceneListing(ProductRequest.listShirts());
-    }
 
     @FXML
     void inicioPressed(ActionEvent event) {
+        javaFxApplication.sceneMainMenu();
     }
 
-    @FXML
-    void carritoPressed(ActionEvent event) {
-    }
 
 }

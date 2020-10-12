@@ -33,7 +33,7 @@
          <children>
             <StackPane layoutX="489.0" layoutY="-50.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <MenuButton mnemonicParsing="false" text="Hombre">
+                  <MenuButton mnemonicParsing="false" style="-fx-background-color: #ffffff;" text="Hombre">
                     <items>
                       <MenuItem fx:id="hombreRemeraButton" mnemonicParsing="false" onAction="#hombreRemera" onMenuValidation="#hombreRemera" text="Remera" />
                       <MenuItem fx:id="hombrePantalonButton" mnemonicParsing="false" onAction="#hombrePantalon" onMenuValidation="#hombrePantalon" text="Pantalon" />
@@ -43,7 +43,7 @@
                         <Insets right="100.0" />
                      </StackPane.margin>
                   </MenuButton>
-                  <MenuButton mnemonicParsing="false" text="Mujer">
+                  <MenuButton mnemonicParsing="false" style="-fx-background-color: #ffffff;" text="Mujer">
                     <items>
                       <MenuItem mnemonicParsing="false" text="Remera" />
                       <MenuItem mnemonicParsing="false" text="Pantalon" />
@@ -55,8 +55,8 @@
                   </MenuButton>
                </children>
             </StackPane>
-            <Button fx:id="inicio" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#inicioPressed" text="Inicio" AnchorPane.leftAnchor="15.0" />
-            <Button fx:id="carrito" layoutX="1214.0" layoutY="13.0" mnemonicParsing="false" onAction="#carritoPressed" text="Carrito" AnchorPane.rightAnchor="100.0" />
+            <Button fx:id="inicio" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#inicioPressed" style="-fx-background-color: #ffffff;" text="Inicio" AnchorPane.leftAnchor="15.0" />
+            <Button fx:id="carrito" layoutX="1214.0" layoutY="13.0" mnemonicParsing="false" onAction="#carritoPressed" style="-fx-background-color: #ffffff;" text="Carrito" AnchorPane.rightAnchor="100.0" />
          </children>
       </AnchorPane>
    </children>
