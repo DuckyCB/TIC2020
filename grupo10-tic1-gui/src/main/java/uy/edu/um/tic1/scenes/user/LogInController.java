@@ -36,8 +36,20 @@ public class LogInController {
     @FXML
     void logInPressed(ActionEvent event) {
         // De aca se toma el user y la password ingresados
-        userField.getCharacters();
-        passwordField.getCharacters();
+        String user = null;
+        String password = null;
+        try {
+            user = String.valueOf(userField.getCharacters());
+            password = String.valueOf(passwordField.getCharacters());
+            if ( (user.equals("brand")) && (password.equals("1234")) ) {
+                javaFxApplication.sceneAdminBrand();
+            }
+            if ( (user.equals("store")) && (password.equals("1234")) ) {
+                javaFxApplication.sceneAdminStore();
+            }
+        } catch (NullPointerException e) {
+            System.out.println("user/pass void");
+        }
     }
 
     @FXML

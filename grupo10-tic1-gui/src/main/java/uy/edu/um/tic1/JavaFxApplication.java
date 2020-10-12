@@ -6,18 +6,20 @@ import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
-import uy.edu.um.tic1.scenes.ComparatorPageController;
+import uy.edu.um.tic1.entity.ColorRGB;
+import uy.edu.um.tic1.product.ProductRequest;
+import uy.edu.um.tic1.scenes.*;
 import uy.edu.um.tic1.product.Products;
-import uy.edu.um.tic1.scenes.ProductDisplayController;
-import uy.edu.um.tic1.scenes.ProductListingController;
-import uy.edu.um.tic1.scenes.MainMenuController;
+import uy.edu.um.tic1.scenes.admin.brand.AdminBrandController;
+import uy.edu.um.tic1.scenes.admin.brand.AdminProductBrandController;
+import uy.edu.um.tic1.scenes.admin.store.AdminProductStoreController;
+import uy.edu.um.tic1.scenes.admin.store.AdminStoreController;
 import uy.edu.um.tic1.scenes.user.LogInController;
 import uy.edu.um.tic1.scenes.user.RegisterFirstController;
 import uy.edu.um.tic1.scenes.user.RegisterSecondController;
@@ -71,13 +73,14 @@ public class JavaFxApplication extends Application {
 
     }
 
-    private void sceneListing(String productsClass) {
+    public void sceneListing(Products[] list) {
 
+        ProductRequest.productsList = list;
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(ProductListingController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle(productsClass);
+        //primaryStage.setTitle(productsClass);
         primaryStage.show();
 
     }
@@ -126,7 +129,7 @@ public class JavaFxApplication extends Application {
 
     }
 
-    public void sceneRegister(Boolean first) {
+    public static void sceneRegister(Boolean first) {
 
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root;
@@ -149,44 +152,49 @@ public class JavaFxApplication extends Application {
 
     }
 
-    public void hombrePantalones() {
+    public void sceneAdminBrand() {
 
-        Products product1 = new Products(new ImageView("/uy/edu/um/tic1/images/Men/Jean/black.jpg"), "Jean Black", "Levi's", "499,99 $UY");
-        Products.getProducts().push(product1);
-        Products product2 = new Products(new ImageView("/uy/edu/um/tic1/images/Men/Jean/blue.jpg"), "Jean Blue", "Levi's", "449,99 $UY");
-        Products.getProducts().push(product2);
-        Products product3 = new Products(new ImageView("/uy/edu/um/tic1/images/Men/Jean/lightBlue.jpg"), "Jean Light Blue", "Levi's", "429,99 $UY");
-        Products.getProducts().push(product3);
-        Products.setProductsCategory("P A N T A L O N E S");
-        sceneListing("Hombre - Pantalones");
-
-    }
-
-    public void hombreRemeras() {
-
-        Products product1 = new Products(new ImageView("/uy/edu/um/tic1/images/Men/Shirt/black.jpg"), "Camisa Black", "Levi's", "389,99 $UY");
-        Products.getProducts().push(product1);
-        Products product2 = new Products(new ImageView("/uy/edu/um/tic1/images/Men/Shirt/brown.jpg"), "Camisa Orange", "Levi's", "349,99 $UY");
-        Products.getProducts().push(product2);
-        Products product3 = new Products(new ImageView("/uy/edu/um/tic1/images/Men/Shirt/green.jpg"), "Remera Green", "Levi's", "299,99 $UY");
-        Products.getProducts().push(product3);
-        Products product4 = new Products(new ImageView("/uy/edu/um/tic1/images/Men/Shirt/pink.jpg"), "Remera Pink", "Levi's", "249,99 $UY");
-        Products.getProducts().push(product4);
-        Products.setProductsCategory("R E M E R A S");
-        sceneListing("Hombre - Remeras");
+        ProductRequest.productsList = ProductRequest.listAll();
+        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
+        Parent root = fxWeaver.loadView(AdminBrandController.class);
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Brand admin");
+        primaryStage.show();
 
     }
 
-    public void hombreBuzos() {
+    public void sceneAdminBrandProduct(Products product) {
 
-        Products product1 = new Products(new ImageView("/uy/edu/um/tic1/images/Men/Sweatshirt/black.jpg"), "Pullover Black Leaves", "Levi's", "699,99 $UY");
-        Products.getProducts().push(product1);
-        Products product2 = new Products(new ImageView("/uy/edu/um/tic1/images/Men/Sweatshirt/lightBlue.jpg"), "Pullover Light Blue", "Levi's", "399,99 $UY");
-        Products.getProducts().push(product2);
-        Products product3 = new Products(new ImageView("/uy/edu/um/tic1/images/Men/Sweatshirt/white.jpg"), "Canguro White", "Levi's", "599,99 $UY");
-        Products.getProducts().push(product3);
-        Products.setProductsCategory("B U Z O S");
-        sceneListing("Hombre - Buzos");
+        AdminProductBrandController.setProduct(product);
+        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
+        Parent root = fxWeaver.loadView(AdminProductBrandController.class);
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Brand admin");
+        primaryStage.show();
+
+    }
+
+    public void sceneAdminStore() {
+
+        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
+        Parent root = fxWeaver.loadView(AdminStoreController.class);
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Brand admin");
+        primaryStage.show();
+
+    }
+
+    public void sceneAdminStoreProduct() {
+
+        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
+        Parent root = fxWeaver.loadView(AdminProductStoreController.class);
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Brand admin");
+        primaryStage.show();
 
     }
 
