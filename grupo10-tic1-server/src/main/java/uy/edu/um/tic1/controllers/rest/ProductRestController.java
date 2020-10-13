@@ -54,12 +54,12 @@ public class ProductRestController {
 
     }
 
-    @GetMapping("/test_insert")
-    public void testInsert(){
-
-        productController.testProduct();
-
-    }
+//    @GetMapping("/test_insert")
+//    public void testInsert(){
+//
+//        productController.testProduct();
+//
+//    }
 
     @GetMapping("/trousers/stock")
     public List<Product> getAllTrousersWithStock(){

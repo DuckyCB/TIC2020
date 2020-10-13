@@ -18,7 +18,7 @@ public interface ProductRepository<T extends Product> extends CrudRepository<T, 
 
     List<T> findByBrand(String name);
 
-    @Query("select p from Product p, Stock s where p.id = s.id.productId group by (p.id) having sum(s.stock) >= 1 ")
+    @Query("select p from Product p, Stock s where p.id = s.product.id group by (p.id) having sum(s.stock) >= 1 ")
     List<Product> findAllWithStock();
 
 

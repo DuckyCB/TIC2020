@@ -37,74 +37,74 @@ public class ProductController {
     @Autowired
     private ProductTrousersRepository productTrousersRepository;
 
-    public void testProduct(){
-        List<Size> size = new ArrayList<>();
-        size.add(new Size("M"));
-        size.add(new Size("L"));
-
-
-        Brand brand = Brand.builder()
-                .name("Levi's")
-                .email(new Email("manager", "levis"))
-                .build();
-        brandController.save(brand);
-
-        Set<Brand> brandSet = new LinkedHashSet<>();
-
-        brandSet.add(brand);
-
-
-
-        ByteArrayOutputStream bos = null;
-
-        try {
-            BufferedImage bImage = ImageIO.read(new File("C:\\Users\\Usuario\\git\\tic1\\tic2020\\grupo10-tic1-server\\src\\main\\resources\\black.jpg"));
-            bos = new ByteArrayOutputStream();
-            ImageIO.write(bImage, "jpg", bos );
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        byte[] image = bos.toByteArray();
-
-
-        Product product = Trousers.builder()
-                .name("Black Jean")
-                .price(699.99)
-                .size(size)
-                .color("Negro")
-                .brand(brand)
-                .gender('M')
-                .image(image)
-                .build();
-
-        Product product2 = Shirt.builder()
-                .name("Black Jean")
-                .price(699.99)
-                .size(size)
-                .color("Negro")
-                .brand(brand)
-                .gender('M')
-                .image(image)
-                .build();
-
-        productRepository.save(product);
-        productRepository.save(product2);
-
-        Store store = Store.builder()
-                .address("8 de Octubre")
-                .telephoneNumber(new TelephoneNumber(9999))
-                .brands(brandSet)
-                .build();
-
-        storeController.save(store);
-
-        Stock stock = new Stock(new StockId(product.getId(),store.getId()), 10);
-        Stock stock2 = new Stock(new StockId(product2.getId(),store.getId()), 0);
-
-        stockController.save(stock);
-        stockController.save(stock2);
-    }
+//    public void testProduct(){
+//        List<Size> size = new ArrayList<>();
+//        size.add(new Size("M"));
+//        size.add(new Size("L"));
+//
+//
+//        Brand brand = Brand.builder()
+//                .name("Levi's")
+//                .email(new Email("manager", "levis"))
+//                .build();
+//        brandController.save(brand);
+//
+//        Set<Brand> brandSet = new LinkedHashSet<>();
+//
+//        brandSet.add(brand);
+//
+//
+//
+//        ByteArrayOutputStream bos = null;
+//
+//        try {
+//            BufferedImage bImage = ImageIO.read(new File("C:\\Users\\Usuario\\git\\tic1\\tic2020\\grupo10-tic1-server\\src\\main\\resources\\black.jpg"));
+//            bos = new ByteArrayOutputStream();
+//            ImageIO.write(bImage, "jpg", bos );
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        byte[] image = bos.toByteArray();
+//
+//
+//        Product product = Trousers.builder()
+//                .name("Black Jean")
+//                .price(699.99)
+//                .size(size)
+//                .color("Negro")
+//                .brand(brand)
+//                .gender('M')
+//                .image(image)
+//                .build();
+//
+//        Product product2 = Shirt.builder()
+//                .name("Black Jean")
+//                .price(699.99)
+//                .size(size)
+//                .color("Negro")
+//                .brand(brand)
+//                .gender('M')
+//                .image(image)
+//                .build();
+//
+//        productRepository.save(product);
+//        productRepository.save(product2);
+//
+//        Store store = Store.builder()
+//                .address("8 de Octubre")
+//                .telephoneNumber(new TelephoneNumber(9999))
+//                .brands(brandSet)
+//                .build();
+//
+//        storeController.save(store);
+//
+//        Stock stock = new Stock(new StockId(product.getId(),store.getId()), 10);
+//        Stock stock2 = new Stock(new StockId(product2.getId(),store.getId()), 0);
+//
+//        stockController.save(stock);
+//        stockController.save(stock2);
+//    }
 
     public List<Product> getAllProducts(){
 

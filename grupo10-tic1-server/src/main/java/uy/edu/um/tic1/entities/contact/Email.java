@@ -1,4 +1,4 @@
-package uy.edu.um.tic1.entities;
+package uy.edu.um.tic1.entities.contact;
 
 
 import lombok.AllArgsConstructor;
