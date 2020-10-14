@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -15,6 +16,16 @@ import javax.persistence.Id;
 public class ColorImpl {
 
     @Id
-    @Column(length = 10)
+    @Column(length = 10, unique = true)
     private String color;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ColorImpl color1 = (ColorImpl) o;
+        return Objects.equals(color, color1.color);
+    }
+
+
 }

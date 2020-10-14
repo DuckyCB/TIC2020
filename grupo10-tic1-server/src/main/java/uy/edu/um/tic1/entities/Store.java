@@ -22,13 +22,13 @@ public class Store {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(length = 50)
     private String address;
 
     @Embedded
+    @Column(unique = true)
     private TelephoneNumber telephoneNumber;
 
     @ManyToMany
@@ -41,7 +41,7 @@ public class Store {
 
 
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
         @JoinColumn(name = "store",
                 foreignKey = @ForeignKey(name = "fk_stock_store")
         )

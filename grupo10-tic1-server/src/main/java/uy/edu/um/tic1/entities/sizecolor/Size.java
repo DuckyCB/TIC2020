@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -19,6 +20,15 @@ public class Size {
     @Id
     @Column(length = 5)
     private String size;
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Size size1 = (Size) o;
+        return Objects.equals(size, size1.size);
+    }
 
 
 }

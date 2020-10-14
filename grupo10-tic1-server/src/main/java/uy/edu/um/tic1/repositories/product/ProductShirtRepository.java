@@ -15,6 +15,10 @@ public interface ProductShirtRepository extends ProductRepository<Shirt> {
     List<Shirt> findByBrand(String brand);
 
     @Query("select p from Shirt sh, Product p, Stock s where sh.id = p.id and p.id = s.product.id group by (p.id) having sum(s.stock) >= 1 ")
-    List<Product> findAllWithStock();
+    Iterable<Product> findAllWithStock();
+
+
+
+
 
 }

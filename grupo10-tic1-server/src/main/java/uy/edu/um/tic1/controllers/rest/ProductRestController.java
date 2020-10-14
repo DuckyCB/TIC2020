@@ -5,18 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import uy.edu.um.tic1.controllers.ProductController;
 import uy.edu.um.tic1.entities.*;
-import uy.edu.um.tic1.entities.products.Trousers;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
+
+
 import java.util.List;
-import java.util.Set;
+
 
 @RestController
 @RequestMapping("/products")
@@ -28,6 +21,11 @@ public class ProductRestController {
     @GetMapping("/")
     public List<Product> getAll(){
         return productController.getAllProducts();
+    }
+
+    @GetMapping("/color")
+    public Iterable<Product> getAllByColor(@RequestParam String color_name){
+        return productController.getAllProductsByColor(color_name);
     }
 
     @GetMapping("/stock")
@@ -47,19 +45,14 @@ public class ProductRestController {
     }
 
 
-    @PostMapping("/insert")
-    public void newProduct(@RequestBody Product product){
 
-        productController.newProduct(product);
+
+    @GetMapping("/test_insert")
+    public void testInsert(){
+
+        productController.testProduct();
 
     }
-
-//    @GetMapping("/test_insert")
-//    public void testInsert(){
-//
-//        productController.testProduct();
-//
-//    }
 
     @GetMapping("/trousers/stock")
     public List<Product> getAllTrousersWithStock(){
@@ -72,6 +65,15 @@ public class ProductRestController {
     public List<Product> getAllShirtsWithStock(){
 
         return productController.getAllShirtsWithStock();
+
+    }
+
+
+
+    @PostMapping("/insert")
+    public void newProduct(@RequestBody Product product){
+
+        productController.newProduct(product);
 
     }
 

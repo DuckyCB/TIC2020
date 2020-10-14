@@ -3,8 +3,10 @@ package uy.edu.um.tic1.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uy.edu.um.tic1.entities.Brand;
 import uy.edu.um.tic1.entities.Product;
 import uy.edu.um.tic1.entities.Store;
+import uy.edu.um.tic1.entities.contact.TelephoneNumber;
 import uy.edu.um.tic1.repositories.StoreRepository;
 
 import java.util.Optional;
@@ -24,6 +26,15 @@ public class StoreController {
         Optional<Store> store  = storeRepository.findById(store_id);
         if (store.isPresent())
             return store.get();
+        return null;
+    }
+
+    public Store findByTelephoneNumber(TelephoneNumber telephoneNumber){
+        Optional<Store> store = storeRepository.findByTelephoneNumber(telephoneNumber);
+
+        if (store.isPresent()){
+            return store.get();
+        }
         return null;
     }
 

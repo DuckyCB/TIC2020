@@ -18,7 +18,6 @@ public class Stock {
 
 
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
     private Integer id;
 
 
@@ -35,8 +34,6 @@ public class Stock {
         @JoinColumn(name = "sizecolor",
         foreignKey =@ForeignKey(name = "fk_stock_sizecolor") )
     private SizeAndColor sizeAndColor;
-
-
 
 
 

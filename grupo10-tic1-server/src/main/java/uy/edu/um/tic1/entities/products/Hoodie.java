@@ -15,4 +15,6 @@ import javax.persistence.Entity;
 @SuperBuilder
 public class Hoodie extends Product {
 
+
+
 }

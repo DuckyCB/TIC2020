@@ -27,25 +27,7 @@ public class StockController {
         stockRepository.save(stock);
     }
 
-//    public void addStock(Integer product_id, Integer store_id, Integer stock, ColorImpl color, Size size) {
-//
-//
-//        Store store = storeController.findById(store_id);
-//        if (store != null){
-//            Stock stockObject = store.getStock(product_id, color, size);
-//            if (stock != null){
-//                stockObject.setStock(stock);
-//            }else{
-//                stockObject = Stock.builder()
-//                        .stock(stock)
-//                        .product()
-//                        .sizeAndColor(new SizeAndColor(size, color))
-//
-//            }
-//        }
-//
-//
-//    }
+
 
 
 }

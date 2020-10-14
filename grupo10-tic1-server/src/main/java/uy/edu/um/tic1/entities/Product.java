@@ -28,14 +28,14 @@ public class Product {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Integer id;
     @Column(length = 50)
     private String name;
 
     private Double price;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
             @JoinTable(name = "product_size_color",
             joinColumns = @JoinColumn(name = "product_id"),
             foreignKey = @ForeignKey(name = "fk_productsize_product"),
