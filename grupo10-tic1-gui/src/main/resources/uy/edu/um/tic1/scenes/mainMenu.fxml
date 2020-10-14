@@ -2,62 +2,73 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="250.0" minWidth="500.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uy.edu.um.tic1.scenes.MainMenuController">
+<AnchorPane fx:id="paneRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="250.0" minWidth="500.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uy.edu.um.tic1.scenes.MainMenuController">
    <children>
-      <ScrollPane fitToHeight="true" fitToWidth="true" minHeight="200.0" minWidth="500.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+      <ScrollPane fx:id="paneBackground" fitToHeight="true" fitToWidth="true" layoutX="157.0" prefWidth="1280.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
          <content>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
-               <children>
-                  <StackPane layoutX="539.0" layoutY="259.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <ImageView fitHeight="670.0" fitWidth="1275.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_CENTER">
-                           <image>
-                              <Image url="@../images/Banner/teens.jpg" />
-                           </image>
-                        </ImageView>
-                     </children>
-                  </StackPane>
-               </children>
-            </AnchorPane>
+            <FlowPane fx:id="flowPaneBackground" hgap="5.0" prefWidth="1078.0" style="-fx-background-color: #ffffff;" vgap="5.0" />
          </content>
       </ScrollPane>
-      <AnchorPane fx:id="menuPane" layoutX="540.0" minWidth="500.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #202020;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="paneMenuBar" maxHeight="40.0" maxWidth="1920.0" minHeight="40.0" minWidth="500.0" prefHeight="40.0" prefWidth="1280.0" style="-fx-background-color: #202020;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <StackPane layoutX="489.0" layoutY="-50.0" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <MenuButton mnemonicParsing="false" style="-fx-background-color: #ffffff;" text="Hombre">
-                    <items>
-                      <MenuItem fx:id="hombreRemeraButton" mnemonicParsing="false" onAction="#hombreRemera" onMenuValidation="#hombreRemera" text="Remera" />
-                      <MenuItem fx:id="hombrePantalonButton" mnemonicParsing="false" onAction="#hombrePantalon" onMenuValidation="#hombrePantalon" text="Pantalon" />
-                        <MenuItem fx:id="hombreBuzoButton" mnemonicParsing="false" onAction="#hombreBuzo" onMenuValidation="#hombreBuzo" text="Buzo" />
-                    </items>
-                     <StackPane.margin>
-                        <Insets right="100.0" />
-                     </StackPane.margin>
-                  </MenuButton>
-                  <MenuButton mnemonicParsing="false" style="-fx-background-color: #ffffff;" text="Mujer">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Remera" />
-                      <MenuItem mnemonicParsing="false" text="Pantalon" />
-                        <MenuItem mnemonicParsing="false" text="Buzo" />
-                    </items>
-                     <StackPane.margin>
-                        <Insets left="100.0" />
-                     </StackPane.margin>
-                  </MenuButton>
-               </children>
-            </StackPane>
-            <Button fx:id="inicio" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#inicioPressed" style="-fx-background-color: #ffffff;" text="Inicio" AnchorPane.leftAnchor="15.0" />
-            <Button fx:id="carrito" layoutX="1214.0" layoutY="13.0" mnemonicParsing="false" onAction="#carritoPressed" style="-fx-background-color: #ffffff;" text="Carrito" AnchorPane.rightAnchor="100.0" />
+            <StackPane layoutX="134.0" prefHeight="40.0" prefWidth="1146.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="134.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Button fx:id="home" layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#homePressed" style="-fx-background-color: #ffffff;" text="Inicio" AnchorPane.leftAnchor="14.0" />
+            <Button fx:id="cart" layoutX="1214.0" layoutY="8.0" mnemonicParsing="false" onAction="#cartPressed" style="-fx-background-color: #ffffff;" text="Carrito" AnchorPane.rightAnchor="100.0" />
          </children>
       </AnchorPane>
+      <AnchorPane fx:id="paneFilters" layoutX="490.0" layoutY="-40.0" prefHeight="40.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+         <children>
+            <Button fx:id="buttonFilters" layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#pressedFilters" style="-fx-background-color: #e2e2e2;" text="Filtros" />
+            <FlowPane fx:id="flowPaneCategory" layoutX="76.0" layoutY="8.0" prefHeight="25.0" prefWidth="450.0" AnchorPane.leftAnchor="75.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="paneFiltersLeft" prefHeight="640.0" prefWidth="200.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="80.0">
+         <children>
+            <FlowPane fx:id="flowPaneCategory" hgap="3.0" layoutY="41.0" maxWidth="200.0" minWidth="0.0" prefHeight="220.0" prefWidth="200.0" vgap="3.0" />
+            <Label layoutX="67.0" layoutY="23.0" text="Caterogias">
+               <font>
+                  <Font name="Calibri Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="85.0" layoutY="336.0" text="Talle">
+               <font>
+                  <Font name="Calibri Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="83.0" layoutY="261.0" text="Color">
+               <font>
+                  <Font name="Calibri Bold" size="15.0" />
+               </font>
+            </Label>
+            <FlowPane fx:id="flowPaneColors" hgap="5.0" layoutY="279.0" maxWidth="200.0" minWidth="0.0" prefHeight="57.0" prefWidth="200.0" vgap="5.0">
+               <padding>
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+               </padding>
+            </FlowPane>
+            <FlowPane fx:id="flowPaneSizes" hgap="5.0" layoutY="354.0" maxWidth="200.0" minWidth="0.0" prefHeight="40.0" prefWidth="200.0" vgap="5.0">
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding></FlowPane>
+            <Label fx:id="labellCleanFilters" layoutX="117.0" layoutY="6.0" onMouseClicked="#pressedClean" text="Limpiar Filtros">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="81.0" layoutY="394.0" text="Precio">
+               <font>
+                  <Font name="Calibri Bold" size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="fieldMinPrice" layoutX="19.0" layoutY="413.0" onAction="#enteredMinPrice" prefHeight="25.0" prefWidth="66.0" promptText="Minimo" />
+            <TextField fx:id="fieldMaxPrice" layoutX="115.0" layoutY="413.0" onAction="#enteredMaxPrice" prefHeight="25.0" prefWidth="66.0" promptText="Maximo" />
+         </children></AnchorPane>
    </children>
 </AnchorPane>

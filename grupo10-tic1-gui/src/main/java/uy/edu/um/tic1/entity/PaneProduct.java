@@ -69,8 +69,9 @@ public class PaneProduct {
 
             StackPane paneSize = new StackPane();
             paneSize.setPrefSize(32,32);
-            paneSize.setBackground(new Background(new BackgroundFill
-                    (new Color(0.8, 0.8, 0.8, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));
+            paneSize.setStyle("-fx-background-color: #cdcdcd");
+            /*paneSize.setBackground(new Background(new BackgroundFill
+                    (new Color(0.8, 0.8, 0.8, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));*/
             Label sizeLetter = new Label(size);
             sizeLetter.setFont(Font.font("Cambria", FontWeight.BOLD, 26));
             paneSize.getChildren().add(sizeLetter);

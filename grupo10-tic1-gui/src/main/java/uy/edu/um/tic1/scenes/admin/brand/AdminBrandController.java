@@ -49,7 +49,6 @@ public class AdminBrandController implements Initializable {
 
             for (Products product : ProductRequest.productsList) {
 
-                System.out.println(product.getName());
                 Pane pane = PaneProduct.paneGeneric(product.getImage(), product.getName(), product.getBrand(), product.getPrice(), product.getColors(), product.getSizes());
                 // Por aca no se si cambiar las cosas y directamente referenciar la prenda con su id en lugar de tomar uno a uno los atributos
                 pane.setOnMouseClicked(event -> {
