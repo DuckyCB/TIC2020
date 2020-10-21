@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uy.edu.um.tic1.entities.sizecolor.SizeAndColor;
 
 import javax.persistence.*;
 

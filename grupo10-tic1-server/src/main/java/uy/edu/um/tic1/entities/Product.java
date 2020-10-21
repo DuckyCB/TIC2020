@@ -1,10 +1,11 @@
 package uy.edu.um.tic1.entities;
 
+import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import uy.edu.um.tic1.entities.sizecolor.SizeAndColor;
 
 
 import javax.persistence.*;
@@ -23,7 +24,9 @@ import java.util.Set;
 
 public class Product {
 
-
+    @Getter
+    private final static List<String> colors = Lists.newArrayList(
+            "white", "black", "red", "blue");
 
 
 
@@ -42,7 +45,7 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "size_color"),
             inverseForeignKey = @ForeignKey(name = "fk_productsizecolor_sizecolor"))
 
-    Set<SizeAndColor> sizeAndColor;
+    private Set<SizeAndColor> sizeAndColor;
 
 
     private Character gender;

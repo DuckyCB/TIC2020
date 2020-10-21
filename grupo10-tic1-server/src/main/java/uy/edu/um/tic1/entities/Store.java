@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uy.edu.um.tic1.entities.contact.TelephoneNumber;
-import uy.edu.um.tic1.entities.sizecolor.ColorImpl;
-import uy.edu.um.tic1.entities.sizecolor.Size;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -41,7 +39,8 @@ public class Store {
 
 
 
-    @OneToMany(cascade = CascadeType.ALL)
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
         @JoinColumn(name = "store",
                 foreignKey = @ForeignKey(name = "fk_stock_store")
         )
@@ -49,16 +48,5 @@ public class Store {
 
 
 
-    public Stock getStock(Integer productId, ColorImpl color, Size size){
 
-        for (Stock stock : stockSet){
-            if ((stock.getProduct().getId()).equals(productId)
-                    && (stock.getSizeAndColor().getColor()).equals(color)
-                    && (stock.getSizeAndColor().getSize()).equals(size)){
-                return stock;
-            }
-        }
-
-        return null;
-    }
 }

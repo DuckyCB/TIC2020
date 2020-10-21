@@ -1,6 +1,5 @@
 package uy.edu.um.tic1.controllers;
 
-import com.mysql.cj.jdbc.result.UpdatableResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uy.edu.um.tic1.entities.*;
@@ -8,22 +7,13 @@ import uy.edu.um.tic1.entities.contact.Email;
 import uy.edu.um.tic1.entities.contact.TelephoneNumber;
 import uy.edu.um.tic1.entities.products.Shirt;
 import uy.edu.um.tic1.entities.products.Trousers;
-import uy.edu.um.tic1.entities.sizecolor.ColorImpl;
-import uy.edu.um.tic1.entities.sizecolor.Size;
-import uy.edu.um.tic1.entities.sizecolor.SizeAndColor;
-import uy.edu.um.tic1.repositories.BrandRepository;
-import uy.edu.um.tic1.repositories.ColorRepository;
+import uy.edu.um.tic1.entities.SizeAndColor;
 import uy.edu.um.tic1.repositories.SizeAndColorRepository;
 import uy.edu.um.tic1.repositories.product.ProductRepository;
 import uy.edu.um.tic1.repositories.product.ProductShirtRepository;
 import uy.edu.um.tic1.repositories.product.ProductTrousersRepository;
+import uy.edu.um.tic1.repositories.specifications.ProductQuerySpecification;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
@@ -45,11 +35,10 @@ public class ProductController {
     private ProductTrousersRepository productTrousersRepository;
     @Autowired
     private SizeAndColorRepository sizeAndColorRepository;
-    @Autowired
-    private ColorRepository colorRepository;
 
 
-    public void testProduct(){
+
+    public void testProduct1(){
 
         Brand brand = brandController.findById(1);
 
@@ -66,38 +55,51 @@ public class ProductController {
 
 
 
-        ColorImpl color = new ColorImpl("negro");
-        ColorImpl color2 = new ColorImpl("blanco");
-        Size talle1 = new Size("L");
-        Size talle2 = new Size("M");
+        String color1 = Product.getColors().get(0);
+        String color2 = Product.getColors().get(1);
+        String color3 = Product.getColors().get(2);
+        String talle1Pantalon = Trousers.getSizes().get(4);
+        String talle2Pantalon = Trousers.getSizes().get(5);
 
 
-        SizeAndColor sc1 = sizeAndColorRepository.findBySizeAndColor(talle1, color);
+        String talle1Camisa = Shirt.getSizes().get(2);
+        String talle2Camisa = Shirt.getSizes().get(3);
+
+        SizeAndColor sc1 = sizeAndColorRepository.findBySizeAndColor(talle1Pantalon, color1);
         if (sc1 == null){
             sc1 = SizeAndColor.builder()
                     .id(1)
-                    .color(color)
-                    .size(talle1)
+                    .color(color1)
+                    .size(talle1Pantalon)
                     .build();
             sizeAndColorRepository.save(sc1);
         }
 
-        SizeAndColor sc2 = sizeAndColorRepository.findBySizeAndColor(talle2, color);
+        SizeAndColor sc2 = sizeAndColorRepository.findBySizeAndColor(talle2Pantalon, color2);
         if (sc2 == null){
             sc2 = SizeAndColor.builder()
                     .id(2)
-                    .color(color)
-                    .size(talle2)
+                    .color(color2)
+                    .size(talle2Pantalon)
                     .build();
             sizeAndColorRepository.save(sc2);
         }
 
-        SizeAndColor sc3 = sizeAndColorRepository.findBySizeAndColor(talle2, color2);
+        SizeAndColor sc3 = sizeAndColorRepository.findBySizeAndColor(talle1Camisa, color1);
         if (sc3 == null){
             sc3 = SizeAndColor.builder()
                     .id(3)
+                    .color(color3)
+                    .size(talle1Camisa)
+                    .build();
+            sizeAndColorRepository.save(sc3);
+        }
+        SizeAndColor sc4 = sizeAndColorRepository.findBySizeAndColor(talle2Camisa, color2);
+        if (sc4 == null){
+            sc4 = SizeAndColor.builder()
+                    .id(4)
                     .color(color2)
-                    .size(talle2)
+                    .size(talle2Camisa)
                     .build();
             sizeAndColorRepository.save(sc3);
         }
@@ -109,25 +111,27 @@ public class ProductController {
         sizeAndColor.add(sc2);
 
         Set<SizeAndColor> sizeAndColor2 = new LinkedHashSet<>();
-        sizeAndColor2.add(sc1);
+        sizeAndColor2.add(sc4);
         sizeAndColor2.add(sc3);
 
-        ByteArrayOutputStream bos = null;
-        try {
-            BufferedImage bImage = ImageIO.read(new File("C:\\Users\\Usuario\\git\\tic1\\tic2020\\grupo10-tic1-server\\src\\main\\resources\\black.jpg"));
-            bos = new ByteArrayOutputStream();
-            ImageIO.write(bImage, "jpg", bos );
+//        ByteArrayOutputStream bos = null;
+//        try {
+//            BufferedImage bImage = ImageIO.read(new File("C:\\Users\\Usuario\\git\\tic1\\tic2020\\grupo10-tic1-server\\src\\main\\resources\\black.jpg"));
+//            bos = new ByteArrayOutputStream();
+//            ImageIO.write(bImage, "jpg", bos );
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        byte[] image = bos.toByteArray();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        byte[] image = bos.toByteArray();
 
 
 
 
 
         Product product1 = this.findById(1);
+
         if (product1 == null) {
             product1 = Trousers.builder()
                     .id(1)
@@ -135,21 +139,22 @@ public class ProductController {
                     .price(699.99)
                     .brand(brand)
                     .gender('M')
-                    .image(image)
+                    .image(null)
                     .sizeAndColor(sizeAndColor)
                     .build();
             productRepository.save(product1);
         }
 
+
         Product product2 = this.findById(2);
         if(product2 == null) {
-           product2 = Shirt.builder()
+            product2 = Shirt.builder()
                     .id(2)
                     .name("White Shirt")
                     .price(699.99)
                     .brand(brand)
                     .gender('M')
-                    .image(image)
+                    .image(null)
                     .sizeAndColor(sizeAndColor2)
                     .build();
             productRepository.save(product2);
@@ -194,34 +199,45 @@ public class ProductController {
 
     }
 
-    public List<Product> getAllProducts(){
-
-        List<Product> products = new ArrayList<>();
-        productRepository.findAll().forEach(p -> {
-            products.add(p);
-        });
 
 
+    public List<Product> find(Integer id, String name, Character gender,
+                                        String brand_id, String size, String color){
 
-        return products;
+        Brand brand = null;
+        if (brand_id != null)
+            brand = brandController.findById(Integer.valueOf(brand_id));
+
+//        if (color != null){
+//            return productRepository.findAll(ProductQuerySpecification.productColor(color));
+//        }
+
+        return productRepository.findAll(ProductQuerySpecification.builder()
+                .id(id)
+                .name(name)
+                .gender(gender)
+                .brand(null)
+                .size(size)
+                .color(color)
+                .build()
+        );
+
+
+    }
+
+    public Product findById(Integer id){
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent()){
+            return productOptional.get();
+        }
+
+        return null;
     }
 
 
-    public List<Product> getByName(String name){
-        List<Product> products = new ArrayList<>();
-        productRepository.findByName(name).forEach(p ->{
-            products.add(p);
-        });
-        return products;
-    }
 
-    public List<Product> getByBrand(String name){
-        List<Product> products = new ArrayList<>();
-        productRepository.findByBrand(name).forEach(p ->{
-            products.add(p);
-        });
-        return products;
-    }
+
+
 
 
     public List<Product> getAllShirts(){
@@ -234,56 +250,15 @@ public class ProductController {
 
     }
 
-    public List<Product> getAllWithStock() {
-        List<Product> products = new ArrayList<>();
-        productRepository.findAllWithStock().forEach(p -> {
-            products.add(p);
-        });
-
-        return products;
-    }
 
 
-    public void newProduct(Product product) {
-        productRepository.save(product);
-    }
-
-    public Product findById(Integer product_id) {
-        Optional<Product> product  = productRepository.findById(product_id);
-        if (product.isPresent())
-            return product.get();
-        return null;
-    }
 
 
-    public List<Product> getAllTrouserWithStock(){
-        List<Product> products = new ArrayList<>();
-        productTrousersRepository.findAllTrousersWithStock().forEach(p -> {
-            products.add(p);
-        });
 
-        return products;
-    }
 
-    public List<Product> getAllShirtsWithStock(){
-        List<Product> products = new ArrayList<>();
-        productShirtRepository.findAllWithStock().forEach(p -> {
-            products.add(p);
-        });
 
-        return products;
-    }
 
-    public Iterable<Product> getAllProductsByColor(String color) {
 
-        Optional<ColorImpl> colorOptional = colorRepository.findByColor(color);
 
-        if (colorOptional.isPresent()){
 
-            return productRepository.findAllWithStockByColor(colorOptional.get());
-
-        }
-
-        return null;
-    }
 }

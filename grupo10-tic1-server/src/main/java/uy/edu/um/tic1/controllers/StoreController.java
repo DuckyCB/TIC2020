@@ -22,6 +22,10 @@ public class StoreController {
         storeRepository.save(store);
     }
 
+    public Iterable<Store> findAll(){
+        return storeRepository.findAll();
+    }
+
     public Store findById(Integer store_id){
         Optional<Store> store  = storeRepository.findById(store_id);
         if (store.isPresent())
