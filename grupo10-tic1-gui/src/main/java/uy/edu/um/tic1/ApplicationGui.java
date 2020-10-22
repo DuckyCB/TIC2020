@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ApplicationGui {
 
     public static void main(String[] args) {
-        Application.launch(JavaFxApplication.class, args);
+        Application.launch(StoreApplication.class, args);
     }
 
 }

@@ -8,14 +8,14 @@ import javafx.scene.control.TextField;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uy.edu.um.tic1.JavaFxApplication;
+import uy.edu.um.tic1.StoreApplication;
 
 @Component
 @FxmlView("/uy/edu/um/tic1/scenes/user/sceneRegisterFirst.fxml")
 public class RegisterFirstController {
 
     @Autowired
-    JavaFxApplication javaFxApplication;
+    StoreApplication storeApplication;
 
     @FXML
     private Button inicio;
@@ -36,7 +36,7 @@ public class RegisterFirstController {
     private PasswordField userPassword;
 
     @FXML
-    void inicioPressed(ActionEvent event) { javaFxApplication.sceneMainMenu(); }
+    void inicioPressed(ActionEvent event) { storeApplication.sceneMain(); }
 
     @FXML
     void pressedContinue(ActionEvent event) {
@@ -44,7 +44,7 @@ public class RegisterFirstController {
         userLastName.getCharacters();
         userMail.getCharacters();
         userPassword.getCharacters();
-        javaFxApplication.sceneRegister(false);
+        storeApplication.sceneRegister(false);
     }
 
 }

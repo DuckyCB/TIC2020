@@ -6,17 +6,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uy.edu.um.tic1.JavaFxApplication;
+import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entity.PaneProduct;
 import uy.edu.um.tic1.product.ProductRequest;
 import uy.edu.um.tic1.product.Products;
-import uy.edu.um.tic1.scenes.ProductDisplayController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,7 +24,7 @@ import java.util.ResourceBundle;
 public class AdminBrandController implements Initializable {
 
     @Autowired
-    JavaFxApplication javaFxApplication;
+    StoreApplication storeApplication;
 
     @FXML
     private Button inicio;
@@ -52,7 +50,7 @@ public class AdminBrandController implements Initializable {
                 Pane pane = PaneProduct.paneGeneric(product.getImage(), product.getName(), product.getBrand(), product.getPrice(), product.getColors(), product.getSizes());
                 // Por aca no se si cambiar las cosas y directamente referenciar la prenda con su id en lugar de tomar uno a uno los atributos
                 pane.setOnMouseClicked(event -> {
-                    javaFxApplication.sceneAdminBrandProduct(product);
+                    storeApplication.sceneAdminBrandProduct(product);
                 });
 
                 flowPaneProducts.setVgap(5);
@@ -90,7 +88,7 @@ public class AdminBrandController implements Initializable {
 
     @FXML
     void inicioPressed(ActionEvent event) {
-        javaFxApplication.sceneMainMenu();
+        storeApplication.sceneMain();
     }
 
 

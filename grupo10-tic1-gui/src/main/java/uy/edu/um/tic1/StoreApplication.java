@@ -12,7 +12,6 @@ import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
-import uy.edu.um.tic1.entity.ColorRGB;
 import uy.edu.um.tic1.product.ProductRequest;
 import uy.edu.um.tic1.scenes.*;
 import uy.edu.um.tic1.product.Products;
@@ -23,9 +22,10 @@ import uy.edu.um.tic1.scenes.admin.store.AdminStoreController;
 import uy.edu.um.tic1.scenes.user.LogInController;
 import uy.edu.um.tic1.scenes.user.RegisterFirstController;
 import uy.edu.um.tic1.scenes.user.RegisterSecondController;
+import uy.edu.um.tic1.scenes.user.CartController;
 
 @Component
-public class JavaFxApplication extends Application {
+public class StoreApplication extends Application {
 
     private static ConfigurableApplicationContext applicationContext;
 
@@ -45,9 +45,9 @@ public class JavaFxApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        JavaFxApplication.primaryStage = primaryStage;
+        StoreApplication.primaryStage = primaryStage;
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(MainMenuController.class);
+        Parent root = fxWeaver.loadView(MainController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Página principal");
@@ -62,25 +62,13 @@ public class JavaFxApplication extends Application {
         Platform.exit();
     }
 
-    public void sceneMainMenu(){
+    public void sceneMain(){
 
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(MainMenuController.class);
+        Parent root = fxWeaver.loadView(MainController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Página Principal");
-        primaryStage.show();
-
-    }
-
-    public void sceneListing(Products[] list) {
-
-        ProductRequest.productsList = list;
-        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(ProductListingController.class);
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        //primaryStage.setTitle(productsClass);
         primaryStage.show();
 
     }
@@ -96,28 +84,6 @@ public class JavaFxApplication extends Application {
 
     }
 
-    public void sceneComparator(String image, String name, String brand, String price, Boolean comparatorA) {
-        if (comparatorA) {
-            ComparatorPageController.setImageA(new Image(image));
-            ComparatorPageController.setNameA(name);
-            ComparatorPageController.setBrandA(brand);
-            ComparatorPageController.setPriceA(price);
-            Stage stageComparator = new Stage();
-            FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-            Parent root = fxWeaver.loadView(ComparatorPageController.class);
-            Scene scene = new Scene(root);
-            stageComparator.setScene(scene);
-            stageComparator.show();
-        } else {
-            ComparatorPageController.setImageB(new Image(image));
-            ComparatorPageController.setNameB(name);
-            ComparatorPageController.setBrandB(brand);
-            ComparatorPageController.setPriceB(price);
-            //stageComparator.
-        }
-
-    }
-
     public void sceneLogIn() {
 
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
@@ -129,7 +95,7 @@ public class JavaFxApplication extends Application {
 
     }
 
-    public static void sceneRegister(Boolean first) {
+    public void sceneRegister(Boolean first) {
 
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root;
@@ -152,9 +118,20 @@ public class JavaFxApplication extends Application {
 
     }
 
+    public void sceneCart() {
+
+        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
+        Parent root = fxWeaver.loadView(CartController.class);
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Carrito");
+        primaryStage.show();
+
+    }
+
     public void sceneAdminBrand() {
 
-        ProductRequest.productsList = ProductRequest.listAll();
+        ProductRequest.productsList = ProductRequest.getAll();
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(AdminBrandController.class);
         Scene scene = new Scene(root);

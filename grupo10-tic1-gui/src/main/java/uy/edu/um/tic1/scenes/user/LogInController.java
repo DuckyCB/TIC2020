@@ -8,14 +8,14 @@ import javafx.scene.control.TextField;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uy.edu.um.tic1.JavaFxApplication;
+import uy.edu.um.tic1.StoreApplication;
 
 @Component
 @FxmlView("/uy/edu/um/tic1/scenes/user/sceneLogIn.fxml")
 public class LogInController {
 
     @Autowired
-    JavaFxApplication javaFxApplication;
+    StoreApplication storeApplication;
 
     @FXML
     private Button inicio;
@@ -31,7 +31,7 @@ public class LogInController {
 
 
     @FXML
-    void inicioPressed(ActionEvent event) { javaFxApplication.sceneMainMenu(); }
+    void inicioPressed(ActionEvent event) { storeApplication.sceneMain(); }
 
     @FXML
     void logInPressed(ActionEvent event) {
@@ -42,10 +42,10 @@ public class LogInController {
             user = String.valueOf(userField.getCharacters());
             password = String.valueOf(passwordField.getCharacters());
             if ( (user.equals("brand")) && (password.equals("1234")) ) {
-                javaFxApplication.sceneAdminBrand();
+                storeApplication.sceneAdminBrand();
             }
             if ( (user.equals("store")) && (password.equals("1234")) ) {
-                javaFxApplication.sceneAdminStore();
+                storeApplication.sceneAdminStore();
             }
         } catch (NullPointerException e) {
             System.out.println("user/pass void");
@@ -54,7 +54,7 @@ public class LogInController {
 
     @FXML
     void registerPressed(ActionEvent event) {
-        javaFxApplication.sceneRegister(true);
+        storeApplication.sceneRegister(true);
     }
 
 

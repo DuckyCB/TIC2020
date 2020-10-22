@@ -12,14 +12,13 @@ import javafx.scene.layout.Pane;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uy.edu.um.tic1.JavaFxApplication;
+import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entity.PaneProduct;
 import uy.edu.um.tic1.product.ProductRequest;
 import uy.edu.um.tic1.product.Products;
 import uy.edu.um.tic1.scenes.ProductDisplayController;
 
 import java.net.URL;
-import java.util.EmptyStackException;
 import java.util.ResourceBundle;
 
 @Component
@@ -27,7 +26,7 @@ import java.util.ResourceBundle;
 public class AdminStoreController implements Initializable {
 
     @Autowired
-    JavaFxApplication javaFxApplication;
+    StoreApplication storeApplication;
 
     @FXML
     private Button inicio;
@@ -52,7 +51,7 @@ public class AdminStoreController implements Initializable {
                 ProductDisplayController.setConstName(finalProduct.getName());
                 ProductDisplayController.setConstBrand(finalProduct.getBrand());
                 ProductDisplayController.setConstPrice(finalProduct.getPrice().toString()+" $UY");
-                javaFxApplication.sceneProductDisplay(finalProduct.getName());
+                storeApplication.sceneProductDisplay(finalProduct.getName());
             });
 
             flowPaneProducts.setPadding(new Insets(5,5,5,5));
@@ -78,7 +77,7 @@ public class AdminStoreController implements Initializable {
 
     @FXML
     void inicioPressed(ActionEvent event) {
-        javaFxApplication.sceneMainMenu();
+        storeApplication.sceneMain();
     }
 
 
