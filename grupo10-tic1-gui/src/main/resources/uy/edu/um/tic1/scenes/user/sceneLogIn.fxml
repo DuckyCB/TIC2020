@@ -37,6 +37,8 @@
                      </font>
                   </Label>
                   <Button fx:id="registerButton" layoutX="678.0" layoutY="550.0" mnemonicParsing="false" onAction="#registerPressed" style="-fx-background-color: #e2e2e2;" text="Registrarse" />
+                  <StackPane fx:id="errorUser" layoutX="728.0" layoutY="303.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;" />
+                  <StackPane fx:id="errorPassword" layoutX="728.0" layoutY="350.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;" />
                </children>
             </AnchorPane>
          </children>

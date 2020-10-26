@@ -1,4 +1,4 @@
-package uy.edu.um.tic1.scenes;
+package uy.edu.um.tic1.scenes.user;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +13,6 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
-import uy.edu.um.tic1.product.ProductRequest;
 import uy.edu.um.tic1.product.Products;
 
 import java.net.URL;
@@ -21,7 +20,7 @@ import java.util.ResourceBundle;
 
 
 @Component
-@FxmlView("/uy/edu/um/tic1/scenes/productDisplay.fxml")
+@FxmlView("/uy/edu/um/tic1/scenes/user/productDisplay.fxml")
 public class ProductDisplayController implements Initializable {
 
     @Autowired

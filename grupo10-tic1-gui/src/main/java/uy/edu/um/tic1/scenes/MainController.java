@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -13,8 +14,11 @@ import javafx.scene.shape.Circle;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uy.edu.um.tic1.Requests.RequestMain;
+import uy.edu.um.tic1.Requests.RequestProducts;
 import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entity.*;
+import uy.edu.um.tic1.product.Product;
 import uy.edu.um.tic1.product.ProductRequest;
 import uy.edu.um.tic1.product.Products;
 
@@ -30,7 +34,6 @@ public class MainController implements Initializable {
 
     private Boolean user = Boolean.FALSE;
     private Boolean filters = Boolean.FALSE;
-    private Integer level = 0;
     private String genre;
     private String category;
     private String subcategory;
@@ -39,6 +42,8 @@ public class MainController implements Initializable {
     private AnchorPane paneRoot;
     @FXML
     private MenuButton menuButtonSort;
+    @FXML
+    private TextField fieldSearch;
     @FXML
     private AnchorPane paneFiltersLeft;
     @FXML
@@ -175,19 +180,17 @@ public class MainController implements Initializable {
 
         if (subcategory != null) {
 
-            System.out.println("Busca productos de"+genre+" - "+category+" - "+subcategory);
+            RequestProducts.getByCategory(genre, category, subcategory);
 
         } else if (category != null) {
 
-            System.out.println("Busca productos de"+genre+" - "+category);
+            RequestProducts.getByCategory(genre, category);
 
         } else {
 
-            System.out.println("Busca productos de"+genre);
+            RequestProducts.getByCategory(genre);
 
         }
-
-
 
     }
 
@@ -221,7 +224,7 @@ public class MainController implements Initializable {
     private void colorRequest(String color) {
 
         menuButtonSort.setVisible(true);
-        System.out.println("Busca los productos color"+color);
+        System.out.println("Busca los productos color "+color);
 
     }
 
@@ -255,7 +258,7 @@ public class MainController implements Initializable {
     private void sizeRequest(String size) {
 
         menuButtonSort.setVisible(true);
-        System.out.println("Busca productos de talle"+size);
+        System.out.println("Busca productos de talle "+size);
 
     }
 
@@ -280,6 +283,22 @@ public class MainController implements Initializable {
 
     }
 
+    /**private void setProducts(Product[] productsList) {
+
+        for (Product product : productsList) {
+
+            Pane pane = PaneProduct.paneGeneric(product.getImage(), product.getName(), product.getBrand(), product.getPrice(), product.getColor(), product.getSize());
+
+            pane.setOnMouseClicked(event -> {
+                storeApplication.sceneProductDisplay(product.getName());
+            });
+
+            flowPaneBackground.getChildren().add(pane);
+
+        }
+
+    }*/
+
 
     /** Vuelve al home, mostrando nuevamente la pantalla con banner y marcas */
     @FXML
@@ -287,23 +306,41 @@ public class MainController implements Initializable {
 
     }
 
+    void setMainPage() {
+
+        flowPaneBackground.getChildren().clear();
+
+        ImageView banner = RequestMain.getBanner();
+        flowPaneBackground.getChildren().add(banner);
+
+
+
+    }
+
     /** Abre la scene del carrito de compras */
     @FXML
     void cartPressed(ActionEvent event) {
+
+        if (user) {
+            RequestProducts.getCart("Juanito Escarcha");
+        } else {
+            System.out.println("Usa carrito guardado en memoria");
+        }
         storeApplication.sceneCart();
+
     }
 
     @FXML
     void pressedHighFirst(ActionEvent event) {
 
-        System.out.println("Ordenar por precio de alto a bajo");
+        RequestProducts.getSortedByHighFirst();
 
     }
 
     @FXML
     void pressedLowFirst(ActionEvent event) {
 
-        System.out.println("Ordenar por precio de bajo a alto");
+        RequestProducts.getSortedByLowFirst();
 
     }
 
@@ -339,6 +376,7 @@ public class MainController implements Initializable {
         subcategory = null;
 
         ProductRequest.productsList = ProductRequest.getAll();
+        RequestProducts.getAll();
         setCategory(Categories.getGenre());
         setProducts();
 
@@ -347,14 +385,55 @@ public class MainController implements Initializable {
     @FXML
     void enteredMaxPrice(ActionEvent event) {
 
-        // Request products con precio maximo
+        String maxStr = fieldMaxPrice.getText();
+
+        if (!maxStr.isEmpty()) {
+
+            try {
+                Float max = Float.parseFloat(maxStr);
+                RequestProducts.getByMinPrice(max);
+                System.out.println("Buscar productos de precio hasta "+max.toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                System.out.println("El valor debe ser un numero");
+            }
+
+        }
 
     }
 
     @FXML
     void enteredMinPrice(ActionEvent event) {
 
-        // Request products con precio minimo
+        String minStr = fieldMinPrice.getText();
+
+        if (!minStr.isEmpty()) {
+
+            try {
+                Float min = Float.parseFloat(minStr);
+                RequestProducts.getByMinPrice(min);
+                System.out.println("Buscar productos de precio desde "+min.toString());
+            } catch (NumberFormatException e) {
+                System.out.println("El valor debe ser un numero");
+            }
+
+        }
+
+    }
+
+    @FXML
+    void pressedSearch(ActionEvent event) {
+
+        String text = fieldSearch.getText();
+        if (!text.isEmpty()) {
+
+            System.out.println("Busca items con el nombre "+text);
+
+        } else {
+
+            System.out.println("Busqueda vacia");
+
+        }
 
     }
 

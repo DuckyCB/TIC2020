@@ -16,7 +16,7 @@ import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entity.PaneProduct;
 import uy.edu.um.tic1.product.ProductRequest;
 import uy.edu.um.tic1.product.Products;
-import uy.edu.um.tic1.scenes.ProductDisplayController;
+import uy.edu.um.tic1.scenes.user.ProductDisplayController;
 
 import java.net.URL;
 import java.util.ResourceBundle;

@@ -23,6 +23,7 @@
          <children>
             <Button fx:id="home" layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#homePressed" style="-fx-background-color: #ffffff;" text="Inicio" AnchorPane.leftAnchor="14.0" />
             <Button fx:id="cart" layoutX="1214.0" layoutY="8.0" mnemonicParsing="false" onAction="#cartPressed" style="-fx-background-color: #ffffff;" text="Carrito" AnchorPane.rightAnchor="100.0" />
+            <TextField fx:id="fieldSearch" layoutX="836.0" layoutY="8.0" onAction="#pressedSearch" prefHeight="25.0" prefWidth="250.0" promptText="Buscador" style="-fx-background-color: #ffffff;" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="paneFilters" layoutX="490.0" layoutY="-40.0" prefHeight="40.0" style="-fx-background-color: #f1f1f1;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">

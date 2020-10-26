@@ -5,7 +5,6 @@ import javafx.application.Platform;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 
@@ -19,10 +18,7 @@ import uy.edu.um.tic1.scenes.admin.brand.AdminBrandController;
 import uy.edu.um.tic1.scenes.admin.brand.AdminProductBrandController;
 import uy.edu.um.tic1.scenes.admin.store.AdminProductStoreController;
 import uy.edu.um.tic1.scenes.admin.store.AdminStoreController;
-import uy.edu.um.tic1.scenes.user.LogInController;
-import uy.edu.um.tic1.scenes.user.RegisterFirstController;
-import uy.edu.um.tic1.scenes.user.RegisterSecondController;
-import uy.edu.um.tic1.scenes.user.CartController;
+import uy.edu.um.tic1.scenes.user.*;
 
 @Component
 public class StoreApplication extends Application {
