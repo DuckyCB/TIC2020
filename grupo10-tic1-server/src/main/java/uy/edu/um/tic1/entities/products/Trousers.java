@@ -4,9 +4,7 @@ import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import uy.edu.um.tic1.entities.Product;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

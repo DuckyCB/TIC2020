@@ -18,7 +18,7 @@ public class Brand {
 
 
     @Id
-
+    @GeneratedValue (strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(length = 20)

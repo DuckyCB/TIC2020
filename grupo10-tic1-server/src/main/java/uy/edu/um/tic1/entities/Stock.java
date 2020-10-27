@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uy.edu.um.tic1.entities.products.Product;
 
 import javax.persistence.*;
 
@@ -17,6 +18,7 @@ public class Stock {
 
 
     @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
     private Integer id;
 
 

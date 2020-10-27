@@ -20,6 +20,7 @@ public class SizeAndColor {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
 

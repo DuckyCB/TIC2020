@@ -1,13 +1,12 @@
 package uy.edu.um.tic1.repositories.specifications;
 
 import lombok.Builder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import uy.edu.um.tic1.entities.Brand;
-import uy.edu.um.tic1.entities.Product;
+import uy.edu.um.tic1.entities.products.Product;
 import uy.edu.um.tic1.entities.SizeAndColor;
-import uy.edu.um.tic1.entities.Stock;
-import org.hibernate.criterion.Order;
+import uy.edu.um.tic1.entities.products.Hoodie;
+import uy.edu.um.tic1.entities.products.Shirt;
+import uy.edu.um.tic1.entities.products.Trousers;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
@@ -22,18 +21,27 @@ public class ProductQuerySpecification implements Specification<Product> {
     private Integer id;
     private String name;
     private Character gender;
-    private Brand brand;
+    private Integer brand_id;
     private String color;
     private String size;
     private Double priceFrom;
     private Double priceTo;
-
+    private Integer desiredStock;
+    private String clothType;
 
 
     @Override
     public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
+
         Join<Product, SizeAndColor> productSizeAndColorJoin = root.joinSet("sizeAndColor");
+
+
+
+        Class<? extends Product> shirtClass = Shirt.class;
+        Class<? extends Product> trousersClass = Trousers.class;
+        Class<? extends Product> hoodieClass = Hoodie.class;
+
 
         List<Predicate> predicates = new ArrayList<>();
 
@@ -44,16 +52,33 @@ public class ProductQuerySpecification implements Specification<Product> {
             predicates.add(criteriaBuilder.like(root.get("name"), "%"+name+"%"));
         if (gender != null)
             predicates.add(criteriaBuilder.equal(root.get("gender"), gender));
-        if (brand != null)
-            predicates.add(criteriaBuilder.equal(root.get("brand"), brand));
+        if (brand_id != null)
+            predicates.add(criteriaBuilder.equal(root.get("brand").get("id"), brand_id));
         if (priceFrom != null)
             predicates.add(criteriaBuilder.greaterThan(root.get("price"), priceFrom));
         if (priceTo != null)
             predicates.add(criteriaBuilder.lessThan(root.get("price"), priceTo));
-//        if (color != null)
-//            predicates.add(criteriaBuilder.equal(productSizeAndColorJoin.get("color"), color));
-//        if (size != null)
-//            predicates.add(criteriaBuilder.equal(productSizeAndColorJoin.get("size"), size));
+
+        if (color != null)
+            predicates.add(criteriaBuilder.isMember(color, productSizeAndColorJoin.get("color")));
+        if (size != null)
+            predicates.add(criteriaBuilder.isMember(size, productSizeAndColorJoin.get("size")));
+
+
+        if (clothType != null){
+            if(clothType.equals("trousers"))
+                predicates.add(criteriaBuilder.equal(root.type(), trousersClass));
+            if(clothType.equals("shirt"))
+                predicates.add(criteriaBuilder.equal(root.type(), shirtClass));
+            if(clothType.equals("hoodie"))
+                predicates.add(criteriaBuilder.equal(root.type(), hoodieClass));
+        }
+
+
+
+        query.groupBy(root.get("id"));
+
+
 
 
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

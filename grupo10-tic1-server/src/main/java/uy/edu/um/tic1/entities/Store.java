@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import uy.edu.um.tic1.entities.contact.TelephoneNumber;
 
 import javax.persistence.*;
@@ -20,6 +21,7 @@ public class Store {
 
 
     @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(length = 50)
@@ -40,6 +42,7 @@ public class Store {
 
 
 
+    @Lazy
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
         @JoinColumn(name = "store",
                 foreignKey = @ForeignKey(name = "fk_stock_store")

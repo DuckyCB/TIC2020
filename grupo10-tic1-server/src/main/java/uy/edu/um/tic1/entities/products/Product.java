@@ -1,4 +1,4 @@
-package uy.edu.um.tic1.entities;
+package uy.edu.um.tic1.entities.products;
 
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import uy.edu.um.tic1.entities.Brand;
+import uy.edu.um.tic1.entities.SizeAndColor;
 
 
 import javax.persistence.*;
@@ -31,7 +33,7 @@ public class Product {
 
 
     @Id
-
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(length = 50)
     private String name;

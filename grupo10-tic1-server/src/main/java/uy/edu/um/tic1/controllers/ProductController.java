@@ -5,26 +5,28 @@ import org.springframework.stereotype.Service;
 import uy.edu.um.tic1.entities.*;
 import uy.edu.um.tic1.entities.contact.Email;
 import uy.edu.um.tic1.entities.contact.TelephoneNumber;
+import uy.edu.um.tic1.entities.products.Product;
 import uy.edu.um.tic1.entities.products.Shirt;
 import uy.edu.um.tic1.entities.products.Trousers;
 import uy.edu.um.tic1.entities.SizeAndColor;
-import uy.edu.um.tic1.repositories.SizeAndColorRepository;
-import uy.edu.um.tic1.repositories.product.ProductRepository;
-import uy.edu.um.tic1.repositories.product.ProductShirtRepository;
-import uy.edu.um.tic1.repositories.product.ProductTrousersRepository;
+import uy.edu.um.tic1.repositories.StockRepository;
+import uy.edu.um.tic1.repositories.ProductRepository;
 import uy.edu.um.tic1.repositories.specifications.ProductQuerySpecification;
+import uy.edu.um.tic1.repositories.specifications.StockQuerySpecification;
 
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductController {
 
 
     @Autowired
-    private ProductRepository<Product> productRepository;
+    private ProductRepository productRepository;
     @Autowired
-    private ProductShirtRepository productShirtRepository;
+    private StockRepository stockRepository;
+
     @Autowired
     private StoreController storeController;
     @Autowired
@@ -32,76 +34,88 @@ public class ProductController {
     @Autowired
     private StockController stockController;
     @Autowired
-    private ProductTrousersRepository productTrousersRepository;
-    @Autowired
-    private SizeAndColorRepository sizeAndColorRepository;
+    private SizeAndColorController sizeAndColorController;
+
 
 
 
     public void testProduct1(){
 
-        Brand brand = brandController.findById(1);
 
-        if (brand == null) {
+        List<Brand> brandList = brandController.findAll(null, "Levi's", null);
+
+        Brand brand = null;
+        if(!brandList.isEmpty())
+            brand = brandList.get(0);
+        if(brand == null){
             brand = Brand.builder()
-                    .id(1)
                     .name("Levi's")
                     .email(new Email("manager", "levis"))
                     .build();
             brandController.save(brand);
         }
+
         Set<Brand> brandSet = new LinkedHashSet<>();
         brandSet.add(brand);
-
-
 
         String color1 = Product.getColors().get(0);
         String color2 = Product.getColors().get(1);
         String color3 = Product.getColors().get(2);
         String talle1Pantalon = Trousers.getSizes().get(4);
         String talle2Pantalon = Trousers.getSizes().get(5);
-
-
         String talle1Camisa = Shirt.getSizes().get(2);
         String talle2Camisa = Shirt.getSizes().get(3);
 
-        SizeAndColor sc1 = sizeAndColorRepository.findBySizeAndColor(talle1Pantalon, color1);
+        Iterator<SizeAndColor> sizeAndColorIterator = sizeAndColorController.findAll(color1, talle1Pantalon).iterator();
+        SizeAndColor sc1 = null;
+        if(sizeAndColorIterator.hasNext()) {
+            sc1 = sizeAndColorIterator.next();
+        }
         if (sc1 == null){
             sc1 = SizeAndColor.builder()
-                    .id(1)
                     .color(color1)
                     .size(talle1Pantalon)
                     .build();
-            sizeAndColorRepository.save(sc1);
+            sizeAndColorController.save(sc1);
         }
 
-        SizeAndColor sc2 = sizeAndColorRepository.findBySizeAndColor(talle2Pantalon, color2);
+        sizeAndColorIterator = sizeAndColorController.findAll(color2, talle2Pantalon).iterator();
+        SizeAndColor sc2 = null;
+        if (sizeAndColorIterator.hasNext()){
+            sc2 = sizeAndColorIterator.next();
+        }
         if (sc2 == null){
             sc2 = SizeAndColor.builder()
-                    .id(2)
                     .color(color2)
                     .size(talle2Pantalon)
                     .build();
-            sizeAndColorRepository.save(sc2);
+            sizeAndColorController.save(sc2);
         }
 
-        SizeAndColor sc3 = sizeAndColorRepository.findBySizeAndColor(talle1Camisa, color1);
+        sizeAndColorIterator = sizeAndColorController.findAll(color1, talle1Camisa).iterator();
+        SizeAndColor sc3 = null;
+        if (sizeAndColorIterator.hasNext()){
+            sc3 = sizeAndColorIterator.next();
+        }
         if (sc3 == null){
             sc3 = SizeAndColor.builder()
-                    .id(3)
-                    .color(color3)
+                    .color(color1)
                     .size(talle1Camisa)
                     .build();
-            sizeAndColorRepository.save(sc3);
+            sizeAndColorController.save(sc2);
         }
-        SizeAndColor sc4 = sizeAndColorRepository.findBySizeAndColor(talle2Camisa, color2);
+
+        sizeAndColorIterator = sizeAndColorController.findAll(color2, talle2Camisa).iterator();
+        SizeAndColor sc4 = null;
+        if (sizeAndColorIterator.hasNext()){
+            sc4 = sizeAndColorIterator.next();
+        }
         if (sc4 == null){
             sc4 = SizeAndColor.builder()
-                    .id(4)
-                    .color(color2)
-                    .size(talle2Camisa)
+                    .color(color1)
+                    .size(talle1Camisa)
                     .build();
-            sizeAndColorRepository.save(sc3);
+            sizeAndColorController.save(sc2);
         }
 
 
@@ -126,15 +140,17 @@ public class ProductController {
 //        byte[] image = bos.toByteArray();
 
 
+        List<Product> productsList = this.findAll(null, null, "Black Jean",
+                null, null, null, null, null, null);
 
 
+        Product product1 = null;
 
-
-        Product product1 = this.findById(1);
+        if(!productsList.isEmpty())
+            product1 = productsList.get(0);
 
         if (product1 == null) {
             product1 = Trousers.builder()
-                    .id(1)
                     .name("Black Jean")
                     .price(699.99)
                     .brand(brand)
@@ -145,11 +161,16 @@ public class ProductController {
             productRepository.save(product1);
         }
 
+        productsList = this.findAll(null, null, "White Shirt",
+                null, null, null, null, null, null);
 
-        Product product2 = this.findById(2);
+        Product product2 = null;
+
+        if(!productsList.isEmpty())
+            product2 = productsList.get(0);
+
         if(product2 == null) {
             product2 = Shirt.builder()
-                    .id(2)
                     .name("White Shirt")
                     .price(699.99)
                     .brand(brand)
@@ -160,28 +181,32 @@ public class ProductController {
             productRepository.save(product2);
         }
 
+
         TelephoneNumber telephoneNumber = new TelephoneNumber(9999);
-        Store store = storeController.findByTelephoneNumber(telephoneNumber);
+
+
+        List<Store> storeList = storeController.findAll(null, "8 de Octubre 2203", null,
+                null, null);
+        Store store = null;
+        if(!storeList.isEmpty())
+            store = storeList.get(0);
+
 
         if (store == null) {
             store = Store.builder()
-                    .id(1)
-                    .address("8 de Octubre")
+                    .address("8 de Octubre 2203")
                     .telephoneNumber(telephoneNumber)
                     .brandSet(brandSet)
                     .build();
 
             Set<Stock> stockSet = new LinkedHashSet<>();
 
-
             Stock stock1 = Stock.builder()
-                    .id(1)
                     .stock(10)
                     .product(product1)
                     .sizeAndColor(sc1)
                     .build();
             Stock stock2 = Stock.builder()
-                    .id(2)
                     .stock(10)
                     .product(product1)
                     .sizeAndColor(sc2)
@@ -201,24 +226,48 @@ public class ProductController {
 
 
 
-    public List<Product> find(Integer id, String name, Character gender,
-                                        String brand_id, String size, String color){
+    public void save(Product product){
+        productRepository.save(product);
+    }
 
-        Brand brand = null;
-        if (brand_id != null)
-            brand = brandController.findById(Integer.valueOf(brand_id));
+    public List<Product> findWithStock(String type, Integer id, String name, Character gender,
+                                        Integer brand_id, String size, String color, Integer stock,
+                                        Double from, Double to){
 
-//        if (color != null){
-//            return productRepository.findAll(ProductQuerySpecification.productColor(color));
-//        }
+
+        List<Stock> stocks = stockRepository.findAll(StockQuerySpecification.builder()
+                        .clothType(type)
+                        .product_id(id)
+                        .name(name)
+                        .gender(gender)
+                        .brand_id(brand_id)
+                        .size(size)
+                        .color(color)
+                        .priceFrom(from)
+                        .priceTo(to)
+                        .desiredStock(stock)
+                        .build());
+
+
+        return stocks.stream().map(Stock::getProduct).collect(Collectors.toList());
+
+    }
+
+
+    public List<Product> findAll(String type, Integer id, String name, Character gender,
+                              Integer brand_id, String size, String color,
+                              Double from, Double to){
 
         return productRepository.findAll(ProductQuerySpecification.builder()
+                .clothType(type)
                 .id(id)
                 .name(name)
                 .gender(gender)
-                .brand(null)
+                .brand_id(brand_id)
                 .size(size)
                 .color(color)
+                .priceFrom(from)
+                .priceTo(to)
                 .build()
         );
 
@@ -233,27 +282,6 @@ public class ProductController {
 
         return null;
     }
-
-
-
-
-
-
-
-    public List<Product> getAllShirts(){
-        List<Product> shirts = new ArrayList<>();
-        productShirtRepository.findAll().forEach(s -> {
-            shirts.add(s);
-        });
-
-        return shirts;
-
-    }
-
-
-
-
-
 
 
 
