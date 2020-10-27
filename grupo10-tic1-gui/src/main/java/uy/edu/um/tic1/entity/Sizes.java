@@ -2,6 +2,7 @@ package uy.edu.um.tic1.entity;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
@@ -24,7 +25,7 @@ public class Sizes {
         label.setLayoutX(6);
         label.setLayoutY(3);
 
-        Pane pane = new Pane();
+        StackPane pane = new StackPane();
         pane.setPrefSize(32, 32);
         pane.getChildren().add(label);
         pane.setStyle("-fx-background-color: #e2e2e2");

@@ -28,7 +28,7 @@ public class Colors {
 
         Circle circle = new Circle();
         circle.setRadius(radius);
-        circle.setStyle("-fx-background-color: #" + color);
+        circle.setStyle("-fx-fill: #" + color);
         //circle.setFill(new Color(color.getR(), color.getG(), color.getB(), 1.0));
         return circle;
 
