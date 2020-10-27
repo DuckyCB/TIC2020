@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,12 +16,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uy.edu.um.tic1.JavaFxApplication;
+import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entity.ColorRGB;
 import uy.edu.um.tic1.product.Products;
 
@@ -34,7 +31,7 @@ import java.util.ResourceBundle;
 public class AdminProductBrandController implements Initializable {
 
     @Autowired
-    JavaFxApplication javaFxApplication;
+    StoreApplication storeApplication;
 
     private static Products product;
 
@@ -77,7 +74,7 @@ public class AdminProductBrandController implements Initializable {
 
     @FXML
     void inicioPressed(ActionEvent event) {
-        javaFxApplication.sceneMainMenu();
+        storeApplication.sceneMain();
     }
 
     @FXML

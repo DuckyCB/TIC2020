@@ -6,7 +6,8 @@ public class ProductRequest {
 
     public static Products[] productsList;
 
-    public static Products[] listPants() {
+    /** Genera y devuelve una lista con todos los pantalones */
+    public static Products[] getPants() {
 
         Products[] list = new Products[3];
         list[0] = new Products("/uy/edu/um/tic1/images/Men/Jean/black.jpg", "Jean Black",
@@ -25,7 +26,8 @@ public class ProductRequest {
 
     }
 
-    public static Products[] listShirts() {
+    /** Genera y devuelve una lista con todos los remeras */
+    public static Products[] getShirts() {
 
         Products[] list = new Products[4];
         list[0] = new Products("/uy/edu/um/tic1/images/Men/Shirt/black.jpg", "Camisa Black",
@@ -51,7 +53,8 @@ public class ProductRequest {
 
     }
 
-    public static Products[] listBuzos() {
+    /** Genera y devuelve una lista con todos los buzos */
+    public static Products[] getBuzos() {
 
         Products[] list = new Products[3];
         list[0] = new Products("/uy/edu/um/tic1/images/Men/Sweatshirt/black.jpg", "Pullover Black Leaves",
@@ -70,21 +73,22 @@ public class ProductRequest {
 
     }
 
-    public static Products[] listAll() {
+    /** Genera y devuelve una lista de todas las categorias disponibles */
+    public static Products[] getAll() {
 
         Products[] list = new Products[10];
 
-        Products[] pants = listPants();
+        Products[] pants = getPants();
         for (int i = 0; i < 3; i++) {
             list[i] = pants[i];
         }
-        Products[] shirts = listShirts();
+        Products[] shirts = getShirts();
         for (int i = 0; i < 4; i++) {
             list[i+3] = shirts[i];
         }
-        Products[] buzos = listBuzos();
+        Products[] coats = getBuzos();
         for (int i = 0; i < 3; i++) {
-            list[i+7] = buzos[i];
+            list[i+7] = coats[i];
         }
 
         return list;

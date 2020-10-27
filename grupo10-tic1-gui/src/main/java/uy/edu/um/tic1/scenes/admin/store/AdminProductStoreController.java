@@ -11,14 +11,14 @@ import javafx.scene.layout.FlowPane;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uy.edu.um.tic1.JavaFxApplication;
+import uy.edu.um.tic1.StoreApplication;
 
 @Component
 @FxmlView("/uy/edu/um/tic1/scenes/admin/brand/adminProductStore.fxml")
 public class AdminProductStoreController {
 
     @Autowired
-    JavaFxApplication javaFxApplication;
+    StoreApplication storeApplication;
 
     @FXML
     private Button inicio;
@@ -53,7 +53,7 @@ public class AdminProductStoreController {
 
     @FXML
     void inicioPressed(ActionEvent event) {
-        javaFxApplication.sceneMainMenu();
+        storeApplication.sceneMain();
     }
 
     @FXML

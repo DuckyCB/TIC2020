@@ -1,4 +1,4 @@
-package uy.edu.um.tic1.scenes;
+package uy.edu.um.tic1.scenes.user;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,8 +12,7 @@ import javafx.scene.layout.AnchorPane;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uy.edu.um.tic1.JavaFxApplication;
-import uy.edu.um.tic1.product.ProductRequest;
+import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.product.Products;
 
 import java.net.URL;
@@ -21,11 +20,11 @@ import java.util.ResourceBundle;
 
 
 @Component
-@FxmlView("/uy/edu/um/tic1/scenes/productDisplay.fxml")
+@FxmlView("/uy/edu/um/tic1/scenes/user/productDisplay.fxml")
 public class ProductDisplayController implements Initializable {
 
     @Autowired
-    JavaFxApplication javaFxApplication;
+    StoreApplication storeApplication;
 
     private static Image constImage;
     private static String constName;
@@ -60,38 +59,29 @@ public class ProductDisplayController implements Initializable {
     private Products product;
 
     @FXML
-    private Button inicio;
-    @FXML
-    private Button carrito;
-    @FXML
-    private MenuItem hombreRemeraButton;
-    @FXML
-    private MenuItem hombrePantalonButton;
-    @FXML
-    private MenuItem hombreBuzoButton;
-
-    @FXML
     private AnchorPane backgroundPane;
-
+    @FXML
+    private Label productBrand;
     @FXML
     private ImageView productImage;
     @FXML
     private Label productName;
     @FXML
-    private Label productBrand;
+    private Label productPrice;
+    @FXML
+    private Button addToCart;
     @FXML
     private MenuButton menuQuantity;
     @FXML
     private MenuButton menuSize;
     @FXML
-    private Label productPrice;
-    @FXML
-    private Button addToCart;
-    @FXML
     private Button compare;
     @FXML
     private Label productDescription;
-
+    @FXML
+    private Button inicio;
+    @FXML
+    private Button carrito;
 
     @FXML
     void addToCartPressed(ActionEvent event) {
@@ -109,22 +99,8 @@ public class ProductDisplayController implements Initializable {
     }
 
     @FXML
-    void hombreBuzo(ActionEvent event) {
-        javaFxApplication.sceneListing(ProductRequest.listBuzos());
-    }
-
-    @FXML
-    void hombrePantalon(ActionEvent event) {
-        javaFxApplication.sceneListing(ProductRequest.listPants());
-    }
-
-    @FXML
-    void hombreRemera(ActionEvent event) {
-        javaFxApplication.sceneListing(ProductRequest.listShirts());
-    }
-    @FXML
     void inicioPressed(ActionEvent event) {
-        javaFxApplication.sceneMainMenu();
+        storeApplication.sceneMain();
     }
 
 
