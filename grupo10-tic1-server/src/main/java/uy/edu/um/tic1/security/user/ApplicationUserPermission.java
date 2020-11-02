@@ -1,4 +1,4 @@
-package uy.edu.um.tic1.security;
+package uy.edu.um.tic1.security.user;
 
 
 
@@ -15,7 +15,10 @@ public enum ApplicationUserPermission {
     CLIENT_READ("client:read"),
 
     PRODUCT_WRITE("product:write"),
-    PRODUCT_READ("product:read");
+    PRODUCT_READ("product:read"),
+
+    STOCK_WRITE("stock:write"),
+    STOCK_READ("stock:read");
 
 
     private final String permission;

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uy.edu.um.tic1.entitites.SizeAndColorDTO;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -31,7 +32,11 @@ public class SizeAndColor {
     private String color;
 
 
-
-
-
+    public SizeAndColorDTO toDTO() {
+        return SizeAndColorDTO.builder()
+                .id(this.id)
+                .color(this.color)
+                .size(this.size)
+                .build();
+    }
 }

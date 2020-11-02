@@ -2,6 +2,7 @@ package uy.edu.um.tic1.repositories.specifications;
 
 import lombok.Builder;
 import org.springframework.data.jpa.domain.Specification;
+import uy.edu.um.tic1.entities.Brand;
 import uy.edu.um.tic1.entities.products.Product;
 import uy.edu.um.tic1.entities.SizeAndColor;
 import uy.edu.um.tic1.entities.products.Hoodie;
@@ -35,7 +36,6 @@ public class ProductQuerySpecification implements Specification<Product> {
 
 
         Join<Product, SizeAndColor> productSizeAndColorJoin = root.joinSet("sizeAndColor");
-
 
 
         Class<? extends Product> shirtClass = Shirt.class;

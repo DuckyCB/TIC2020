@@ -31,7 +31,7 @@ public class BrandQuerySpecification implements Specification<Brand> {
             predicates.add(criteriaBuilder.equal(root.get("id"), id));
 
         if (name != null)
-            predicates.add(criteriaBuilder.like(root.get("name"), "%"+id+"%"));
+            predicates.add(criteriaBuilder.like(root.get("name"), "%"+name+"%"));
 
         if (email != null)
             predicates.add(criteriaBuilder.equal(root.get("email"), email));

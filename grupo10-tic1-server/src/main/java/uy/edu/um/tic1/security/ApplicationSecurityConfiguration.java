@@ -3,6 +3,8 @@ package uy.edu.um.tic1.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,6 +14,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import uy.edu.um.tic1.security.user.ApplicationUserRole;
+import uy.edu.um.tic1.security.user.ApplicationUserService;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +25,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
+    @Autowired
+    private ApplicationUserService applicationUserService;
 
 
 
@@ -29,32 +35,40 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/", "/index", "/admin/create/").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .httpBasic();
+//                .formLogin()
+//                        .loginProcessingUrl("/login")
+//                            .permitAll()
+//                            .defaultSuccessUrl("/")
+//                            .passwordParameter("password")
+//                            .usernameParameter("username")
+//                    .and()
+//                        .logout()
+//                            .logoutUrl("/logout")
+//                            .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) // https://docs.spring.io/spring-security/site/docs/4.2.12.RELEASE/apidocs/org/springframework/security/config/annotation/web/configurers/LogoutConfigurer.html
+//                            .clearAuthentication(true)
+//                            .invalidateHttpSession(true)
+//                            .deleteCookies("JSESSIONID")
+//                            .logoutSuccessUrl("/");
+
     }
 
+
     @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(daoAuthenticationProvider());
+    }
+
     @Bean
-    protected UserDetailsService userDetailsService() {
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("admin"))
-                .authorities(ApplicationUserRole.ADMIN.getGrantedAuthorities())
-                .build();
-
-        UserDetails store = User.builder()
-                .username("store")
-                .password(passwordEncoder.encode("store"))
-                .authorities(ApplicationUserRole.STORE.getGrantedAuthorities())
-                .build();
-
-        return new InMemoryUserDetailsManager(
-                admin,
-                store
-        );
-
+    public DaoAuthenticationProvider daoAuthenticationProvider(){
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+        daoAuthenticationProvider.setUserDetailsService(applicationUserService);
+        return daoAuthenticationProvider;
     }
 
 }

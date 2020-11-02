@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uy.edu.um.tic1.entities.contact.Email;
+import uy.edu.um.tic1.entitites.BrandDTO;
 
 import javax.persistence.*;
 
@@ -26,4 +27,15 @@ public class Brand {
 
     @Embedded
     private Email email;
+
+    public BrandDTO toDTO() {
+        return BrandDTO.builder()
+                .id(this.id)
+                .name(this.name)
+                .email(this.email.toDTO())
+                .build();
+
+    }
+
+
 }

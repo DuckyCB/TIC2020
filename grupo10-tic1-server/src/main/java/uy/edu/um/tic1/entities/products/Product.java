@@ -1,6 +1,6 @@
 package uy.edu.um.tic1.entities.products;
 
-import com.google.common.collect.Lists;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -8,9 +8,11 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import uy.edu.um.tic1.entities.Brand;
 import uy.edu.um.tic1.entities.SizeAndColor;
+import uy.edu.um.tic1.entitites.product.ProductDTO;
 
 
 import javax.persistence.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -24,10 +26,10 @@ import java.util.Set;
 @NoArgsConstructor
 @SuperBuilder
 
-public class Product {
+public abstract class Product {
 
     @Getter
-    private final static List<String> colors = Lists.newArrayList(
+    private final static List<String> colors = Arrays.asList(
             "white", "black", "red", "blue");
 
 
@@ -60,4 +62,5 @@ public class Product {
     @Lob
     private byte[] image;
 
+    public abstract ProductDTO toDTO();
 }

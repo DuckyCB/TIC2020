@@ -1,32 +1,35 @@
-package uy.edu.um.tic1.security;
+package uy.edu.um.tic1.security.user;
 
-import com.google.common.collect.Sets;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import uy.edu.um.tic1.security.user.ApplicationUserPermission;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static uy.edu.um.tic1.security.ApplicationUserPermission.*;
+import static uy.edu.um.tic1.security.user.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
 
-    ADMIN(Sets.newHashSet(BRAND_READ, BRAND_WRITE,
+    ADMIN(Set.of(BRAND_READ, BRAND_WRITE,
             STORE_READ, STORE_WRITE,
             PRODUCT_READ, PRODUCT_WRITE,
-            CLIENT_READ, CLIENT_WRITE)),
+            CLIENT_READ, CLIENT_WRITE,
+            STOCK_READ, STOCK_WRITE)),
 
-    BRAND(Sets.newHashSet(BRAND_READ,
+    BRAND(Set.of(BRAND_READ,
             STORE_READ, STORE_WRITE,
             PRODUCT_READ, PRODUCT_WRITE)),
 
-    STORE(Sets.newHashSet(BRAND_READ,
+    STORE(Set.of(BRAND_READ,
             STORE_READ,
             PRODUCT_READ)),
 
-    CLIENT(Sets.newHashSet(BRAND_READ,
+    CLIENT(Set.of(BRAND_READ,
             STORE_READ,
-            PRODUCT_READ));
+            PRODUCT_READ,
+            STOCK_READ, STORE_WRITE));
 
 
     private final Set<ApplicationUserPermission> permissions;

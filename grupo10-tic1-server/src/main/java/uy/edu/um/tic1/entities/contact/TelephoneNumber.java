@@ -2,8 +2,10 @@ package uy.edu.um.tic1.entities.contact;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uy.edu.um.tic1.entitites.contact.TelephoneNumberDTO;
 
 import javax.persistence.Embeddable;
 import java.util.Objects;
@@ -12,6 +14,7 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class TelephoneNumber {
 
 
@@ -28,4 +31,7 @@ public class TelephoneNumber {
     }
 
 
+    public TelephoneNumberDTO toDTO() {
+        return TelephoneNumberDTO.builder().number(this.number).build();
+    }
 }
