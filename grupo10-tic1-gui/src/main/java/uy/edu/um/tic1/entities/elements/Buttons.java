@@ -1,4 +1,4 @@
-package uy.edu.um.tic1.element;
+package uy.edu.um.tic1.entities.elements;
 
 public class Buttons {
 

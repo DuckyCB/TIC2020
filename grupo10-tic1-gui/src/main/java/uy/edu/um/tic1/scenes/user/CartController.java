@@ -15,8 +15,8 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
-import uy.edu.um.tic1.entity.PaneProduct;
-import uy.edu.um.tic1.product.Product;
+import uy.edu.um.tic1.entities.elements.PaneProduct;
+import uy.edu.um.tic1.entities.products.Product;
 
 import java.net.URL;
 import java.util.ResourceBundle;

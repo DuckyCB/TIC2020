@@ -1,20 +1,26 @@
-package uy.edu.um.tic1.product;
+package uy.edu.um.tic1.entities.products;
 
-import javafx.scene.image.ImageView;
-import uy.edu.um.tic1.entity.ColorRGB;
-
-import java.util.Stack;
-
-public class Products {
+public class Product {
 
     private String image;
     private String name;
     private String brand;
     private Float price;
-    private ColorRGB[] colors;
+    private String color;
+    private String[] colors;
+    private String size;
     private String[] sizes;
 
-    public Products(String image, String name, String brand, Float price, String[] sizes, ColorRGB[] colors) {
+    public Product(String image, String name, String brand, Float price, String color, String size) {
+        this.image = image;
+        this.name = name;
+        this.brand = brand;
+        this.price = price;
+        this.color = color;
+        this.size = size;
+    }
+
+    public Product(String image, String name, String brand, Float price, String[] colors, String[] sizes) {
         this.image = image;
         this.name = name;
         this.brand = brand;
@@ -51,10 +57,24 @@ public class Products {
         this.price = price;
     }
 
-    public ColorRGB[] getColors() {
+    public String getColor() {
+        return color;
+    }
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getSize() {
+        return size;
+    }
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String[] getColors() {
         return colors;
     }
-    public void setColors(ColorRGB[] colors) {
+    public void setColors(String[] colors) {
         this.colors = colors;
     }
 
@@ -64,4 +84,5 @@ public class Products {
     public void setSizes(String[] sizes) {
         this.sizes = sizes;
     }
+
 }

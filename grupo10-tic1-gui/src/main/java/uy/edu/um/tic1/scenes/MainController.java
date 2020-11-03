@@ -5,22 +5,29 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uy.edu.um.tic1.Requests.RequestMain;
-import uy.edu.um.tic1.Requests.RequestProducts;
+import uy.edu.um.tic1.entities.attributes.Categories;
+import uy.edu.um.tic1.entities.attributes.Colors;
+import uy.edu.um.tic1.entities.attributes.Sizes;
+import uy.edu.um.tic1.entities.elements.PaneBrands;
+import uy.edu.um.tic1.entities.elements.PaneProduct;
+import uy.edu.um.tic1.entities.products.Product;
+import uy.edu.um.tic1.requests.RequestMain;
+import uy.edu.um.tic1.requests.RequestProducts;
 import uy.edu.um.tic1.StoreApplication;
-import uy.edu.um.tic1.entity.*;
-import uy.edu.um.tic1.product.Product;
-import uy.edu.um.tic1.product.ProductRequest;
-import uy.edu.um.tic1.product.Products;
+import uy.edu.um.tic1.requests.ProductRequestOld;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -37,6 +44,9 @@ public class MainController implements Initializable {
     private String genre;
     private String category;
     private String subcategory;
+    private String size;
+    private String color;
+
 
     @FXML
     private AnchorPane paneRoot;
@@ -69,35 +79,18 @@ public class MainController implements Initializable {
     @FXML
     private Button home;
     @FXML
-    private Button cart;
-    @FXML
     private AnchorPane paneFilters;
     @FXML
     private Button buttonFilters;
+    @FXML
+    private FlowPane flowPaneButtons;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        if (user) {
-
-            MenuButton menuUser = new MenuButton("Usuario");
-            AnchorPane.setRightAnchor(menuUser, 15.0);
-            menuUser.setLayoutY(8);
-            menuUser.setStyle("-fx-background-color: #ffffff");
-            paneMenuBar.getChildren().add(menuUser);
-
-        } else {
-
-            Button logInButton = new Button("Ingresar");
-            AnchorPane.setRightAnchor(logInButton, 15.0);
-            logInButton.setLayoutY(8);
-            logInButton.setStyle("-fx-background-color: #ffffff");
-            paneMenuBar.getChildren().add(logInButton);
-            logInButton.setOnMouseClicked(event -> {
-                storeApplication.sceneLogIn();
-            });
-
-        }
+        // Falta la verificacion de tipo de usuario, actualmente es solo un Boolean
+        if (user) setButtonsClient();
+        else setButtonsDefault();
 
         setCategory(Categories.getGenre());
         setColors();
@@ -105,6 +98,89 @@ public class MainController implements Initializable {
 
         paneFiltersLeft.setVisible(false);
         menuButtonSort.setVisible(false);
+
+        setMainPage();
+
+    }
+
+    /**
+     * Agrega los botones de un usuario sin cuenta, Carrito e Ingresar
+     */
+    private void setButtonsDefault() {
+
+        flowPaneButtons.getChildren().clear();
+
+        Button login = new Button("Ingresar");
+        login.setStyle("-fx-background-color: #ffffff");
+        login.setOnAction(event -> storeApplication.sceneLogIn());
+        flowPaneButtons.getChildren().add(login);
+
+        Button cart = new Button("Carrito");
+        cart.setStyle("-fx-background-color: #ffffff");
+        cart.setOnAction(event -> storeApplication.sceneCart());
+        flowPaneButtons.getChildren().add(cart);
+
+    }
+
+    /**
+     * Agrega los botones de un cliente, Carrito y Usuario
+     */
+    private void setButtonsClient() {
+
+        flowPaneButtons.getChildren().clear();
+
+        MenuButton user = new MenuButton("Usuario");
+        user.setStyle("-fx-background-color: #ffffff");
+        MenuItem config = new MenuItem("Configuración");
+        config.setOnAction(event -> storeApplication.sceneConfig());
+        user.getItems().add(config);
+        MenuItem logOut = new MenuItem("Cerrar sesión");
+        logOut.setOnAction(event -> System.out.println("cerrar sesión"));
+        user.getItems().add(logOut);
+        flowPaneButtons.getChildren().add(user);
+
+        Button cart = new Button();
+        cart.setStyle("-fx-background-color: #ffffff");
+        cart.setOnMouseClicked(event -> storeApplication.sceneCart());
+        flowPaneButtons.getChildren().add(cart);
+
+    }
+
+    /**
+     * Agrega los botones de una Marca, Nuevo Producto y Marca.
+     */
+    private void setButtonsBrand() {
+
+        flowPaneButtons.getChildren().clear();
+
+        Button logOut = new Button("Cerrar sesión");
+        logOut.setStyle("-fx-background-color: #ffffff");
+        logOut.setOnAction(event -> System.out.println("Cerrar sesión"));
+        flowPaneButtons.getChildren().add(logOut);
+
+        Button newProduct = new Button("Nuevo producto");
+        newProduct.setStyle("-fx-background-color: #ffffff");
+        newProduct.setOnAction(event -> storeApplication.sceneBrandNewProduct());
+        flowPaneButtons.getChildren().add(newProduct);
+
+    }
+
+    /**
+     * Agrega los botones de una tienda, Nuevo Producto, y Tienda
+     */
+    private void setButtonsStore() {
+
+        flowPaneButtons.getChildren().clear();
+
+        Button logOut = new Button("Cerrar sesión");
+        logOut.setStyle("-fx-background-color: #ffffff");
+        logOut.setOnAction(event -> System.out.println("Cerrar sesión"));
+        flowPaneButtons.getChildren().add(logOut);
+
+        Button newProduct = new Button("Agregar producto");
+        newProduct.setStyle("-fx-background-color: #ffffff");
+        newProduct.setOnAction(event -> storeApplication.sceneStoreAddProduct());
+        flowPaneButtons.getChildren().add(newProduct);
 
     }
 
@@ -167,30 +243,24 @@ public class MainController implements Initializable {
         flowPaneCategoryLabels.getChildren().add(label);
 
         requestProductsCategory();
-        setProducts();
+        setProducts(requestProductsCategory());
 
     }
 
     /**
      * Hace un request de productos por categoria
      */
-    private void requestProductsCategory() {
+    private Product[] requestProductsCategory() {
 
         menuButtonSort.setVisible(true);
 
-        if (subcategory != null) {
+        Product[] products;
 
-            RequestProducts.getByCategory(genre, category, subcategory);
+        if (subcategory != null) products = RequestProducts.getByCategory(genre, category, subcategory);
+        else if (category != null) products = RequestProducts.getByCategory(genre, category);
+        else products = RequestProducts.getByCategory(genre);
 
-        } else if (category != null) {
-
-            RequestProducts.getByCategory(genre, category);
-
-        } else {
-
-            RequestProducts.getByCategory(genre);
-
-        }
+        return products;
 
     }
 
@@ -263,11 +333,18 @@ public class MainController implements Initializable {
     }
 
 
-    private void setProducts() {
+    /**
+     * Muestra una lista de productos en pantalla.
+     * Borra los productos mostrados anteriormente.
+     * @param productsList Lista de productos para mostrar en pantalla
+     */
+    private void setProducts(Product[] productsList) {
 
-        if (ProductRequest.productsList != null) {
+        flowPaneBackground.getChildren().clear();
 
-            for (Products product : ProductRequest.productsList) {
+        if (productsList != null) {
+
+            for (Product product : productsList) {
 
                 Pane pane = PaneProduct.paneGeneric(product.getImage(), product.getName(), product.getBrand(), product.getPrice(), product.getColors(), product.getSizes());
 
@@ -279,47 +356,52 @@ public class MainController implements Initializable {
 
             }
 
+        } else {
+
+            Label noProducts = new Label("No hay productos para mostrar ¯\\_(ツ)_/¯");
+            noProducts.setFont(Font.font("Cambria", FontWeight.BOLD, 48));
+            flowPaneBackground.getChildren().add(noProducts);
+
         }
 
     }
 
-    /**private void setProducts(Product[] productsList) {
+    /**
+     * Hace un request de productos por marca, y los muestra en pantalla
+     * @param brand Marca elegida
+     */
+    public static void selectedBrand(String brand) {
 
-        for (Product product : productsList) {
+        System.out.println();
 
-            Pane pane = PaneProduct.paneGeneric(product.getImage(), product.getName(), product.getBrand(), product.getPrice(), product.getColor(), product.getSize());
-
-            pane.setOnMouseClicked(event -> {
-                storeApplication.sceneProductDisplay(product.getName());
-            });
-
-            flowPaneBackground.getChildren().add(pane);
-
-        }
-
-    }*/
+    }
 
 
     /** Vuelve al home, mostrando nuevamente la pantalla con banner y marcas */
     @FXML
     void homePressed(ActionEvent event) {
 
+        setMainPage();
+
     }
 
-    void setMainPage() {
+    public void setMainPage() {
 
         flowPaneBackground.getChildren().clear();
 
         ImageView banner = RequestMain.getBanner();
+        banner.setFitWidth(1000);
+        banner.setPreserveRatio(true);
         flowPaneBackground.getChildren().add(banner);
 
-
+        ScrollPane brandsPane = PaneBrands.getScroll(RequestMain.getBrands());
+        brandsPane.setPrefWidth(1000);
+        flowPaneBackground.getChildren().add(brandsPane);
 
     }
 
     /** Abre la scene del carrito de compras */
-    @FXML
-    void cartPressed(ActionEvent event) {
+    void cartPressed() {
 
         if (user) {
             RequestProducts.getCart("Juanito Escarcha");
@@ -375,10 +457,9 @@ public class MainController implements Initializable {
         category = null;
         subcategory = null;
 
-        ProductRequest.productsList = ProductRequest.getAll();
-        RequestProducts.getAll();
+        ProductRequestOld.productsList = ProductRequestOld.getAll();
         setCategory(Categories.getGenre());
-        setProducts();
+        setProducts(RequestProducts.getAll());
 
     }
 
@@ -425,8 +506,11 @@ public class MainController implements Initializable {
     void pressedSearch(ActionEvent event) {
 
         String text = fieldSearch.getText();
+
         if (!text.isEmpty()) {
 
+            //RequestProducts.setFiltersNull();
+            //RequestProducts.performQuery();
             System.out.println("Busca items con el nombre "+text);
 
         } else {

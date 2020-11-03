@@ -11,7 +11,7 @@ import javafx.scene.layout.StackPane;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import uy.edu.um.tic1.Requests.RequestUser;
+import uy.edu.um.tic1.requests.RequestUser;
 import uy.edu.um.tic1.StoreApplication;
 
 import java.net.URL;
@@ -76,7 +76,7 @@ public class LogInController implements Initializable {
 
     @FXML
     void registerPressed(ActionEvent event) {
-        storeApplication.sceneRegister(true);
+        storeApplication.sceneRegister();
     }
 
 

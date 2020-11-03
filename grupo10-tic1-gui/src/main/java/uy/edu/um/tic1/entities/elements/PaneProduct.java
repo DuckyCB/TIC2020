@@ -1,18 +1,18 @@
-package uy.edu.um.tic1.entity;
+package uy.edu.um.tic1.entities.elements;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import uy.edu.um.tic1.entities.attributes.Colors;
 
 public class PaneProduct {
 
-    public static Pane paneGeneric(String image, String name, String brand, Float price, ColorRGB[] colors, String[] sizes) {
+    public static Pane paneGeneric(String image, String name, String brand, Float price, String[] colors, String[] sizes) {
 
         Pane paneProduct = new Pane();
         paneProduct.setPrefSize(500, 320);
@@ -70,8 +70,6 @@ public class PaneProduct {
             StackPane paneSize = new StackPane();
             paneSize.setPrefSize(32,32);
             paneSize.setStyle("-fx-background-color: #cdcdcd");
-            /*paneSize.setBackground(new Background(new BackgroundFill
-                    (new Color(0.8, 0.8, 0.8, 1.0), CornerRadii.EMPTY, Insets.EMPTY)));*/
             Label sizeLetter = new Label(size);
             sizeLetter.setFont(Font.font("Cambria", FontWeight.BOLD, 26));
             paneSize.getChildren().add(sizeLetter);
@@ -90,12 +88,11 @@ public class PaneProduct {
         flowPaneColors.setHgap(5);
         flowPaneColors.setPadding(new Insets(3, 3, 3, 3));
 
-        for (ColorRGB rgb: colors) {
+        for (String color: colors) {
 
             Circle circle = new Circle();
             circle.setRadius(16.0f);
-            Color color = new Color(rgb.getR(), rgb.getG(), rgb.getB(), 1.0);
-            circle.setFill(color);
+            circle.setStyle("-fx-fill: #" + color);
             flowPaneColors.getChildren().add(circle);
 
         }

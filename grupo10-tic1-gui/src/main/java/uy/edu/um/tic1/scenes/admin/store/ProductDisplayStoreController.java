@@ -15,7 +15,7 @@ import uy.edu.um.tic1.StoreApplication;
 
 @Component
 @FxmlView("/uy/edu/um/tic1/scenes/admin/brand/adminProductStore.fxml")
-public class AdminProductStoreController {
+public class ProductDisplayStoreController {
 
     @Autowired
     StoreApplication storeApplication;
