@@ -13,7 +13,7 @@ import uy.edu.um.tic1.entitites.StoreDTO;
 import java.util.List;
 
 @RestController
-@RequestMapping("/store")
+@RequestMapping("/stores")
 public class StoreRestController {
 
     @Autowired

@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
+import uy.edu.um.tic1.entitites.contact.AddressDTO;
+import uy.edu.um.tic1.entitites.contact.TelephoneNumberDTO;
 
 
 @Data
@@ -13,7 +15,16 @@ import uy.edu.um.tic1.entitites.cart.CartDTO;
 @SuperBuilder
 public class ClientDTO extends AppUserDTO {
 
+
+    private String firstName;
+
+    private String lastName;
+
     private CartDTO currentCart;
+
+    private AddressDTO address;
+
+    private TelephoneNumberDTO telephoneNumber;
 
 
 

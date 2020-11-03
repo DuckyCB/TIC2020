@@ -39,19 +39,7 @@ public class AdminController {
             userRepository.save(user);
         }
 
-        Optional<AppUser> optionalAppUser2 = userRepository.findByUsername("client");
-        if (!optionalAppUser2.isPresent()) {
-            AppUser user2 = Client.builder()
-                    .username("client")
-                    .password(passwordEncoder.encode("client"))
-                    .isAccountNonExpired(true)
-                    .isAccountNonLocked(true)
-                    .isCredentialsNonExpired(true)
-                    .isEnabled(true)
-                    .build();
 
-            userRepository.save(user2);
-        }
     }
 
 }

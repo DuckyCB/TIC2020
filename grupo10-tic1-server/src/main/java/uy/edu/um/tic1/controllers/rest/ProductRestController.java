@@ -2,11 +2,13 @@ package uy.edu.um.tic1.controllers.rest;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uy.edu.um.tic1.controllers.ProductController;
 import uy.edu.um.tic1.entities.cart.Cart;
 import uy.edu.um.tic1.entities.products.Product;
+import uy.edu.um.tic1.entities.products.Trousers;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 
 import java.util.List;
@@ -50,12 +52,13 @@ public class ProductRestController {
     @GetMapping("/test_insert/")
     @PreAuthorize("hasAuthority('product:write')")
     public void testInsert(){
-        productController.testProduct1();
+        productController.testInsert();
     }
 
-    @PutMapping("/insert/")
+    @PutMapping(value = "/insert/")
     @PreAuthorize("hasAuthority('product:write')")
     public void insert(@RequestBody Product product){
+        System.out.println(product);
         productController.save(product);
     }
 

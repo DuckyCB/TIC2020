@@ -51,6 +51,8 @@ public class Cart {
     )
     private Store store;
 
+    private Boolean acceptedByStore;
+
     @Basic
     private LocalTime time;
     @Basic
@@ -77,6 +79,10 @@ public class Cart {
             item.setPrice(item.getProduct().getPrice());
         }
 
+    }
+
+    public void storeAcceptedCart(){
+        this.acceptedByStore = true;
     }
 
 
@@ -115,6 +121,7 @@ public class Cart {
                 .id(this.id)
                 .client((ClientDTO) this.client.toDTO())
                 .store(this.store.toDTO())
+                .acceptedByStore(this.acceptedByStore)
                 .items(this.items.stream().map(CartItem::toDTO).collect(Collectors.toSet()))
                 .date(this.date)
                 .time(this.time)

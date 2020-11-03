@@ -13,7 +13,7 @@ import uy.edu.um.tic1.entitites.BrandDTO;
 import java.util.List;
 
 @RestController
-@RequestMapping("/brand")
+@RequestMapping("/brands")
 public class BrandRestController {
 
 

@@ -2,7 +2,9 @@ package uy.edu.um.tic1.entities.products;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import uy.edu.um.tic1.entities.SizeAndColor;
 import uy.edu.um.tic1.entitites.product.HoodieDTO;
@@ -16,10 +18,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@DiscriminatorValue("shirt")
+@DiscriminatorValue("SHIRT")
 @AllArgsConstructor
 
 @SuperBuilder
+
 public class Shirt extends Product {
     @Getter
     private final static List<String> sizes = Arrays.asList(

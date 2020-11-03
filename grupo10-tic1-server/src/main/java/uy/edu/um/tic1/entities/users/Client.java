@@ -7,7 +7,11 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import uy.edu.um.tic1.entities.cart.Cart;
 import uy.edu.um.tic1.entities.SizeAndColor;
+import uy.edu.um.tic1.entities.contact.Address;
+import uy.edu.um.tic1.entities.contact.Email;
+import uy.edu.um.tic1.entities.contact.TelephoneNumber;
 import uy.edu.um.tic1.entities.products.Product;
+import uy.edu.um.tic1.entitites.contact.AddressDTO;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.entitites.users.BrandUserDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
@@ -27,7 +31,13 @@ public class Client extends AppUser{
 
     private final static Set<? extends GrantedAuthority> grantedAuthorities = ApplicationUserRole.CLIENT.getGrantedAuthorities();
 
+    @Column(length = 20)
+    private String firstName;
+    @Column(length = 20)
+    private String lastName;
 
+    @Embedded
+    private Email email;
 
     @OneToOne
     @JoinColumn(name = "current_cart",
@@ -35,7 +45,9 @@ public class Client extends AppUser{
     )
     private Cart currentCart;
 
+    private Address address;
 
+    private TelephoneNumber telephoneNumber;
 
 
 
@@ -69,8 +81,12 @@ public class Client extends AppUser{
     public AppUserDTO toDTO() {
         return ClientDTO.builder()
                 .id(this.getId())
+                .firstName(this.firstName)
+                .lastName(this.lastName)
                 .username(this.getUsername())
+                .address(this.address.toDTO())
                 .currentCart(this.currentCart.toDTO())
+                .telephoneNumber(this.telephoneNumber.toDTO())
                 .build();
     }
 

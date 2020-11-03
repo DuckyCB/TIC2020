@@ -13,8 +13,8 @@ repositories {
 dependencies {
 
 
-    //JACKSON
-    compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version: '1.9.13'
+    //SPRINGBOOT
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.3.3.RELEASE'
 
 
     //LOMBOK

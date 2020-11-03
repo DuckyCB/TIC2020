@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import uy.edu.um.tic1.entities.cart.CartItem;
+import uy.edu.um.tic1.entities.contact.Address;
+import uy.edu.um.tic1.entities.contact.Email;
 import uy.edu.um.tic1.entities.contact.TelephoneNumber;
 import uy.edu.um.tic1.entitites.StoreDTO;
 
@@ -27,8 +29,11 @@ public class Store {
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(length = 50)
-    private String address;
+    @Embedded
+    private Address address;
+
+    @Embedded
+    private Email email;
 
     @Embedded
     @Column(unique = true)
@@ -53,6 +58,7 @@ public class Store {
     private Set<Stock> stockSet;
 
 
+
     public void updateStock(Stock stock) {
 
         stockSet.remove(stock);
@@ -75,7 +81,7 @@ public class Store {
     public StoreDTO toDTO() {
         return StoreDTO.builder()
                 .id(this.id)
-                .address(this.address)
+                .address(this.address.toDTO())
                 .brandSet(this.brandSet.stream().map(Brand::toDTO).collect(Collectors.toSet()))
                 .stockSet(this.stockSet.stream().map(Stock::toDTO).collect(Collectors.toSet()))
                 .telephoneNumber(this.telephoneNumber.toDTO())

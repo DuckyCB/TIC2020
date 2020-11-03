@@ -12,7 +12,7 @@ import uy.edu.um.tic1.repositories.specifications.StoreQuerySpecification;
 
 
 @RestController
-@RequestMapping("/stock")
+@RequestMapping("/stocks")
 
 public class StockRestController {
 

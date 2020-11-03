@@ -1,11 +1,16 @@
 package uy.edu.um.tic1.entities.products;
 
 
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
 import uy.edu.um.tic1.entities.Brand;
 import uy.edu.um.tic1.entities.SizeAndColor;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
@@ -16,16 +21,28 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name="product_type",
         discriminatorType = DiscriminatorType.STRING)
 
 @Data
+
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "product_type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Trousers.class, name = "trousers"),
+        @JsonSubTypes.Type(value = Shirt.class, name = "shirt"),
+        @JsonSubTypes.Type(value = Hoodie.class, name = "hoodie")
+})
+
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
-
 public abstract class Product {
 
     @Getter
@@ -62,5 +79,8 @@ public abstract class Product {
     @Lob
     private byte[] image;
 
-    public abstract ProductDTO toDTO();
+
+   public abstract ProductDTO toDTO();
+
+
 }

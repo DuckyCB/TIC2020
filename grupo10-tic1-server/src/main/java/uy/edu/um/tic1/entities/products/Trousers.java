@@ -1,9 +1,11 @@
 package uy.edu.um.tic1.entities.products;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.NamedType;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import uy.edu.um.tic1.entities.SizeAndColor;
 import uy.edu.um.tic1.entitites.product.HoodieDTO;
@@ -17,10 +19,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@DiscriminatorValue("trousers")
+@DiscriminatorValue("TROUSERS")
 @AllArgsConstructor
 @Data
+
 @SuperBuilder
+
 public class Trousers extends Product {
 
     @Getter
@@ -41,4 +45,7 @@ public class Trousers extends Product {
                 .build();
 
     }
+
+
+
 }

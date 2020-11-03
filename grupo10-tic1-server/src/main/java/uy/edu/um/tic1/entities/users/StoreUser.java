@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 @DiscriminatorValue("store")
 @AllArgsConstructor
-
+@NoArgsConstructor
 @Data
 @SuperBuilder
 public class StoreUser extends AppUser{

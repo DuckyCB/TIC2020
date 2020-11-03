@@ -1,12 +1,17 @@
 package uy.edu.um.tic1.entitites.product;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.codehaus.jackson.annotate.JsonSubTypes;
-import org.codehaus.jackson.annotate.JsonTypeInfo;
+
+
+
+
 import uy.edu.um.tic1.entitites.BrandDTO;
 import uy.edu.um.tic1.entitites.SizeAndColorDTO;
 
@@ -18,7 +23,8 @@ import java.util.Set;
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
+        property = "product_type")
+
 @JsonSubTypes({
         @JsonSubTypes.Type(value = HoodieDTO.class, name = "hoodie"),
         @JsonSubTypes.Type(value = ShirtDTO.class, name = "shirt"),
@@ -30,7 +36,7 @@ import java.util.Set;
 @NoArgsConstructor
 @SuperBuilder
 
-public class ProductDTO {
+public abstract class ProductDTO {
 
     @Getter
     private final static List<String> colors = Arrays.asList(

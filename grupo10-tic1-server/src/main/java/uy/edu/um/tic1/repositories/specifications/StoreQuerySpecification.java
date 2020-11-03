@@ -24,7 +24,7 @@ public class StoreQuerySpecification implements Specification<Store> {
     @Override
     public Predicate toPredicate(Root<Store> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
-        Join<Store, Stock> storeStockJoin = root.joinSet("stockSet");
+
 
 
 
@@ -42,8 +42,10 @@ public class StoreQuerySpecification implements Specification<Store> {
         if (brand != null)
             predicates.add(criteriaBuilder.isMember(brand, root.get("brandSet")));
 
-        if (product != null)
-            predicates.add(criteriaBuilder.equal(storeStockJoin.get("product"),product));
+        if (product != null) {
+            Join<Store, Stock> storeStockJoin = root.joinSet("stockSet");
+            predicates.add(criteriaBuilder.equal(storeStockJoin.get("product"), product));
+        }
 
 
         query.groupBy(root.get("id"));

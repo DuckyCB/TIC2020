@@ -1,8 +1,11 @@
 package uy.edu.um.tic1.entities.products;
 
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import uy.edu.um.tic1.entities.SizeAndColor;
 import uy.edu.um.tic1.entities.cart.CartItem;
@@ -16,10 +19,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@DiscriminatorValue("hoodie")
+@DiscriminatorValue("HOODIE")
 @AllArgsConstructor
 
 @SuperBuilder
+
+
 public class Hoodie extends Product {
 
     @Getter

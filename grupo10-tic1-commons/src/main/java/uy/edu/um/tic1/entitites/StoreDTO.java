@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uy.edu.um.tic1.entitites.contact.AddressDTO;
 import uy.edu.um.tic1.entitites.contact.TelephoneNumberDTO;
 
 import java.util.Set;
@@ -18,7 +19,7 @@ public class StoreDTO {
     private Integer id;
 
 
-    private String address;
+    private AddressDTO address;
 
 
     private TelephoneNumberDTO telephoneNumber;

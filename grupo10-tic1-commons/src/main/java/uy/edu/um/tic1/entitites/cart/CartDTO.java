@@ -32,6 +32,7 @@ public class CartDTO {
 
     private StoreDTO store;
 
+    private Boolean acceptedByStore;
 
     private LocalTime time;
 
