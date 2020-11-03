@@ -12,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
@@ -20,23 +19,22 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
-import uy.edu.um.tic1.entity.ColorRGB;
-import uy.edu.um.tic1.product.Products;
+import uy.edu.um.tic1.entities.products.Product;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-@FxmlView("/uy/edu/um/tic1/scenes/admin/brand/adminProductBrand.fxml")
-public class AdminProductBrandController implements Initializable {
+@FxmlView("/uy/edu/um/tic1/scenes/admin/brand/productDisplayBrand.fxml")
+public class ProductDisplayBrandController implements Initializable {
 
     @Autowired
     StoreApplication storeApplication;
 
-    private static Products product;
+    private static Product product;
 
-    public static void setProduct(Products product) {
-        AdminProductBrandController.product = product;
+    public static void setProduct(Product product) {
+        ProductDisplayBrandController.product = product;
     }
 
     @FXML
@@ -96,7 +94,7 @@ public class AdminProductBrandController implements Initializable {
         pageTitle.setText(product.getName());
         productImage.setImage(new Image(product.getImage()));
 
-        for (ColorRGB rgb: product.getColors()) {
+        for (String color: product.getColors()) {
 
             Pane paneColor = new Pane();
             paneColor.setPrefSize(565, 60);
@@ -104,8 +102,7 @@ public class AdminProductBrandController implements Initializable {
 
             Circle circle = new Circle();
             circle.setRadius(16.0f);
-            Color color = new Color(rgb.getR(), rgb.getG(), rgb.getB(), 1.0);
-            circle.setFill(color);
+            circle.setStyle("-fx-fill: #" + color);
             circle.setLayoutX(30);
             circle.setLayoutY(30);
             paneColor.getChildren().add(circle);

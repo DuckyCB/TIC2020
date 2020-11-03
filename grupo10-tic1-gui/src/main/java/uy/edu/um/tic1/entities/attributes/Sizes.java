@@ -1,4 +1,4 @@
-package uy.edu.um.tic1.entity;
+package uy.edu.um.tic1.entities.attributes;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;

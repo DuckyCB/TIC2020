@@ -1,8 +1,25 @@
-package uy.edu.um.tic1.Requests;
+package uy.edu.um.tic1.requests;
 
-import uy.edu.um.tic1.product.Product;
+import uy.edu.um.tic1.entities.products.Product;
 
 public class RequestProducts {
+
+    private static String queryString = "/products/?";
+    private static Boolean queryFirst = Boolean.TRUE;
+
+    private static void setQueryString(String query) {
+
+        if (queryFirst) {
+
+            queryString += query;
+
+        } else {
+
+            queryString += "&" + query;
+
+        }
+
+    }
 
     public static Product[] getAll() {
 
@@ -119,5 +136,7 @@ public class RequestProducts {
         return new Product[]{};
 
     }
+
+
 
 }

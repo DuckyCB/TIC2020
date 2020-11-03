@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uy.edu.um.tic1.scenes.user.RegisterController">
+    <children>
+        <AnchorPane layoutX="540.0" minWidth="500.0" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #202020;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Button fx:id="inicio" layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#inicioPressed" style="-fx-background-color: #ffffff;" text="Inicio" AnchorPane.leftAnchor="14.0" />
+            </children>
+        </AnchorPane>
+      <StackPane layoutX="466.0" layoutY="269.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+         <children>
+            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="1280.0">
+               <children>
+                  <Label layoutX="503.0" layoutY="93.0" text="Crear Cuenta">
+                     <font>
+                        <Font name="System Bold" size="45.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="a" layoutX="540.0" layoutY="220.0" prefHeight="25.0" prefWidth="200.0" promptText="a" />
+                  <Button fx:id="buttonNext" layoutX="583.0" layoutY="444.0" mnemonicParsing="false" onAction="#pressedNext" style="-fx-background-color: #CDCDCD;" text="Continuar">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="b" layoutX="540.0" layoutY="260.0" prefWidth="200.0" promptText="b" />
+                  <PasswordField fx:id="e" layoutX="540.0" layoutY="380.0" prefWidth="200.0" promptText="e" />
+                  <StackPane fx:id="errorA" layoutX="752.0" layoutY="220.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;" />
+                  <StackPane fx:id="errorB" layoutX="752.0" layoutY="260.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;" />
+                  <StackPane fx:id="errorC" layoutX="752.0" layoutY="300.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;" />
+                  <StackPane fx:id="errorE" layoutX="752.0" layoutY="380.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;" />
+                  <StackPane fx:id="errorD" layoutX="752.0" layoutY="340.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;" />
+                  <TextField fx:id="c" layoutX="541.0" layoutY="300.0" prefWidth="200.0" promptText="c" />
+                  <TextField fx:id="d" layoutX="541.0" layoutY="340.0" prefWidth="200.0" promptText="d" />
+                  <TextField fx:id="passw" layoutX="540.0" layoutY="380.0" prefWidth="200.0" promptText="pass" />
+                  <Button fx:id="buttonCreate" layoutX="572.0" layoutY="444.0" mnemonicParsing="false" onAction="#pressedCreate" style="-fx-background-color: #CDCDCD;" text="Crear cuenta">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+    </children>
+</AnchorPane>

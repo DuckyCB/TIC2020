@@ -11,19 +11,16 @@ import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
-import uy.edu.um.tic1.product.ProductRequest;
+import uy.edu.um.tic1.entities.products.Product;
 import uy.edu.um.tic1.scenes.*;
-import uy.edu.um.tic1.product.Products;
-import uy.edu.um.tic1.scenes.admin.brand.AdminBrandController;
-import uy.edu.um.tic1.scenes.admin.brand.AdminProductBrandController;
-import uy.edu.um.tic1.scenes.admin.store.AdminProductStoreController;
-import uy.edu.um.tic1.scenes.admin.store.AdminStoreController;
+import uy.edu.um.tic1.scenes.admin.brand.ProductDisplayBrandController;
+import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
 import uy.edu.um.tic1.scenes.user.*;
 
 @Component
 public class StoreApplication extends Application {
 
-    private static ConfigurableApplicationContext applicationContext;
+    private ConfigurableApplicationContext applicationContext;
 
     static Stage primaryStage;
     static Stage stageComparator;
@@ -47,7 +44,6 @@ public class StoreApplication extends Application {
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Página principal");
-        //primaryStage.setMaximized(true);
         primaryStage.show();
 
     }
@@ -91,25 +87,20 @@ public class StoreApplication extends Application {
 
     }
 
-    public void sceneRegister(Boolean first) {
+    public void sceneRegister() {
 
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root;
-
-        if (first) {
-
-            root = fxWeaver.loadView(RegisterFirstController.class);
-
-        } else {
-
-            root = fxWeaver.loadView(RegisterSecondController.class);
-
-        }
-
+        Parent root = fxWeaver.loadView(RegisterController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Register");
         primaryStage.show();
+
+
+    }
+
+    public void sceneConfig() {
+
 
 
     }
@@ -125,11 +116,11 @@ public class StoreApplication extends Application {
 
     }
 
-    public void sceneAdminBrand() {
+    public void sceneAdminBrandProduct(Product product) {
 
-        ProductRequest.productsList = ProductRequest.getAll();
+        ProductDisplayBrandController.setProduct(product);
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(AdminBrandController.class);
+        Parent root = fxWeaver.loadView(ProductDisplayBrandController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Brand admin");
@@ -137,33 +128,22 @@ public class StoreApplication extends Application {
 
     }
 
-    public void sceneAdminBrandProduct(Products product) {
+    public void sceneBrandNewProduct() {
 
-        AdminProductBrandController.setProduct(product);
-        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(AdminProductBrandController.class);
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Brand admin");
-        primaryStage.show();
+
 
     }
 
-    public void sceneAdminStore() {
+    public void sceneStoreAddProduct() {
 
-        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(AdminStoreController.class);
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Brand admin");
-        primaryStage.show();
+
 
     }
 
     public void sceneAdminStoreProduct() {
 
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(AdminProductStoreController.class);
+        Parent root = fxWeaver.loadView(ProductDisplayStoreController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Brand admin");
