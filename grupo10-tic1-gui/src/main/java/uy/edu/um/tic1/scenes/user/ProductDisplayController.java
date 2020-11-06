@@ -35,24 +35,6 @@ public class ProductDisplayController implements Initializable {
 
     public static Product product;
 
-    private static Image constImage;
-    private static String constName;
-    private static String constBrand;
-    private static String constPrice;
-
-    public static void setConstImage(Image image) {
-        constImage = image;
-    }
-    public static void setConstName(String name) {
-        constName = name;
-    }
-    public static void setConstBrand(String brand) {
-        constBrand = brand;
-    }
-    public static void setConstPrice(String price) {
-        constPrice = price;
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

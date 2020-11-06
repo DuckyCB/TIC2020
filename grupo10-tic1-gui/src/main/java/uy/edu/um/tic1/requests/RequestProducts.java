@@ -12,12 +12,23 @@ public class RequestProducts {
         if (queryFirst) {
 
             queryString += query;
+            queryFirst = false;
 
         } else {
 
             queryString += "&" + query;
 
         }
+
+    }
+
+    public static void queryReset() {
+
+        queryString = "/products/?";
+
+    }
+
+    private static void searchInServer() {
 
     }
 
@@ -29,40 +40,51 @@ public class RequestProducts {
     }
 
     /**
-     *
      * @param genre Atributo de genero por el que buscar
      * @return Lista de productos
      */
-    public static Product[] getByCategory(String genre) {
+    public static Product[] getByGenre(String genre) {
 
-        System.out.println("Busca productos de" + genre);
+        char genreChar;
+        if (genre.equals("Hombre")) {
+            genreChar = 'M';
+        } else {
+            genreChar = 'F';
+        }
+        String text = "genre=\""+genreChar+"\"";
+        setQueryString(text);
+
+        searchInServer();
+
+        return new Product[]{};
+
+    }
+
+    /**
+     * @param category Atributo de categoria por el que buscar
+     * @return Lista de productos
+     */
+    public static Product[] getByCategory(String category) {
+
+        String text = "category=\""+category+"\"";
+        setQueryString(text);
+
+        searchInServer();
         return new Product[]{};
 
     }
 
     /**
      *
-     * @param genre Atributo de genero por el que buscar
-     * @param category Atributo de categoria por el que buscar
-     * @return Lista de productos
-     */
-    public static Product[] getByCategory(String genre, String category) {
-
-        System.out.println("Busca productos de" + genre + " - " + category);
-        return new Product[]{};
-
-    }
-
-    /**
-     *
-     * @param genre Atributo de genero por el que buscar
-     * @param category Atributo de categoria por el que buscar
      * @param subcategory Atributo de subcategoria por el que buscar
      * @return Lista de productos
      */
-    public static Product[] getByCategory(String genre, String category, String subcategory) {
+    public static Product[] getBySubCategory(String subcategory) {
 
-        System.out.println("Busca productos de" + genre + " - " + category + " - " + subcategory);
+        String text = "subcategory=\""+subcategory+"\"";
+        setQueryString(text);
+
+        searchInServer();
         return new Product[]{};
 
     }
@@ -74,7 +96,10 @@ public class RequestProducts {
      */
     public static Product[] getByName(String name){
 
-        System.out.println("Busca productos con el nombre "+name);
+        String text = "name=\""+name+"\"";
+        setQueryString(text);
+
+        searchInServer();
         return new Product[]{};
 
     }
