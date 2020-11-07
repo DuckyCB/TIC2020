@@ -1,6 +1,5 @@
 package uy.edu.um.tic1.entities.elements;
 
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;

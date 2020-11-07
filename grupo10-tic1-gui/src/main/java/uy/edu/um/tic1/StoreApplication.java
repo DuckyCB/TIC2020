@@ -16,6 +16,7 @@ import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.scenes.*;
 import uy.edu.um.tic1.scenes.admin.brand.ProductDisplayBrandController;
 import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
+import uy.edu.um.tic1.scenes.exceptions.ErrorController;
 import uy.edu.um.tic1.scenes.user.*;
 
 @Component
@@ -156,6 +157,19 @@ public class StoreApplication extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Brand admin");
         primaryStage.show();
+
+    }
+
+    public void sceneError(String error) {
+
+        Stage errorStage = new Stage();
+        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
+        Parent root = fxWeaver.loadView(ErrorController.class);
+        Scene scene = new Scene(root);
+        errorStage.setScene(scene);
+        errorStage.setTitle("Error");
+        errorStage.setAlwaysOnTop(true);
+        errorStage.show();
 
     }
 

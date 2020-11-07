@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -13,7 +12,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -263,9 +261,15 @@ public class MainController implements Initializable {
 
         Product[] products;
 
+<<<<<<< HEAD
         if (subcategory != null) products = RequestProducts.getByCategory(genre, category, subcategory);
         else if (category != null) products = RequestProducts.getByCategory(genre, category);
         else products = RequestProducts.getByCategory("gender=" + genre);
+=======
+        if (subcategory != null) products = RequestProducts.getBySubCategory(subcategory);
+        else if (category != null) products = RequestProducts.getByCategory(category);
+        else products = RequestProducts.getByGenre(genre);
+>>>>>>> 2fa65df89ab973a3dd9c75e8acb2341a91d31a5a
 
         return products;
 
@@ -455,7 +459,9 @@ public class MainController implements Initializable {
 
     /** Elimina todos los filtros, y muestra la totalidad de los productos */
     @FXML
-    void pressedClean(MouseEvent event) {
+    void pressedClean(MouseEvent event) { clearFilters(); }
+
+    private void clearFilters() {
 
         flowPaneCategory.getChildren().clear();
         flowPaneBackground.getChildren().clear();
@@ -500,7 +506,6 @@ public class MainController implements Initializable {
             try {
                 Float min = Float.parseFloat(minStr);
                 RequestProducts.getByMinPrice(min);
-                System.out.println("Buscar productos de precio desde "+min.toString());
             } catch (NumberFormatException e) {
                 System.out.println("El valor debe ser un numero");
             }
@@ -516,13 +521,9 @@ public class MainController implements Initializable {
 
         if (!text.isEmpty()) {
 
-            //RequestProducts.setFiltersNull();
-            //RequestProducts.performQuery();
-            System.out.println("Busca items con el nombre "+text);
-
-        } else {
-
-            System.out.println("Busqueda vacia");
+            RequestProducts.queryReset();
+            clearFilters();
+            setProducts(RequestProducts.getByName(text));
 
         }
 
