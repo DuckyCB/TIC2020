@@ -1,2 +1,4 @@
 rootProject.name = 'grupo10-tic1-gui'
 
+include ':grupo10-tic1-commons'
+project(':grupo10-tic1-commons').projectDir = file('..\\grupo10-tic1-commons')

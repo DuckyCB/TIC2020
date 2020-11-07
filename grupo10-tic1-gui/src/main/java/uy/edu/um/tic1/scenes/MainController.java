@@ -17,13 +17,16 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import uy.edu.um.tic1.entities.attributes.Categories;
 import uy.edu.um.tic1.entities.attributes.Colors;
 import uy.edu.um.tic1.entities.attributes.Sizes;
 import uy.edu.um.tic1.entities.elements.PaneBrands;
 import uy.edu.um.tic1.entities.elements.PaneProduct;
 import uy.edu.um.tic1.entities.products.Product;
+import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.requests.RequestMain;
 import uy.edu.um.tic1.requests.RequestProducts;
 import uy.edu.um.tic1.StoreApplication;
@@ -38,6 +41,9 @@ public class MainController implements Initializable {
 
     @Autowired
     StoreApplication storeApplication;
+
+
+
 
     private Boolean user = Boolean.FALSE;
     private Boolean filters = Boolean.FALSE;
@@ -100,6 +106,7 @@ public class MainController implements Initializable {
         menuButtonSort.setVisible(false);
 
         setMainPage();
+
 
     }
 
@@ -258,7 +265,7 @@ public class MainController implements Initializable {
 
         if (subcategory != null) products = RequestProducts.getByCategory(genre, category, subcategory);
         else if (category != null) products = RequestProducts.getByCategory(genre, category);
-        else products = RequestProducts.getByCategory(genre);
+        else products = RequestProducts.getByCategory("gender=" + genre);
 
         return products;
 

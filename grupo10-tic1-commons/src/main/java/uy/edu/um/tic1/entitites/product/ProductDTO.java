@@ -40,9 +40,26 @@ public abstract class ProductDTO {
 
     @Getter
     private final static List<String> colors = Arrays.asList(
-            "white", "black", "red", "blue");
+            "FDFEFE", "17202A", "6E2C00", "6C3483", "154360", "3498DB",
+            "145A32", "58D68D", "F4D03F", "E67E22", "E74C3C", "F5B7B1","5D6D7E");
 
+    private static final String white = "FDFEFE";
+    private static final String black = "17202A";
+    private static final String brown = "6E2C00";
 
+    private static final String purple = "6C3483";
+    private static final String blue = "154360";
+    private static final String lightBlue = "3498DB";
+
+    private static final String darkGreen = "145A32";
+    private static final String lightGreen = "58D68D";
+    private static final String yellow = "F4D03F";
+
+    private static final String orange = "E67E22";
+    private static final String red = "E74C3C";
+    private static final String pink = "F5B7B1";
+
+    private static final String grey = "5D6D7E";
 
 
     private Integer id;

@@ -1,6 +1,7 @@
 package uy.edu.um.tic1.requests;
 
 import uy.edu.um.tic1.entities.products.Product;
+import uy.edu.um.tic1.entitites.product.ProductDTO;
 
 public class RequestProducts {
 
@@ -21,9 +22,14 @@ public class RequestProducts {
 
     }
 
+
+
+
+
     public static Product[] getAll() {
 
         System.out.println("Todos los productos");
+
         return new Product[]{};
 
     }

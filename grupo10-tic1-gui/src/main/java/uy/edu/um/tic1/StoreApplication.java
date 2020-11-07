@@ -12,6 +12,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entities.products.Product;
+import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.scenes.*;
 import uy.edu.um.tic1.scenes.admin.brand.ProductDisplayBrandController;
 import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
@@ -21,10 +22,17 @@ import uy.edu.um.tic1.scenes.user.*;
 public class StoreApplication extends Application {
 
     private ConfigurableApplicationContext applicationContext;
-
+    private AppUserDTO appUser;
     static Stage primaryStage;
     static Stage stageComparator;
 
+    public AppUserDTO getAppUser() {
+        return appUser;
+    }
+
+    public void setAppUser(AppUserDTO appUser) {
+        this.appUser = appUser;
+    }
 
     @Override
     public void init() {
