@@ -12,7 +12,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
-import uy.edu.um.tic1.requests.RequestUser;
+import uy.edu.um.tic1.requests.UserRestController;
 import uy.edu.um.tic1.StoreApplication;
 
 import java.net.URL;
@@ -25,7 +25,7 @@ public class LogInController implements Initializable {
     @Autowired
     private StoreApplication storeApplication;
     @Autowired
-    private RequestUser requestUser;
+    private UserRestController userRestController;
 
     @FXML
     private Button inicio;
@@ -72,7 +72,7 @@ public class LogInController implements Initializable {
 
         if (!user.isEmpty() && !password.isEmpty()) {
 
-            AppUserDTO userEntity = requestUser.getUser(user, password);
+            AppUserDTO userEntity = userRestController.getUser(user, password);
             storeApplication.setAppUser(userEntity);
 
         }

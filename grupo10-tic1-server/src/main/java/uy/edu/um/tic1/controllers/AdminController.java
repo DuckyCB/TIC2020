@@ -8,13 +8,18 @@ import uy.edu.um.tic1.entities.users.AdminUser;
 import uy.edu.um.tic1.entities.users.AppUser;
 import uy.edu.um.tic1.entities.users.Client;
 import uy.edu.um.tic1.entities.users.StoreUser;
+import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.repositories.UserRepository;
+import uy.edu.um.tic1.security.user.ApplicationUserService;
 
 import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Service
 public class AdminController {
+
+    @Autowired
+    private ApplicationUserService applicationUserService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -39,6 +44,16 @@ public class AdminController {
             userRepository.save(user);
         }
 
+
+    }
+
+    public AppUserDTO getUser(String username){
+        Optional<AppUser> optionalAppUser = userRepository.findByUsername(username);
+
+        if (optionalAppUser.isPresent()){
+            return optionalAppUser.get().toDTO();
+        }
+        return null;
 
     }
 

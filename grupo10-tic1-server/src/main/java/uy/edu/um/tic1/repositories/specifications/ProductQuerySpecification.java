@@ -60,18 +60,19 @@ public class ProductQuerySpecification implements Specification<Product> {
             predicates.add(criteriaBuilder.lessThan(root.get("price"), priceTo));
 
         if (color != null)
-            predicates.add(criteriaBuilder.isMember(color, productSizeAndColorJoin.get("color")));
+            predicates.add(criteriaBuilder.equal(productSizeAndColorJoin.get("color"), color));
         if (size != null)
-            predicates.add(criteriaBuilder.isMember(size, productSizeAndColorJoin.get("size")));
+            predicates.add(criteriaBuilder.equal(productSizeAndColorJoin.get("size"), size));
 
 
         if (clothType != null){
             if(clothType.equals("trousers"))
                 predicates.add(criteriaBuilder.equal(root.type(), trousersClass));
-            if(clothType.equals("shirt"))
+            else if(clothType.equals("shirt"))
                 predicates.add(criteriaBuilder.equal(root.type(), shirtClass));
-            if(clothType.equals("hoodie"))
+            else if(clothType.equals("hoodie"))
                 predicates.add(criteriaBuilder.equal(root.type(), hoodieClass));
+
         }
 
 

@@ -15,23 +15,30 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
+import uy.edu.um.tic1.requests.BrandRestController;
+import uy.edu.um.tic1.requests.ProductRestController;
+import uy.edu.um.tic1.entities.BrandFilters;
+import uy.edu.um.tic1.entities.ProductFilters;
 import uy.edu.um.tic1.entities.attributes.Categories;
 import uy.edu.um.tic1.entities.attributes.Colors;
 import uy.edu.um.tic1.entities.attributes.Sizes;
 import uy.edu.um.tic1.entities.elements.PaneBrands;
 import uy.edu.um.tic1.entities.elements.PaneProduct;
-import uy.edu.um.tic1.entities.products.Product;
-import uy.edu.um.tic1.entitites.users.AppUserDTO;
+import uy.edu.um.tic1.entitites.BrandDTO;
+import uy.edu.um.tic1.entitites.SizeAndColorDTO;
+import uy.edu.um.tic1.entitites.cart.CartDTO;
+import uy.edu.um.tic1.entitites.product.HoodieDTO;
+import uy.edu.um.tic1.entitites.product.ProductDTO;
+import uy.edu.um.tic1.entitites.product.ShirtDTO;
+import uy.edu.um.tic1.entitites.product.TrousersDTO;
+import uy.edu.um.tic1.entitites.users.ClientDTO;
 import uy.edu.um.tic1.requests.RequestMain;
-import uy.edu.um.tic1.requests.RequestProducts;
 import uy.edu.um.tic1.StoreApplication;
-import uy.edu.um.tic1.requests.ProductRequestOld;
 
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @FxmlView("/uy/edu/um/tic1/scenes/sceneMain.fxml")
@@ -40,16 +47,18 @@ public class MainController implements Initializable {
     @Autowired
     StoreApplication storeApplication;
 
-
+    @Autowired
+    private ProductRestController productRestController;
+    @Autowired
+    private BrandRestController brandRestController;
 
 
     private Boolean user = Boolean.FALSE;
     private Boolean filters = Boolean.FALSE;
-    private String genre;
-    private String category;
-    private String subcategory;
-    private String size;
-    private String color;
+
+
+    private static ProductFilters productFilters = new ProductFilters();
+    private static BrandFilters brandFilters = new BrandFilters();
 
 
     @FXML
@@ -89,6 +98,7 @@ public class MainController implements Initializable {
     @FXML
     private FlowPane flowPaneButtons;
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -106,6 +116,11 @@ public class MainController implements Initializable {
         setMainPage();
 
 
+    }
+
+
+    public List<ProductDTO> getProducts(){
+        return productRestController.getProducts(productFilters);
     }
 
     /**
@@ -223,21 +238,25 @@ public class MainController implements Initializable {
      */
     private void pressedCategory(String type) {
 
-        if (genre == null) {
 
-            genre = type;
+
+
+
+        if (productFilters.getGender() == null) {
+
+            productFilters.setGender(type.charAt(0));
             setCategory(Categories.getSubCategory(type));
 
-        } else if (category == null) {
+        } else if (productFilters.getType() == null) {
 
-            category = type;
+            productFilters.setType(type);
             Label arrow = new Label(" > ");
             flowPaneCategoryLabels.getChildren().add(arrow);
-            setCategory(Categories.getSubCategory(genre, type));
+            setCategory(Categories.getSubCategory(productFilters.getGender().toString(), type));
 
         } else {
 
-            subcategory = type;
+//            subcategory = type;
             Label arrow = new Label(" > ");
             flowPaneCategoryLabels.getChildren().add(arrow);
             flowPaneCategory.getChildren().clear();
@@ -247,31 +266,19 @@ public class MainController implements Initializable {
         Label label = new Label(type);
         flowPaneCategoryLabels.getChildren().add(label);
 
-        requestProductsCategory();
-        setProducts(requestProductsCategory());
+//        requestProductsCategory();
+        setProducts(productRestController.getProducts(productFilters));
 
     }
 
     /**
      * Hace un request de productos por categoria
      */
-    private Product[] requestProductsCategory() {
+    private List<ProductDTO> requestProductsCategory() {
 
         menuButtonSort.setVisible(true);
 
-        Product[] products;
-
-<<<<<<< HEAD
-        if (subcategory != null) products = RequestProducts.getByCategory(genre, category, subcategory);
-        else if (category != null) products = RequestProducts.getByCategory(genre, category);
-        else products = RequestProducts.getByCategory("gender=" + genre);
-=======
-        if (subcategory != null) products = RequestProducts.getBySubCategory(subcategory);
-        else if (category != null) products = RequestProducts.getByCategory(category);
-        else products = RequestProducts.getByGenre(genre);
->>>>>>> 2fa65df89ab973a3dd9c75e8acb2341a91d31a5a
-
-        return products;
+        return getProducts();
 
     }
 
@@ -286,7 +293,7 @@ public class MainController implements Initializable {
      */
     private void setColors() {
 
-        for (String color: Colors.getAllListed()) {
+        for (String color: ProductDTO.getColors()) {
 
             Circle colorCircle = Colors.getCircle(color, 16f);
             colorCircle.setOnMouseClicked(event -> {
@@ -305,7 +312,8 @@ public class MainController implements Initializable {
     private void colorRequest(String color) {
 
         menuButtonSort.setVisible(true);
-        System.out.println("Busca los productos color "+color);
+        productFilters.setColor(color);
+        setProducts(productRestController.getProducts(productFilters));
 
     }
 
@@ -320,7 +328,20 @@ public class MainController implements Initializable {
      */
     private void setSizes(){
 
-        for (String size: Sizes.getListAdults()) {
+        List<String> sizes = new ArrayList<>();
+        if (productFilters.getType() == null)
+            sizes = Arrays.asList(Sizes.getListAdults());
+        else{
+            if (productFilters.getType().equals("shirt")){
+                sizes = ShirtDTO.getSizes();
+            } else if (productFilters.getType().equals("hoodie")){
+                sizes = HoodieDTO.getSizes();
+            }else if (productFilters.getType().equals("trousers")){
+                sizes = TrousersDTO.getSizes();
+            }
+        }
+
+        for (String size: sizes) {
 
             Pane paneSize = Sizes.getPane(size);
             paneSize.setOnMouseClicked(event -> {
@@ -339,7 +360,8 @@ public class MainController implements Initializable {
     private void sizeRequest(String size) {
 
         menuButtonSort.setVisible(true);
-        System.out.println("Busca productos de talle "+size);
+        productFilters.setSize(size);
+        setProducts(productRestController.getProducts(productFilters));
 
     }
 
@@ -349,15 +371,17 @@ public class MainController implements Initializable {
      * Borra los productos mostrados anteriormente.
      * @param productsList Lista de productos para mostrar en pantalla
      */
-    private void setProducts(Product[] productsList) {
+    private void setProducts(List<ProductDTO> productsList) {
 
         flowPaneBackground.getChildren().clear();
 
         if (productsList != null) {
 
-            for (Product product : productsList) {
+            for (ProductDTO product : productsList) {
 
-                Pane pane = PaneProduct.paneGeneric(product.getImage(), product.getName(), product.getBrand(), product.getPrice(), product.getColors(), product.getSizes());
+                Pane pane = PaneProduct.paneGeneric(product.getImage(), product.getName(), product.getBrand().getName(), product.getPrice(),
+                        product.getSizeAndColor().stream().map(SizeAndColorDTO::getColor).collect(Collectors.toList()),
+                        product.getSizeAndColor().stream().map(SizeAndColorDTO::getSize).collect(Collectors.toList()));
 
                 pane.setOnMouseClicked(event -> {
                     storeApplication.sceneProductDisplay(product.getName());
@@ -381,9 +405,10 @@ public class MainController implements Initializable {
      * Hace un request de productos por marca, y los muestra en pantalla
      * @param brand Marca elegida
      */
-    public static void selectedBrand(String brand) {
+    public static void selectedBrand(BrandDTO brand) {
 
-        System.out.println();
+        productFilters.setBrand_id(brand.getId());
+//        setProducts(productRestController.getProducts(productFilters));
 
     }
 
@@ -393,6 +418,7 @@ public class MainController implements Initializable {
     void homePressed(ActionEvent event) {
 
         setMainPage();
+        productFilters = new ProductFilters();
 
     }
 
@@ -405,7 +431,7 @@ public class MainController implements Initializable {
         banner.setPreserveRatio(true);
         flowPaneBackground.getChildren().add(banner);
 
-        ScrollPane brandsPane = PaneBrands.getScroll(RequestMain.getBrands());
+        ScrollPane brandsPane = PaneBrands.getScroll(brandRestController.getAllBrands(brandFilters));
         brandsPane.setPrefWidth(1000);
         flowPaneBackground.getChildren().add(brandsPane);
 
@@ -414,11 +440,15 @@ public class MainController implements Initializable {
     /** Abre la scene del carrito de compras */
     void cartPressed() {
 
-        if (user) {
-            RequestProducts.getCart("Juanito Escarcha");
-        } else {
-            System.out.println("Usa carrito guardado en memoria");
+        CartDTO cart = null;
+
+        if (storeApplication.getAppUser() != null && storeApplication.getAppUser() instanceof ClientDTO) {
+            ClientDTO client = (ClientDTO) storeApplication.getAppUser();
+            cart = client.getCurrentCart();
         }
+
+        storeApplication.setCart(cart);
+
         storeApplication.sceneCart();
 
     }
@@ -426,14 +456,14 @@ public class MainController implements Initializable {
     @FXML
     void pressedHighFirst(ActionEvent event) {
 
-        RequestProducts.getSortedByHighFirst();
+        //RequestProducts.getSortedByHighFirst();
 
     }
 
     @FXML
     void pressedLowFirst(ActionEvent event) {
 
-        RequestProducts.getSortedByLowFirst();
+        //RequestProducts.getSortedByLowFirst();
 
     }
 
@@ -466,13 +496,11 @@ public class MainController implements Initializable {
         flowPaneCategory.getChildren().clear();
         flowPaneBackground.getChildren().clear();
         flowPaneCategoryLabels.getChildren().clear();
-        genre = null;
-        category = null;
-        subcategory = null;
 
-        ProductRequestOld.productsList = ProductRequestOld.getAll();
-        setCategory(Categories.getGenre());
-        setProducts(RequestProducts.getAll());
+        productFilters = new ProductFilters();
+
+
+        setProducts(productRestController.getProducts(productFilters));
 
     }
 
@@ -484,9 +512,9 @@ public class MainController implements Initializable {
         if (!maxStr.isEmpty()) {
 
             try {
-                Float max = Float.parseFloat(maxStr);
-                RequestProducts.getByMinPrice(max);
-                System.out.println("Buscar productos de precio hasta "+max.toString());
+                Double max = Double.parseDouble(maxStr);
+                productFilters.setTo(max);
+                setProducts(productRestController.getProducts(productFilters));
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 System.out.println("El valor debe ser un numero");
@@ -504,8 +532,9 @@ public class MainController implements Initializable {
         if (!minStr.isEmpty()) {
 
             try {
-                Float min = Float.parseFloat(minStr);
-                RequestProducts.getByMinPrice(min);
+                Double min = Double.parseDouble(minStr);
+                productFilters.setFrom(min);
+                setProducts(productRestController.getProducts(productFilters));
             } catch (NumberFormatException e) {
                 System.out.println("El valor debe ser un numero");
             }
@@ -521,9 +550,10 @@ public class MainController implements Initializable {
 
         if (!text.isEmpty()) {
 
-            RequestProducts.queryReset();
+
             clearFilters();
-            setProducts(RequestProducts.getByName(text));
+            productFilters.setName(text);
+            setProducts(productRestController.getProducts(productFilters));
 
         }
 

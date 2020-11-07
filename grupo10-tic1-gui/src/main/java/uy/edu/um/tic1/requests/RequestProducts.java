@@ -23,11 +23,7 @@ public class RequestProducts {
 
     }
 
-<<<<<<< HEAD
 
-
-
-=======
     public static void queryReset() {
 
         queryString = "/products/?";
@@ -37,7 +33,7 @@ public class RequestProducts {
     private static void searchInServer() {
 
     }
->>>>>>> 2fa65df89ab973a3dd9c75e8acb2341a91d31a5a
+
 
     public static Product[] getAll() {
 

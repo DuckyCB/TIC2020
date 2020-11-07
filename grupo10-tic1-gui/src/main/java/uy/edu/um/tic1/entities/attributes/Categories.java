@@ -32,10 +32,12 @@ public class Categories {
 
         switch (genre) {
             case "Hombre":
+            case "H":
             case "Niño":
             case "Unisex":
                 return man;
             case "Mujer":
+            case"M":
             case "Niña":
                 return woman;
         }
@@ -53,28 +55,42 @@ public class Categories {
 
         switch (genre) {
             case "Hombre":
+            case "H":
             case "Niño":
             case "Unisex":
                 switch (category) {
                     case "Remeras":
                         return shirts;
+                    case "shirt":
+                        return shirts;
                     case "Buzos":
                         return coat;
+                    case "hoodie":
+                        return coat;
                     case "Pantalones":
+                        return pants;
+                    case "trousers":
                         return pants;
                     case "Ropa interior":
                         return underwearMan;
                 }
             case "Mujer":
+            case "M":
             case "Niña":
                 switch (category) {
                     case "Remeras":
                         return shirts;
+                    case "shirt":
+                        return shirts;
                     case "Buzos":
+                        return coat;
+                    case "hoodie":
                         return coat;
                     case "Vestidos":
                         return dresses;
                     case "Pantalones":
+                        return pants;
+                    case "trousers":
                         return pants;
                     case "Polleras":
                         return skirts;

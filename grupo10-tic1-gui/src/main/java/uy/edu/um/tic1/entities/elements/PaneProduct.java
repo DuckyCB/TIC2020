@@ -1,7 +1,10 @@
 package uy.edu.um.tic1.entities.elements;
 
+
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
@@ -10,9 +13,19 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import uy.edu.um.tic1.entities.attributes.Colors;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+
+import java.io.ByteArrayInputStream;
+
+import java.util.List;
+
+
 public class PaneProduct {
 
-    public static Pane paneGeneric(String image, String name, String brand, Float price, String[] colors, String[] sizes) {
+    public static Pane paneGeneric(byte[] image, String name, String brand, Double price, List<String> colors, List<String>  sizes) {
 
         Pane paneProduct = new Pane();
         paneProduct.setPrefSize(500, 320);
@@ -21,7 +34,34 @@ public class PaneProduct {
         paneProduct.setStyle("-fx-background-color: #e2e2e2");
 
         // IMAGE
-        ImageView productImage = new ImageView(image);
+//        ByteArrayInputStream bis = new ByteArrayInputStream(image);
+//        Iterator<?> readers = ImageIO.getImageReadersByFormatName("jpg");
+//        ImageReader reader = (ImageReader) readers.next();
+//        Object source = bis;
+//        ImageInputStream iis = null;
+//        try {
+//            iis = ImageIO.createImageInputStream(source);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        reader.setInput(iis, true);
+//        ImageReadParam param = reader.getDefaultReadParam();
+//        Image imageFile = null;
+//        try {
+//            imageFile = reader.read(0, param);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        ImageView productImage = new ImageView(imageFile);
+        ImageView  productImage = null;
+        if (image != null){
+            Image img = new Image(new ByteArrayInputStream(image));
+            productImage = new ImageView(img);
+        }else{
+            productImage = new ImageView("/uy/edu/um/tic1/images/no_image.jpg");
+        }
+
         productImage.setFitWidth(225);
         productImage.setFitHeight(300);
         productImage.setLayoutX(15);
@@ -175,6 +215,8 @@ public class PaneProduct {
         return paneProduct;
 
     }
+
+
 
 
 }

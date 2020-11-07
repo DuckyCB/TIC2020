@@ -12,6 +12,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entities.products.Product;
+import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.scenes.*;
 import uy.edu.um.tic1.scenes.admin.brand.ProductDisplayBrandController;
@@ -24,8 +25,17 @@ public class StoreApplication extends Application {
 
     private ConfigurableApplicationContext applicationContext;
     private AppUserDTO appUser;
+    private CartDTO cart;
     static Stage primaryStage;
     static Stage stageComparator;
+
+    public CartDTO getCart() {
+        return cart;
+    }
+
+    public void setCart(CartDTO cart) {
+        this.cart = cart;
+    }
 
     public AppUserDTO getAppUser() {
         return appUser;
@@ -86,7 +96,7 @@ public class StoreApplication extends Application {
     }
 
     public void sceneLogIn() {
-
+        this.init();
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(LogInController.class);
         Scene scene = new Scene(root);

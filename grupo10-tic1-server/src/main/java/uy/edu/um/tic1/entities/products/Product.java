@@ -47,7 +47,8 @@ public abstract class Product {
 
     @Getter
     private final static List<String> colors = Arrays.asList(
-            "white", "black", "red", "blue");
+            "FDFEFE", "17202A", "6E2C00", "6C3483", "154360", "3498DB",
+            "145A32", "58D68D", "F4D03F", "E67E22", "E74C3C", "F5B7B1","5D6D7E");
 
 
 
@@ -59,7 +60,7 @@ public abstract class Product {
 
     private Double price;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
             @JoinTable(name = "product_size_color",
             joinColumns = @JoinColumn(name = "product_id"),
             foreignKey = @ForeignKey(name = "fk_productsize_product"),
