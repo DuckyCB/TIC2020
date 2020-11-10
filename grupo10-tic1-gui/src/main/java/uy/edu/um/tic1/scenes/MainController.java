@@ -16,6 +16,7 @@ import javafx.scene.text.FontWeight;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uy.edu.um.tic1.entitites.users.*;
 import uy.edu.um.tic1.requests.BrandRestController;
 import uy.edu.um.tic1.requests.ProductRestController;
 import uy.edu.um.tic1.entities.BrandFilters;
@@ -32,7 +33,6 @@ import uy.edu.um.tic1.entitites.product.HoodieDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.entitites.product.ShirtDTO;
 import uy.edu.um.tic1.entitites.product.TrousersDTO;
-import uy.edu.um.tic1.entitites.users.ClientDTO;
 import uy.edu.um.tic1.requests.RequestMain;
 import uy.edu.um.tic1.StoreApplication;
 
@@ -52,8 +52,6 @@ public class MainController implements Initializable {
     @Autowired
     private BrandRestController brandRestController;
 
-
-    private Boolean user = Boolean.FALSE;
     private Boolean filters = Boolean.FALSE;
 
 
@@ -103,7 +101,11 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         // Falta la verificacion de tipo de usuario, actualmente es solo un Boolean
-        if (user) setButtonsClient();
+        AppUserDTO user = storeApplication.getAppUser();
+        if (user instanceof ClientDTO) setButtonsClient();
+        else if (user instanceof BrandUserDTO) setButtonsBrand();
+        else if (user instanceof StoreUserDTO) setButtonsStore();
+        if (user instanceof AdminUserDTO) setButtonsStore();
         else setButtonsDefault();
 
         setCategory(Categories.getGenre());
@@ -161,7 +163,7 @@ public class MainController implements Initializable {
 
         Button cart = new Button();
         cart.setStyle("-fx-background-color: #ffffff");
-        cart.setOnMouseClicked(event -> storeApplication.sceneCart());
+        cart.setOnMouseClicked(event -> cartPressed());
         flowPaneButtons.getChildren().add(cart);
 
     }
@@ -497,7 +499,7 @@ public class MainController implements Initializable {
 
         productFilters = new ProductFilters();
 
-
+        setCategory(Categories.getGenre());
         setProducts(productRestController.getProducts(productFilters));
 
     }
