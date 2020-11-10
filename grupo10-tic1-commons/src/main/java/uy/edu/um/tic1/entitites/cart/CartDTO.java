@@ -17,18 +17,13 @@ import java.util.Set;
 @Builder
 public class CartDTO {
 
-
     private Integer id;
-
 
     private Set<CartItemDTO> items;
 
-
     private Boolean toDeliver;
 
-
     private ClientDTO client;
-
 
     private StoreDTO store;
 
@@ -37,5 +32,7 @@ public class CartDTO {
     private LocalTime time;
 
     private LocalDate date;
+
+    public void addItem(CartItemDTO cartItem) { items.add(cartItem); }
 
 }

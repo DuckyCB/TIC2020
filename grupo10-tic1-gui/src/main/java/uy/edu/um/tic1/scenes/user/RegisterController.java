@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -41,7 +42,7 @@ public class RegisterController implements Initializable {
     @FXML
     private TextField e;
     @FXML
-    private TextField passw;
+    private PasswordField pass;
     @FXML
     private Button buttonNext;
     @FXML
@@ -90,7 +91,7 @@ public class RegisterController implements Initializable {
             errorC.setVisible(false);
         }
 
-        String password = String.valueOf(passw.getCharacters());
+        String password = String.valueOf(pass.getCharacters());
         if (password.isEmpty()) {
             errorE.setVisible(true);
             Label newPasswordError = new Label("El campo no puede ser vacío");
@@ -180,7 +181,7 @@ public class RegisterController implements Initializable {
         c.clear();
 
         d.setVisible(true);
-        passw.setVisible(false);
+        pass.setVisible(false);
         e.setVisible(true);
 
         a.setPromptText("Celular");
@@ -205,7 +206,7 @@ public class RegisterController implements Initializable {
         c.setPromptText("Dirección de correo");
         d.setVisible(false);
         e.setVisible(false);
-        passw.setPromptText("Contraseña");
+        pass.setPromptText("Contraseña");
 
         buttonCreate.setVisible(false);
 

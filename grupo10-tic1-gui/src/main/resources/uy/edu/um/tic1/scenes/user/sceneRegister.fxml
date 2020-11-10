@@ -31,7 +31,7 @@
                      </font>
                   </Button>
                   <TextField fx:id="b" layoutX="540.0" layoutY="260.0" prefWidth="200.0" promptText="b" />
-                  <PasswordField fx:id="e" layoutX="540.0" layoutY="380.0" prefWidth="200.0" promptText="e" />
+                  <PasswordField fx:id="pass" layoutX="540.0" layoutY="380.0" prefWidth="200.0" promptText="e" />
                   <StackPane fx:id="errorA" layoutX="752.0" layoutY="220.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;" />
                   <StackPane fx:id="errorB" layoutX="752.0" layoutY="260.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;" />
                   <StackPane fx:id="errorC" layoutX="752.0" layoutY="300.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;" />
@@ -39,7 +39,7 @@
                   <StackPane fx:id="errorD" layoutX="752.0" layoutY="340.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;" />
                   <TextField fx:id="c" layoutX="541.0" layoutY="300.0" prefWidth="200.0" promptText="c" />
                   <TextField fx:id="d" layoutX="541.0" layoutY="340.0" prefWidth="200.0" promptText="d" />
-                  <TextField fx:id="passw" layoutX="540.0" layoutY="380.0" prefWidth="200.0" promptText="pass" />
+                  <TextField fx:id="e" layoutX="540.0" layoutY="380.0" prefWidth="200.0" promptText="pass" />
                   <Button fx:id="buttonCreate" layoutX="572.0" layoutY="444.0" mnemonicParsing="false" onAction="#pressedCreate" style="-fx-background-color: #CDCDCD;" text="Crear cuenta">
                      <font>
                         <Font name="System Bold" size="19.0" />

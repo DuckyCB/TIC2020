@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entities.products.Product;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
+import uy.edu.um.tic1.entitites.users.ClientDTO;
 import uy.edu.um.tic1.scenes.*;
 import uy.edu.um.tic1.scenes.admin.brand.ProductDisplayBrandController;
 import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
@@ -125,6 +126,15 @@ public class StoreApplication extends Application {
     }
 
     public void sceneCart() {
+
+        CartDTO cart = null;
+
+        if (getAppUser() != null && getAppUser() instanceof ClientDTO) {
+            ClientDTO client = (ClientDTO) getAppUser();
+            cart = client.getCurrentCart();
+        }
+
+        setCart(cart);
 
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(CartController.class);

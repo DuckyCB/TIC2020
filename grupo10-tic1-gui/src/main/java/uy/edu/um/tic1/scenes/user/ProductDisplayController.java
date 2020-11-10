@@ -16,8 +16,11 @@ import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entities.attributes.Colors;
 import uy.edu.um.tic1.entities.attributes.Sizes;
-import uy.edu.um.tic1.entities.products.Product;
+import uy.edu.um.tic1.entitites.SizeAndColorDTO;
+import uy.edu.um.tic1.entitites.cart.CartItemDTO;
+import uy.edu.um.tic1.entitites.product.ProductDTO;
 
+import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -33,20 +36,53 @@ public class ProductDisplayController implements Initializable {
     private String selectedSize;
     private Integer selectedQuantity;
 
-    public static Product product;
+    public static ProductDTO product;
+
+    @FXML
+    private AnchorPane backgroundPane;
+    @FXML
+    private Label productBrand;
+    @FXML
+    private ImageView productImage;
+    @FXML
+    private Label productName;
+    @FXML
+    private Label productPrice;
+    @FXML
+    private Button addToCart;
+    @FXML
+    private MenuButton menuQuantity;
+    @FXML
+    private MenuButton menuSize;
+    @FXML
+    private MenuButton menuColor;
+    @FXML
+    private Label labelSize;
+    @FXML
+    private Label labelQuantity;
+    @FXML
+    private Circle circleColor;
+    @FXML
+    private Button compare;
+    @FXML
+    private Button inicio;
+    @FXML
+    private Button carrito;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        productImage.setImage(new Image(product.getImage()));
+        byte[] image = product.getImage();
+        Image  productImg = null;
+        if (image != null){
+            productImg = new Image(new ByteArrayInputStream(image));
+        }else{
+            productImg = new Image("/uy/edu/um/tic1/images/no_image.jpg");
+        }
+        productImage.setImage(productImg);
         productName.setText(product.getName());
-        productBrand.setText(product.getBrand());
+        productBrand.setText(product.getBrand().getName());
         productPrice.setText(product.getPrice().toString());
-
-        /*productImage.setImage(constImage);
-        productName.setText(constName);
-        productBrand.setText(constBrand);
-        productPrice.setText(constPrice);*/
 
         circleColor.setVisible(false);
         labelSize.setVisible(false);
@@ -143,51 +179,28 @@ public class ProductDisplayController implements Initializable {
 
     }
 
-
-    @FXML
-    private AnchorPane backgroundPane;
-    @FXML
-    private Label productBrand;
-    @FXML
-    private ImageView productImage;
-    @FXML
-    private Label productName;
-    @FXML
-    private Label productPrice;
-    @FXML
-    private Button addToCart;
-    @FXML
-    private MenuButton menuQuantity;
-    @FXML
-    private MenuButton menuSize;
-    @FXML
-    private MenuButton menuColor;
-    @FXML
-    private Label labelSize;
-    @FXML
-    private Label labelQuantity;
-    @FXML
-    private Circle circleColor;
-    @FXML
-    private Button compare;
-    @FXML
-    private Button inicio;
-    @FXML
-    private Button carrito;
-
+    /**
+     * Crea una instancia de
+     * @see CartItemDTO Crea una instancia de CartItemDTO y la añade al carrito.
+     * @see #storeApplication
+     */
     @FXML
     void addToCartPressed(ActionEvent event) {
+
+        SizeAndColorDTO sizeAndColorDTO = SizeAndColorDTO.builder().color(selectedColor).size(selectedSize).build();
+        CartItemDTO cartItem = CartItemDTO.builder().price(product.getPrice()).product(product).sizeAndColor(sizeAndColorDTO).quantity(selectedQuantity).build();
+        storeApplication.getCart().addItem(cartItem);
 
     }
 
     @FXML
     void carritoPressed(ActionEvent event) {
-
+        storeApplication.sceneCart();
     }
 
     @FXML
     void comparePressed(ActionEvent event) {
-
+        System.out.println("En construccion");
     }
 
     @FXML

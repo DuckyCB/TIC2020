@@ -163,7 +163,7 @@ public class MainController implements Initializable {
 
         Button cart = new Button();
         cart.setStyle("-fx-background-color: #ffffff");
-        cart.setOnMouseClicked(event -> cartPressed());
+        cart.setOnMouseClicked(event -> storeApplication.sceneCart());
         flowPaneButtons.getChildren().add(cart);
 
     }
@@ -434,22 +434,6 @@ public class MainController implements Initializable {
         ScrollPane brandsPane = PaneBrands.getScroll(brandRestController.getAllBrands(brandFilters));
         brandsPane.setPrefWidth(1000);
         flowPaneBackground.getChildren().add(brandsPane);
-
-    }
-
-    /** Abre la scene del carrito de compras */
-    void cartPressed() {
-
-        CartDTO cart = null;
-
-        if (storeApplication.getAppUser() != null && storeApplication.getAppUser() instanceof ClientDTO) {
-            ClientDTO client = (ClientDTO) storeApplication.getAppUser();
-            cart = client.getCurrentCart();
-        }
-
-        storeApplication.setCart(cart);
-
-        storeApplication.sceneCart();
 
     }
 
