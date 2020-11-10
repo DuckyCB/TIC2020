@@ -7,12 +7,18 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import org.springframework.beans.factory.annotation.Autowired;
 import uy.edu.um.tic1.entitites.BrandDTO;
 import uy.edu.um.tic1.scenes.MainController;
 
 import java.util.List;
 
 public class PaneBrands {
+
+
+    @Autowired
+    private static MainController mainController;
+
 
     public static ScrollPane getScroll(List<BrandDTO> brands) {
 
@@ -42,7 +48,7 @@ public class PaneBrands {
             labelBrand.setFont(Font.font("Cambria", FontWeight.BOLD, 28));
             labelBrand.setWrapText(true);
             paneBackground.getChildren().add(labelBrand);
-            paneBackground.setOnMouseClicked(event -> MainController.selectedBrand(brand));
+            paneBackground.setOnMouseClicked(event -> mainController.selectedBrand(brand));
             flow.getChildren().add(paneBackground);
 
         }

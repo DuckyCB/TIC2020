@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ import uy.edu.um.tic1.scenes.user.*;
 @Component
 public class StoreApplication extends Application {
 
+    @Autowired
     private ConfigurableApplicationContext applicationContext;
     private AppUserDTO appUser;
     private CartDTO cart;
@@ -85,7 +87,6 @@ public class StoreApplication extends Application {
     }
 
     public void sceneProductDisplay(String productName) {
-
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(ProductDisplayController.class);
         Scene scene = new Scene(root);
@@ -96,7 +97,6 @@ public class StoreApplication extends Application {
     }
 
     public void sceneLogIn() {
-        this.init();
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(LogInController.class);
         Scene scene = new Scene(root);

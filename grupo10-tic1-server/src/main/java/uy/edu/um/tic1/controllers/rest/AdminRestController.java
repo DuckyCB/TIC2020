@@ -5,7 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uy.edu.um.tic1.controllers.AdminController;
 import uy.edu.um.tic1.entities.Brand;
-import uy.edu.um.tic1.entities.users.AdminUser;
+import uy.edu.um.tic1.entities.users.*;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
 
 @RestController
@@ -32,6 +32,23 @@ public class AdminRestController {
     public AppUserDTO getUser(@RequestParam(name="username",required = true) String username) {
         return adminController.getUser(username);
 
+    }
+
+    @PutMapping("/register/client/")
+    public void registerClient(@RequestBody Client newClient){
+        adminController.registerClient(newClient);
+    }
+
+    @PutMapping("/register/brand/")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void registerBrand(@RequestBody BrandUser newBrand){
+        adminController.registerBrand(newBrand);
+    }
+
+    @PutMapping("/register/store/")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void registerStore(@RequestBody StoreUser newStore){
+        adminController.registerStore(newStore);
     }
 
 }

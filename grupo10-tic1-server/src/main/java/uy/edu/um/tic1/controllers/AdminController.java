@@ -4,10 +4,7 @@ package uy.edu.um.tic1.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import uy.edu.um.tic1.entities.users.AdminUser;
-import uy.edu.um.tic1.entities.users.AppUser;
-import uy.edu.um.tic1.entities.users.Client;
-import uy.edu.um.tic1.entities.users.StoreUser;
+import uy.edu.um.tic1.entities.users.*;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.repositories.UserRepository;
 import uy.edu.um.tic1.security.user.ApplicationUserService;
@@ -57,4 +54,15 @@ public class AdminController {
 
     }
 
+    public void registerClient(Client newClient) {
+        applicationUserService.save(newClient);
+    }
+
+    public void registerBrand(BrandUser newBrand) {
+        applicationUserService.save(newBrand);
+    }
+
+    public void registerStore(StoreUser newStore) {
+        applicationUserService.save(newStore);
+    }
 }

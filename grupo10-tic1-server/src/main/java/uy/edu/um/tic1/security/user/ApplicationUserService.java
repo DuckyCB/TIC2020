@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import uy.edu.um.tic1.entities.users.AppUser;
 import uy.edu.um.tic1.repositories.UserRepository;
 
 
@@ -24,5 +25,10 @@ public class ApplicationUserService implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException(String.format("Username %s not found", username))
                 );
+    }
+
+    public void save(AppUser newUser){
+        //TODO: Check user has everything
+        userRepository.save(newUser);
     }
 }

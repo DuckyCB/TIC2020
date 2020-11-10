@@ -60,6 +60,8 @@ public abstract class Product {
 
     private Double price;
 
+    //private Integer subcategory;
+
     @ManyToMany(cascade = CascadeType.MERGE)
             @JoinTable(name = "product_size_color",
             joinColumns = @JoinColumn(name = "product_id"),

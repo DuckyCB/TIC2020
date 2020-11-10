@@ -240,8 +240,6 @@ public class MainController implements Initializable {
 
 
 
-
-
         if (productFilters.getGender() == null) {
 
             productFilters.setGender(type.charAt(0));
@@ -405,7 +403,7 @@ public class MainController implements Initializable {
      * Hace un request de productos por marca, y los muestra en pantalla
      * @param brand Marca elegida
      */
-    public static void selectedBrand(BrandDTO brand) {
+    public void selectedBrand(BrandDTO brand) {
 
         productFilters.setBrand_id(brand.getId());
 //        setProducts(productRestController.getProducts(productFilters));
