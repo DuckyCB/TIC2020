@@ -45,6 +45,7 @@ public class StoreUser extends AppUser{
         return StoreUserDTO.builder()
                 .id(this.getId())
                 .username(this.getUsername())
+                .password(this.getPassword())
                 .store(this.store.toDTO())
                 .build();
     }

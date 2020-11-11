@@ -84,6 +84,7 @@ public class Client extends AppUser{
                 .firstName(this.firstName)
                 .lastName(this.lastName)
                 .username(this.getUsername())
+                .password(this.getPassword())
                 .address(this.address.toDTO())
                 .currentCart(this.currentCart.toDTO())
                 .telephoneNumber(this.telephoneNumber.toDTO())

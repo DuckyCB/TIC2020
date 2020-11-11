@@ -29,7 +29,7 @@ public class ProductQuerySpecification implements Specification<Product> {
     private Double priceTo;
     private Integer desiredStock;
     private String clothType;
-
+    private Integer clothSubtype;
 
     @Override
     public Predicate toPredicate(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
@@ -74,6 +74,9 @@ public class ProductQuerySpecification implements Specification<Product> {
                 predicates.add(criteriaBuilder.equal(root.type(), hoodieClass));
 
         }
+
+        if (clothSubtype != null)
+            predicates.add(criteriaBuilder.equal(root.get("subtype"), clothSubtype));
 
 
 

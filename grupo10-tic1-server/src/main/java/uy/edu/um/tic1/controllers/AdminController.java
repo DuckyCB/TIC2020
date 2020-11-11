@@ -55,14 +55,15 @@ public class AdminController {
     }
 
     public void registerClient(Client newClient) {
-        applicationUserService.save(newClient);
+
+        userRepository.save(newClient);
     }
 
     public void registerBrand(BrandUser newBrand) {
-        applicationUserService.save(newBrand);
+        userRepository.save(newBrand);
     }
 
     public void registerStore(StoreUser newStore) {
-        applicationUserService.save(newStore);
+        userRepository.save(newStore);
     }
 }

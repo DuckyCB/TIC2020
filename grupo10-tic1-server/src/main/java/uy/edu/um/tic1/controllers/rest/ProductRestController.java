@@ -34,14 +34,15 @@ public class ProductRestController {
                                    @RequestParam(name="from",required = false) Double from,
                                    @RequestParam(name="to",required = false) Double to,
                                    @RequestParam(name="type",required = false) String type,
+                                   @RequestParam(name="subtype",required = false) Integer subtype,
                                    @RequestParam(name="hasStock",required = false) Boolean hasStock
                                     ){
 
         if (hasStock == null || hasStock == true){
-            return productController.findWithStock(type, id, name, gender, brand_id, size, color, stock, from, to);
+            return productController.findWithStock(type, subtype,  id, name, gender, brand_id, size, color, stock, from, to);
         }
 
-        return productController.findAll(type, id, name, gender, brand_id, size, color, from, to);
+        return productController.findAll(type, subtype, id, name, gender, brand_id, size, color, from, to);
 
     }
 
@@ -68,6 +69,12 @@ public class ProductRestController {
         productController.delete(product);
     }
 
+
+
+    @GetMapping("/test_image/")
+    public void testInsertImage(){
+        productController.testProduct1();
+    }
 
 
 }

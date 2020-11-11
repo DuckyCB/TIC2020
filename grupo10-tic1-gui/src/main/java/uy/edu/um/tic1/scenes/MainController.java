@@ -35,6 +35,7 @@ import uy.edu.um.tic1.entitites.product.ShirtDTO;
 import uy.edu.um.tic1.entitites.product.TrousersDTO;
 import uy.edu.um.tic1.requests.RequestMain;
 import uy.edu.um.tic1.StoreApplication;
+import uy.edu.um.tic1.scenes.user.ProductDisplayController;
 
 import java.net.URL;
 import java.util.*;
@@ -379,11 +380,22 @@ public class MainController implements Initializable {
 
             for (ProductDTO product : productsList) {
 
+                HashMap<String, String> uniqueSize = new HashMap<>();
+                product.getSizeAndColor().stream().forEach(sc ->{
+                    uniqueSize.put(sc.getSize(), sc.getSize());
+                });
+                HashMap<String, String> uniqueColors = new HashMap<>();
+                product.getSizeAndColor().stream().forEach(sc ->{
+                    uniqueColors.put(sc.getColor(), sc.getColor());
+                });
+
+
                 Pane pane = PaneProduct.paneGeneric(product.getImage(), product.getName(), product.getBrand().getName(), product.getPrice(),
-                        product.getSizeAndColor().stream().map(SizeAndColorDTO::getColor).collect(Collectors.toList()),
-                        product.getSizeAndColor().stream().map(SizeAndColorDTO::getSize).collect(Collectors.toList()));
+                       uniqueColors.keySet().stream().collect(Collectors.toList()),
+                        uniqueSize.keySet().stream().collect(Collectors.toList()));
 
                 pane.setOnMouseClicked(event -> {
+                    ProductDisplayController.product = product;
                     storeApplication.sceneProductDisplay(product.getName());
                 });
 

@@ -38,6 +38,7 @@ public class AdminUser extends AppUser{
         return AdminUserDTO.builder()
                 .id(this.getId())
                 .username(this.getUsername())
+                .password(this.getPassword())
                 .build();
     }
 

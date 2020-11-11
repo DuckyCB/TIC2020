@@ -30,6 +30,7 @@ public class StockQuerySpecification implements Specification<Stock> {
     private Double priceTo;
     private Integer desiredStock;
     private String clothType;
+    private Integer clothSubtype;
 
 
     @Override
@@ -78,6 +79,9 @@ public class StockQuerySpecification implements Specification<Stock> {
             if(clothType.equals("hoodie"))
                 predicates.add(criteriaBuilder.equal(stockProductJoin.type(), hoodieClass));
         }
+
+        if (clothSubtype != null)
+            predicates.add(criteriaBuilder.equal(stockSizeAndColorJoin.get("subtype"), clothSubtype));
 
 
         if (desiredStock != null)

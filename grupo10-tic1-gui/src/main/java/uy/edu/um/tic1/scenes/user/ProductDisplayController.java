@@ -22,7 +22,11 @@ import uy.edu.um.tic1.entitites.product.ProductDTO;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -90,7 +94,13 @@ public class ProductDisplayController implements Initializable {
 
         // Toma una lista de talles disponibles del producto
         menuSize.getItems().clear();
-        for (String size: Sizes.getListAdults()){
+
+        HashMap<String, String> uniqueSize = new HashMap<>();
+        product.getSizeAndColor().stream().forEach(sc ->{
+            uniqueSize.put(sc.getSize(), sc.getSize());
+        });
+
+        for (String size: uniqueSize.keySet()){
 
             MenuItem newItem = new MenuItem(size);
             newItem.setOnAction(event -> {
@@ -132,7 +142,13 @@ public class ProductDisplayController implements Initializable {
 
         // Toma lista de colores disponibles del producto
         menuColor.getItems().clear();
-        for (String color: Colors.getAllListed()) {
+
+        HashMap<String, String> uniqueColors = new HashMap<>();
+        product.getSizeAndColor().stream().forEach(sc ->{
+            if (sc.getSize().equals(selectedSize))
+                uniqueColors.put(sc.getColor(), sc.getColor());
+        });
+        for (String color: uniqueColors.keySet()) {
 
             MenuItem newItem = new MenuItem("       ");
             newItem.setStyle("-fx-background-color: #"+color);
@@ -173,6 +189,10 @@ public class ProductDisplayController implements Initializable {
                 compare.setStyle("-fx-background-color: #e2e2e2");
                 selectedQuantity = finalI;
             });
+
+            //TODO: Chequear que hay stock. Se hace haciendo una consulta que filtre este producto con
+            //      la variable stock=selectQuantity
+
             menuQuantity.getItems().add(newItem);
 
         }

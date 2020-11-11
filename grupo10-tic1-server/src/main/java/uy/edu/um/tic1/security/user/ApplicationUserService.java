@@ -27,8 +27,5 @@ public class ApplicationUserService implements UserDetailsService {
                 );
     }
 
-    public void save(AppUser newUser){
-        //TODO: Check user has everything
-        userRepository.save(newUser);
-    }
+
 }

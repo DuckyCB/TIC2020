@@ -60,7 +60,7 @@ public abstract class Product {
 
     private Double price;
 
-    //private Integer subcategory;
+    private Integer subcategory;
 
     @ManyToMany(cascade = CascadeType.MERGE)
             @JoinTable(name = "product_size_color",
@@ -74,7 +74,7 @@ public abstract class Product {
 
     private Character gender;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "brand_id",
         foreignKey = @ForeignKey(name = "fk_product_brand"))
     private Brand brand;

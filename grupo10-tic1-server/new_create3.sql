@@ -282,3 +282,7 @@ use  proyecto_tic1;
        add constraint FK5gn723d35k44lbib1ucham9ta 
        foreign key (id) 
        references product (id);
+
+
+    alter table product
+    add column(subcategory integer);

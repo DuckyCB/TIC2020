@@ -38,6 +38,7 @@ public class Hoodie extends Product {
                 .id(this.getId())
                 .brand(this.getBrand().toDTO())
                 .gender(this.getGender())
+                .subcategory(this.getSubcategory())
                 .name(this.getName())
                 .price(this.getPrice())
                 .sizeAndColor(this.getSizeAndColor().stream().map(SizeAndColor::toDTO).collect(Collectors.toSet()))
