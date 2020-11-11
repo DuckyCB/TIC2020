@@ -15,8 +15,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import uy.edu.um.tic1.entities.users.AppUser;
 import uy.edu.um.tic1.security.user.ApplicationUserRole;
 import uy.edu.um.tic1.security.user.ApplicationUserService;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 @Configuration
 @EnableWebSecurity
@@ -35,7 +39,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/index", "/admin/create/","/admin/register/client/" ).permitAll()
+                .antMatchers("/", "/index", "/admin/create/","/admin/register/client/", "/products/" ).permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -70,5 +74,8 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         daoAuthenticationProvider.setUserDetailsService(applicationUserService);
         return daoAuthenticationProvider;
     }
+
+
+
 
 }

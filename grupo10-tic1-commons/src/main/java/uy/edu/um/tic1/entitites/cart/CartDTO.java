@@ -25,9 +25,7 @@ public class CartDTO {
 
     private ClientDTO client;
 
-    private StoreDTO store;
-
-    private Boolean acceptedByStore;
+    private Boolean purchased;
 
     private LocalTime time;
 

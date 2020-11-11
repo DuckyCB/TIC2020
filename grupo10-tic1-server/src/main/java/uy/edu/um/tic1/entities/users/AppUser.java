@@ -1,6 +1,9 @@
 package uy.edu.um.tic1.entities.users;
 
 
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,12 +13,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import uy.edu.um.tic1.entities.Brand;
+import uy.edu.um.tic1.entities.products.Hoodie;
+import uy.edu.um.tic1.entities.products.Shirt;
+import uy.edu.um.tic1.entities.products.Trousers;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
+
+
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "user_role")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = AdminUser.class, name = "admin"),
+        @JsonSubTypes.Type(value = BrandUser.class, name = "brand"),
+        @JsonSubTypes.Type(value = StoreUser.class, name = "store"),
+        @JsonSubTypes.Type(value = Client.class, name = "client"),
+})
+
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -92,4 +112,12 @@ public abstract class AppUser implements UserDetails {
 
 
     public abstract AppUserDTO toDTO();
+
+
+    public void initUser(){
+        this.isAccountNonExpired = true;
+        this.isAccountNonLocked = true;
+        this.isCredentialsNonExpired = true;
+        this.isEnabled = true;
+    }
 }

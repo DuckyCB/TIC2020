@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Builder
-public class SizeAndColorSpecification implements Specification<SizeAndColor> {
+public class SizeAndColorQuerySpecification implements Specification<SizeAndColor> {
 
 
     private String size;

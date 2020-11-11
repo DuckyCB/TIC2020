@@ -45,13 +45,8 @@ public class Cart {
     )
     private Client client;
 
-    @ManyToOne
-    @JoinColumn(name = "store",
-            foreignKey = @ForeignKey(name = "fk_cart_store")
-    )
-    private Store store;
 
-    private Boolean acceptedByStore;
+    private Boolean purchased;
 
     @Basic
     private LocalTime time;
@@ -74,45 +69,47 @@ public class Cart {
     public void processCart(Boolean toDeliver) {
         time = LocalTime.now();
         date = LocalDate.now();
+        purchased = true;
         this.toDeliver = toDeliver;
+
         for (CartItem item : items){
-            item.setPrice(item.getProduct().getPrice());
+            item.getStore().addPurchase(item.generatePurchase(this.client));
         }
 
     }
 
-    public void storeAcceptedCart(){
-        this.acceptedByStore = true;
-    }
+//    public void storeAcceptedCart(){
+//        this.acceptedByStore = true;
+//    }
 
 
-    public Cart returnProduct(Product product, SizeAndColor sizeAndColor, Integer quantity){
-
-        if(date.compareTo(LocalDate.now().minusDays(3)) > 0) {
-
-            Set<CartItem> itemsSet = new LinkedHashSet<>();
-            items.stream().
-                    forEach(cartItem -> {
-                        if (cartItem.getProduct().equals(product) && cartItem.getSizeAndColor().equals(sizeAndColor)) {
-                            if (cartItem.getQuantity() >= quantity) {
-                                itemsSet.add(CartItem.builder().product(product).sizeAndColor(sizeAndColor).quantity(-quantity).build());
-                            } else {
-                                itemsSet.add((CartItem.builder().product(product).sizeAndColor(sizeAndColor).quantity(-cartItem.getQuantity()).build()));
-                            }
-                        }
-                    });
-
-
-            return Cart.builder()
-                    .client(this.client)
-                    .items(items)
-                    .build();
-        }
-        else{
-            return null;
-        }
-
-    }
+//    public Cart returnProduct(Product product, SizeAndColor sizeAndColor, Integer quantity){
+//
+//        if(date.compareTo(LocalDate.now().minusDays(3)) > 0) {
+//
+//            Set<CartItem> itemsSet = new LinkedHashSet<>();
+//            items.stream().
+//                    forEach(cartItem -> {
+//                        if (cartItem.getProduct().equals(product) && cartItem.getSizeAndColor().equals(sizeAndColor)) {
+//                            if (cartItem.getQuantity() >= quantity) {
+//                                itemsSet.add(CartItem.builder().product(product).sizeAndColor(sizeAndColor).quantity(-quantity).build());
+//                            } else {
+//                                itemsSet.add((CartItem.builder().product(product).sizeAndColor(sizeAndColor).quantity(-cartItem.getQuantity()).build()));
+//                            }
+//                        }
+//                    });
+//
+//
+//            return Cart.builder()
+//                    .client(this.client)
+//                    .items(items)
+//                    .build();
+//        }
+//        else{
+//            return null;
+//        }
+//
+//    }
 
 
     public CartDTO toDTO(){
@@ -120,8 +117,7 @@ public class Cart {
         return CartDTO.builder()
                 .id(this.id)
                 .client((ClientDTO) this.client.toDTO())
-                .store(this.store.toDTO())
-                .acceptedByStore(this.acceptedByStore)
+                .purchased(this.purchased)
                 .items(this.items.stream().map(CartItem::toDTO).collect(Collectors.toSet()))
                 .date(this.date)
                 .time(this.time)

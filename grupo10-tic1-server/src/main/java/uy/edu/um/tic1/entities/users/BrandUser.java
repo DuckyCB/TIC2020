@@ -48,7 +48,6 @@ public class BrandUser extends AppUser{
         return BrandUserDTO.builder()
                 .id(this.getId())
                 .username(this.getUsername())
-                .password(this.getPassword())
                 .brand(this.getBrand().toDTO())
                 .build();
     }

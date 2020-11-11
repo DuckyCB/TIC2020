@@ -7,12 +7,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import uy.edu.um.tic1.entities.cart.CartItem;
+import uy.edu.um.tic1.entities.cart.Purchase;
 import uy.edu.um.tic1.entities.contact.Address;
 import uy.edu.um.tic1.entities.contact.Email;
 import uy.edu.um.tic1.entities.contact.TelephoneNumber;
 import uy.edu.um.tic1.entitites.StoreDTO;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,6 +61,14 @@ public class Store {
 
 
 
+    @OneToMany
+    @JoinColumn(name = "store",
+            foreignKey = @ForeignKey(name = "fk_purchase_store")
+    )
+    private Set<Purchase> purchaseSet;
+
+
+
     public void updateStock(Stock stock) {
 
         stockSet.remove(stock);
@@ -84,7 +94,20 @@ public class Store {
                 .address(this.address.toDTO())
                 .brandSet(this.brandSet.stream().map(Brand::toDTO).collect(Collectors.toSet()))
                 .stockSet(this.stockSet.stream().map(Stock::toDTO).collect(Collectors.toSet()))
+                .purchaseSet(this.purchaseSet.stream().map(Purchase::toDTO).collect(Collectors.toSet()))
                 .telephoneNumber(this.telephoneNumber.toDTO())
                 .build();
     }
+
+    public void addPurchase(Purchase purchase) {
+
+        this.purchaseSet.add(purchase);
+    }
+
+    public List<Purchase> getUndeliveredPurchases(){
+        return this.purchaseSet.stream().filter(purchase -> !purchase.getDelivered()).collect(Collectors.toList());
+    }
+
+
+
 }

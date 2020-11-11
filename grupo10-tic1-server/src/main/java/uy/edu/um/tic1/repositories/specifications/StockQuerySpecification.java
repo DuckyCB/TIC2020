@@ -2,6 +2,7 @@ package uy.edu.um.tic1.repositories.specifications;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import uy.edu.um.tic1.entities.products.Product;
 import uy.edu.um.tic1.entities.SizeAndColor;
@@ -31,6 +32,7 @@ public class StockQuerySpecification implements Specification<Stock> {
     private Integer desiredStock;
     private String clothType;
     private Integer clothSubtype;
+    private Integer order;
 
 
     @Override
@@ -88,6 +90,15 @@ public class StockQuerySpecification implements Specification<Stock> {
             query.having(criteriaBuilder.greaterThan(criteriaBuilder.sum(root.get("stock")), desiredStock));
 
         query.groupBy(root.get("product"));
+
+        if(order != null){
+            if (order == 1){
+                query.orderBy((Order) new Sort.Order(Sort.Direction.ASC, "price"));
+            } else if (order == -1){
+                query.orderBy((Order) new Sort.Order(Sort.Direction.DESC, "price"));
+            }
+        }
+
 
 
 

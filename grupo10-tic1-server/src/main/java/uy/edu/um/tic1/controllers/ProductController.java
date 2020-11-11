@@ -267,7 +267,7 @@ public class ProductController {
 
     public List<ProductDTO> findWithStock(String type, Integer subtype, Integer id, String name, Character gender,
                                           Integer brand_id, String size, String color, Integer stock,
-                                          Double from, Double to){
+                                          Double from, Double to, Integer order){
 
 
         List<Stock> stocks = stockRepository.findAll(StockQuerySpecification.builder()
@@ -282,6 +282,7 @@ public class ProductController {
                         .priceFrom(from)
                         .priceTo(to)
                         .desiredStock(stock)
+                        .order(order)
                         .build());
 
         return stocks.stream().map(Stock::getProduct).map(Product::toDTO).collect(Collectors.toList());

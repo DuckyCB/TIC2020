@@ -7,7 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uy.edu.um.tic1.entities.SizeAndColor;
+import uy.edu.um.tic1.entities.Store;
 import uy.edu.um.tic1.entities.products.Product;
+import uy.edu.um.tic1.entities.users.Client;
 import uy.edu.um.tic1.entitites.cart.CartItemDTO;
 
 import javax.persistence.*;
@@ -39,6 +41,12 @@ public class CartItem {
     @NotNull(message = "Size and color may not be null")
     private SizeAndColor sizeAndColor;
 
+    @ManyToOne
+    @JoinColumn(name = "store",
+            foreignKey = @ForeignKey(name = "fk_cart_store")
+    )
+    private Store store;
+
     private Double price;
 
     private Integer quantity;
@@ -50,6 +58,15 @@ public class CartItem {
                 .product(this.product.toDTO())
                 .quantity(this.quantity)
                 .sizeAndColor(this.sizeAndColor.toDTO())
+                .build();
+    }
+
+
+    public Purchase generatePurchase(Client client){
+        return Purchase.builder()
+                .cartItem(this)
+                .client(client)
+                .delivered(false)
                 .build();
     }
 }

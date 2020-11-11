@@ -78,13 +78,12 @@ public class Client extends AppUser{
     }
 
     @Override
-    public AppUserDTO toDTO() {
+    public ClientDTO toDTO() {
         return ClientDTO.builder()
                 .id(this.getId())
                 .firstName(this.firstName)
                 .lastName(this.lastName)
                 .username(this.getUsername())
-                .password(this.getPassword())
                 .address(this.address.toDTO())
                 .currentCart(this.currentCart.toDTO())
                 .telephoneNumber(this.telephoneNumber.toDTO())

@@ -23,7 +23,6 @@ public class ProductRestController {
 
 
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('product:read')")
     public List<ProductDTO> getAll(@RequestParam(name="id",required = false) Integer id,
                                    @RequestParam(name="name",required = false) String name,
                                    @RequestParam(name="gender",required = false) Character gender,
@@ -35,11 +34,12 @@ public class ProductRestController {
                                    @RequestParam(name="to",required = false) Double to,
                                    @RequestParam(name="type",required = false) String type,
                                    @RequestParam(name="subtype",required = false) Integer subtype,
-                                   @RequestParam(name="hasStock",required = false) Boolean hasStock
+                                   @RequestParam(name="hasStock",required = false) Boolean hasStock,
+                                   @RequestParam(name="order",required = false) Integer order
                                     ){
 
         if (hasStock == null || hasStock == true){
-            return productController.findWithStock(type, subtype,  id, name, gender, brand_id, size, color, stock, from, to);
+            return productController.findWithStock(type, subtype,  id, name, gender, brand_id, size, color, stock, from, to, order);
         }
 
         return productController.findAll(type, subtype, id, name, gender, brand_id, size, color, from, to);

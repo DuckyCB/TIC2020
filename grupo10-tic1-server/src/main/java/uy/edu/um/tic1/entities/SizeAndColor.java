@@ -39,4 +39,15 @@ public class SizeAndColor {
                 .size(this.size)
                 .build();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SizeAndColor that = (SizeAndColor) o;
+        return Objects.equals(size, that.size) &&
+                Objects.equals(color, that.color);
+    }
+
+
 }

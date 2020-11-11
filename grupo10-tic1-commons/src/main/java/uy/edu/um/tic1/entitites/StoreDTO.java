@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
 import uy.edu.um.tic1.entitites.contact.AddressDTO;
 import uy.edu.um.tic1.entitites.contact.TelephoneNumberDTO;
 
@@ -28,6 +29,7 @@ public class StoreDTO {
 
     private Set<StockDTO> stockSet;
 
+    private Set<PurchaseDTO> purchaseSet;
 
     public void updateStock(StockDTO stock) {
 

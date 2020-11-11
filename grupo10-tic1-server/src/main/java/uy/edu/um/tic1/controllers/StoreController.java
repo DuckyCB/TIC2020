@@ -5,13 +5,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uy.edu.um.tic1.entities.Brand;
 import uy.edu.um.tic1.entities.Stock;
+import uy.edu.um.tic1.entities.cart.Purchase;
 import uy.edu.um.tic1.entities.products.Product;
 import uy.edu.um.tic1.entities.Store;
 import uy.edu.um.tic1.entities.contact.TelephoneNumber;
+import uy.edu.um.tic1.entities.users.AppUser;
+import uy.edu.um.tic1.entities.users.Client;
+import uy.edu.um.tic1.entities.users.StoreUser;
 import uy.edu.um.tic1.entitites.StoreDTO;
+import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
+import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.repositories.StoreRepository;
 import uy.edu.um.tic1.repositories.specifications.StoreQuerySpecification;
+import uy.edu.um.tic1.security.user.ApplicationUserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -21,6 +29,10 @@ public class StoreController {
 
     @Autowired
     private StoreRepository storeRepository;
+    @Autowired
+    private ApplicationUserService applicationUserService;
+    @Autowired
+    private ProductController productController;
 
 
     public void save(Store store){
@@ -64,5 +76,46 @@ public class StoreController {
     public void deleteBrand(Store store, Brand brand) {
         store.deleteBrand(brand);
         storeRepository.save(store);
+    }
+
+    public List<PurchaseDTO> getPurchases(String auth, Boolean delivered) {
+        AppUser userFromHeader = applicationUserService.getUserFromHeader(auth);
+
+        if (userFromHeader != null && userFromHeader instanceof StoreUser){
+            StoreUser storeUser = (StoreUser) userFromHeader;
+
+            if(delivered)
+                return storeUser.getStore().getPurchaseSet().stream().map(Purchase::toDTO).collect(Collectors.toList());
+            else
+                return storeUser.getStore().getPurchaseSet().stream().map(Purchase::toDTO).collect(Collectors.toList())
+                        .stream().filter(p -> !p.getDelivered()).collect(Collectors.toList());
+        }
+
+        return null;
+    }
+
+    public List<ProductDTO> getProducts(String auth, Boolean inStock) {
+
+        AppUser userFromHeader = applicationUserService.getUserFromHeader(auth);
+
+        if (userFromHeader != null && userFromHeader instanceof StoreUser){
+            StoreUser storeUser = (StoreUser) userFromHeader;
+
+            if(inStock)
+                return storeUser.getStore().getStockSet().stream().map(stock -> stock.getProduct().toDTO()).collect(Collectors.toList());
+            else{
+                List<ProductDTO> productsList = new ArrayList<>();
+                storeUser.getStore().getBrandSet().stream().forEach(brand -> {
+                    productController.findAll(null, null, null, null, null, brand.getId(),
+                            null, null, null, null).stream().forEach(p ->{
+                                productsList.add(p);
+                    });
+                });
+                return productsList;
+            }
+        }
+
+        return null;
+
     }
 }

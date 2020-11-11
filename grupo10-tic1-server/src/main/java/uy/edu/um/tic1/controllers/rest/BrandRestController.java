@@ -9,6 +9,7 @@ import uy.edu.um.tic1.entities.Brand;
 import uy.edu.um.tic1.entities.Store;
 import uy.edu.um.tic1.entities.contact.Email;
 import uy.edu.um.tic1.entitites.BrandDTO;
+import uy.edu.um.tic1.entitites.product.ProductDTO;
 
 import java.util.List;
 
@@ -55,5 +56,12 @@ public class BrandRestController {
     public void deleteStore(@RequestBody Brand brand, Store store){
         brandController.deleteStore(brand, store);
     }
+
+    @GetMapping("/products/")
+    //@PreAuthorize("hasRole('ROLE_BRAND')")
+    public List<ProductDTO> getProducts(@RequestHeader("authorization") String auth){
+        return brandController.getProducts(auth);
+    }
+
 
 }

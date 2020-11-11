@@ -9,6 +9,8 @@ import uy.edu.um.tic1.entities.Store;
 import uy.edu.um.tic1.entities.contact.TelephoneNumber;
 import uy.edu.um.tic1.entities.products.Product;
 import uy.edu.um.tic1.entitites.StoreDTO;
+import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
+import uy.edu.um.tic1.entitites.product.ProductDTO;
 
 import java.util.List;
 
@@ -31,8 +33,6 @@ public class StoreRestController {
     }
 
 
-
-
     @PutMapping("/insert/")
     @PreAuthorize("hasAuthority('store:write')")
     public void insert(@RequestBody Store store){
@@ -43,6 +43,23 @@ public class StoreRestController {
     @PreAuthorize("hasAuthority('store:write')")
     public void delete(@RequestBody Store store){
         storeController.delete(store);
+    }
+
+
+    @GetMapping("/purchases/")
+    @PreAuthorize("hasRole('ROLE_STORE')")
+    public List<PurchaseDTO> getPurchases(@RequestHeader("authorization") String auth,
+                                          @RequestParam(name="delivered",required = false) Boolean delivered){
+
+        return storeController.getPurchases(auth, delivered);
+    }
+
+    @GetMapping("/products/")
+    @PreAuthorize("hasRole('ROLE_STORE')")
+    public List<ProductDTO> getProducts(@RequestHeader("authorization") String auth,
+                                        @RequestParam(name="inStock",required = false) Boolean inStock){
+
+        return storeController.getProducts(auth, inStock);
     }
 
 }

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uy.edu.um.tic1.entitites.SizeAndColorDTO;
+import uy.edu.um.tic1.entitites.StoreDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 
 @Data
@@ -14,13 +15,13 @@ import uy.edu.um.tic1.entitites.product.ProductDTO;
 @Builder
 public class CartItemDTO {
 
-
-
     private Integer id;
 
     private ProductDTO product;
 
     private SizeAndColorDTO sizeAndColor;
+
+    private StoreDTO store;
 
     private Double price;
 
