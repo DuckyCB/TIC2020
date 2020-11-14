@@ -103,24 +103,4 @@ public class Categories {
 
     }
 
-    /**
-     *
-     * @param category Nombre de la categoria
-     * @return Pane de la categoria
-     */
-    public static Pane getPane(String category) {
-
-        Label label = new Label(category);
-        label.setFont(Font.font("Cambria", 16));
-        label.setLayoutX(23);
-        label.setLayoutY(3);
-
-        Pane pane = new Pane();
-        pane.setPrefSize(200, 30);
-        pane.getChildren().add(label);
-        pane.setStyle("-fx-background-color: #e2e2e2");
-
-        return pane;
-
-    }
 }

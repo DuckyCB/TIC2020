@@ -10,12 +10,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uy.edu.um.tic1.entities.elements.PaneFilter;
 import uy.edu.um.tic1.entitites.users.*;
 import uy.edu.um.tic1.requests.BrandRestController;
 import uy.edu.um.tic1.requests.ProductRestController;
@@ -54,7 +56,6 @@ public class MainController implements Initializable {
     private BrandRestController brandRestController;
 
     private Boolean filters = Boolean.FALSE;
-
 
     private static ProductFilters productFilters = new ProductFilters();
     private static BrandFilters brandFilters = new BrandFilters();
@@ -96,35 +97,73 @@ public class MainController implements Initializable {
     private Button buttonFilters;
     @FXML
     private FlowPane flowPaneButtons;
-
+    @FXML
+    private FlowPane flowPaneBrands;
+    @FXML
+    private Pane labelBrands;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // Falta la verificacion de tipo de usuario, actualmente es solo un Boolean
+        // Agrega los botones acordes al usuario
         AppUserDTO user = storeApplication.getAppUser();
         if (user instanceof ClientDTO) setButtonsClient();
-        else if (user instanceof BrandUserDTO) setButtonsBrand();
+        else if (user instanceof BrandUserDTO) {
+            labelBrands.setVisible(false);
+            flowPaneBrands.setVisible(false);
+            setButtonsBrand();
+        }
         else if (user instanceof StoreUserDTO) setButtonsStore();
         if (user instanceof AdminUserDTO) setButtonsStore();
         else setButtonsDefault();
 
+        // Setea el panel de filtros
         setCategory(Categories.getGenre());
         setColors();
         setSizes();
+        setBrands();
 
         paneFiltersLeft.setVisible(false);
         menuButtonSort.setVisible(false);
 
+        // Muestra la pagina de inicio, el banner y marcas
         setMainPage();
 
+    }
+
+    // ****************************************************************************************************************
+    //                  PÁGINA DE INICIO
+    // ****************************************************************************************************************
+
+    public void setMainPage() {
+
+        flowPaneBackground.getChildren().clear();
+
+        ImageView banner = RequestMain.getBanner();
+        banner.setFitWidth(1000);
+        banner.setPreserveRatio(true);
+        flowPaneBackground.getChildren().add(banner);
+
+        ScrollPane brandsPane = PaneBrands.getScroll(brandRestController.getAllBrands(brandFilters));
+        brandsPane.setPrefWidth(1000);
+        flowPaneBackground.getChildren().add(brandsPane);
 
     }
 
+    /**
+     * Hace un request de productos por marca, y los muestra en pantalla
+     * @param brand Marca elegida
+     */
+    public void selectedBrand(BrandDTO brand) {
 
-    public List<ProductDTO> getProducts(){
-        return productRestController.getProducts(productFilters);
+        productFilters.setBrand_id(brand.getId());
+//        setProducts(productRestController.getProducts(productFilters));
+
     }
+
+    // ****************************************************************************************************************
+    //                  BOTONES
+    // ****************************************************************************************************************
 
     /**
      * Agrega los botones de un usuario sin cuenta, Carrito e Ingresar
@@ -207,6 +246,10 @@ public class MainController implements Initializable {
 
     }
 
+    // ****************************************************************************************************************
+    //                  PANEL DE FILTROS
+    // ****************************************************************************************************************
+
     /**
      * Agrega las categorias al panel de filtro.
      * Toma las categorias de la clase estatica Categories.
@@ -220,7 +263,7 @@ public class MainController implements Initializable {
 
         for (String string : categoryList) {
 
-            Pane paneCategory = Categories.getPane(string);
+            Pane paneCategory = PaneFilter.getPane(string, "E2E2E2");
             paneCategory.setOnMouseClicked(event -> pressedCategory(string));
             flowPaneCategory.getChildren().add(paneCategory);
 
@@ -240,8 +283,6 @@ public class MainController implements Initializable {
      * @param type Nombre de la categoria presionada
      */
     private void pressedCategory(String type) {
-
-
 
         if (productFilters.getGender() == null) {
 
@@ -267,22 +308,9 @@ public class MainController implements Initializable {
         Label label = new Label(type);
         flowPaneCategoryLabels.getChildren().add(label);
 
-//        requestProductsCategory();
         setProducts(productRestController.getProducts(productFilters));
 
     }
-
-    /**
-     * Hace un request de productos por categoria
-     */
-    private List<ProductDTO> requestProductsCategory() {
-
-        menuButtonSort.setVisible(true);
-
-        return getProducts();
-
-    }
-
 
 
     /**
@@ -294,17 +322,31 @@ public class MainController implements Initializable {
      */
     private void setColors() {
 
+        flowPaneColors.getChildren().clear();
+
         for (String color: ProductDTO.getColors()) {
 
             Circle colorCircle = Colors.getCircle(color, 16f);
+            StackPane colorPane = new StackPane(colorCircle);
+            if (productFilters.getColor() != null) {
+                if (productFilters.getColor().equals(color)) {
+                    colorPane.setStyle("-fx-background-color: #888888");
+                } else {
+                    colorPane.setStyle("-fx-background-color: #E2E2E2");
+                }
+            } else {
+                colorPane.setStyle("-fx-background-color: #E2E2E2");
+            }
+            colorPane.setPrefSize(32, 32);
             colorCircle.setOnMouseClicked(event -> {
                 colorRequest(color);
             });
-            flowPaneColors.getChildren().add(colorCircle);
+            flowPaneColors.getChildren().add(colorPane);
 
         }
 
     }
+
 
     /**
      * Hace un request de productos por color
@@ -312,9 +354,9 @@ public class MainController implements Initializable {
      */
     private void colorRequest(String color) {
 
-        menuButtonSort.setVisible(true);
         productFilters.setColor(color);
         setProducts(productRestController.getProducts(productFilters));
+        setColors();
 
     }
 
@@ -329,22 +371,33 @@ public class MainController implements Initializable {
      */
     private void setSizes(){
 
+        flowPaneSizes.getChildren().clear();
+
         List<String> sizes = new ArrayList<>();
         if (productFilters.getType() == null)
             sizes = Arrays.asList(Sizes.getListAdults());
         else{
-            if (productFilters.getType().equals("shirt")){
-                sizes = ShirtDTO.getSizes();
-            } else if (productFilters.getType().equals("hoodie")){
-                sizes = HoodieDTO.getSizes();
-            }else if (productFilters.getType().equals("trousers")){
-                sizes = TrousersDTO.getSizes();
+            switch (productFilters.getType()) {
+                case "shirt":
+                    sizes = ShirtDTO.getSizes();
+                    break;
+                case "hoodie":
+                    sizes = HoodieDTO.getSizes();
+                    break;
+                case "trousers":
+                    sizes = TrousersDTO.getSizes();
+                    break;
             }
         }
 
         for (String size: sizes) {
 
             Pane paneSize = Sizes.getPane(size);
+            if (productFilters.getSize() != null) {
+                if (productFilters.getSize().equals(size)) {
+                    paneSize.setStyle("-fx-background-color: #888888");
+                }
+            }
             paneSize.setOnMouseClicked(event -> {
                 sizeRequest(size);
             });
@@ -363,9 +416,69 @@ public class MainController implements Initializable {
         menuButtonSort.setVisible(true);
         productFilters.setSize(size);
         setProducts(productRestController.getProducts(productFilters));
+        setSizes();
 
     }
 
+    /**
+     * Agrega las marcas al panel de filtro.
+     * Toma las marcas con un request.
+     * @see BrandRestController
+     * @see #pressedCategory(String)
+     */
+    private void setBrands() {
+
+        flowPaneBrands.getChildren().clear();
+
+        List<BrandDTO> brands = brandRestController.getAllBrands(brandFilters);
+
+        if (brands != null) {
+
+            for (BrandDTO brand : brands) {
+
+                String brandName = brand.getName();
+                Integer brandID = brand.getId();
+                Pane paneBrand;
+
+                if (productFilters.getBrand_id() != null) {
+                    if (productFilters.getBrand_id().equals(brandID))
+                        paneBrand = PaneFilter.getPane(brandName, "888888");
+                    else paneBrand = PaneFilter.getPane(brandName, "E2E2E2");
+                } else paneBrand = PaneFilter.getPane(brandName, "E2E2E2");
+
+                paneBrand.setOnMouseClicked(event -> brandRequest(brandID));
+                flowPaneCategory.getChildren().add(paneBrand);
+
+            }
+
+        }
+
+    }
+
+    /**
+     * Hace un request de productos por marca
+     * @param brand Marca por la cual va a hacer filtro.
+     */
+    private void brandRequest(Integer brand) {
+
+        productFilters.setBrand_id(brand);
+        setProducts(productRestController.getProducts(productFilters));
+        setBrands();
+
+    }
+
+    // ****************************************************************************************************************
+    //                  PRODUCTOS
+    // ****************************************************************************************************************
+
+    /**
+     * Hace un request de productos en base a los filtros aplicados.
+     * @see ProductFilters
+     * @return Lista de productos
+     */
+    public List<ProductDTO> getProducts(){
+        return productRestController.getProducts(productFilters);
+    }
 
     /**
      * Muestra una lista de productos en pantalla.
@@ -375,8 +488,9 @@ public class MainController implements Initializable {
     private void setProducts(List<ProductDTO> productsList) {
 
         flowPaneBackground.getChildren().clear();
+        menuButtonSort.setVisible(true);
 
-        if (productsList != null) {
+        if (productsList != null && !productsList.isEmpty()) {
 
             for (ProductDTO product : productsList) {
 
@@ -405,24 +519,17 @@ public class MainController implements Initializable {
 
         } else {
 
-            Label noProducts = new Label("No hay productos para mostrar ¯\\_(ツ)_/¯");
-            noProducts.setFont(Font.font("Cambria", FontWeight.BOLD, 48));
+            Label noProducts = new Label("No hay productos ¯\\_(ツ)_/¯");
+            noProducts.setFont(Font.font("Cambria", FontWeight.BOLD, 32));
             flowPaneBackground.getChildren().add(noProducts);
 
         }
 
     }
 
-    /**
-     * Hace un request de productos por marca, y los muestra en pantalla
-     * @param brand Marca elegida
-     */
-    public void selectedBrand(BrandDTO brand) {
-
-        productFilters.setBrand_id(brand.getId());
-//        setProducts(productRestController.getProducts(productFilters));
-
-    }
+    // ****************************************************************************************************************
+    //                  BOTONES FXML
+    // ****************************************************************************************************************
 
 
     /** Vuelve al home, mostrando nuevamente la pantalla con banner y marcas */
@@ -434,21 +541,7 @@ public class MainController implements Initializable {
 
     }
 
-    public void setMainPage() {
-
-        flowPaneBackground.getChildren().clear();
-
-        ImageView banner = RequestMain.getBanner();
-        banner.setFitWidth(1000);
-        banner.setPreserveRatio(true);
-        flowPaneBackground.getChildren().add(banner);
-
-        ScrollPane brandsPane = PaneBrands.getScroll(brandRestController.getAllBrands(brandFilters));
-        brandsPane.setPrefWidth(1000);
-        flowPaneBackground.getChildren().add(brandsPane);
-
-    }
-
+    // TODO: Ordenar por precio de mayor a menor
     @FXML
     void pressedHighFirst(ActionEvent event) {
 
@@ -456,6 +549,7 @@ public class MainController implements Initializable {
 
     }
 
+    // TODO: Ordenar por precio de menor a mayor
     @FXML
     void pressedLowFirst(ActionEvent event) {
 
@@ -489,7 +583,6 @@ public class MainController implements Initializable {
 
     private void clearFilters() {
 
-        flowPaneCategory.getChildren().clear();
         flowPaneBackground.getChildren().clear();
         flowPaneCategoryLabels.getChildren().clear();
 
@@ -497,6 +590,7 @@ public class MainController implements Initializable {
 
         setCategory(Categories.getGenre());
         setProducts(productRestController.getProducts(productFilters));
+        setColors();
 
     }
 
@@ -545,7 +639,6 @@ public class MainController implements Initializable {
         String text = fieldSearch.getText();
 
         if (!text.isEmpty()) {
-
 
             clearFilters();
             productFilters.setName(text);

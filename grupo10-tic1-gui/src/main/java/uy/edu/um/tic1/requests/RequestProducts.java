@@ -3,6 +3,9 @@ package uy.edu.um.tic1.requests;
 import uy.edu.um.tic1.entities.products.Product;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 
+/**
+ * @deprecated
+ */
 public class RequestProducts {
 
     private static String queryString = "/products/?";

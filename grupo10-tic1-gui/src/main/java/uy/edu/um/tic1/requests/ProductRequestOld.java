@@ -3,6 +3,9 @@ package uy.edu.um.tic1.requests;
 import uy.edu.um.tic1.entities.attributes.Colors;
 import uy.edu.um.tic1.entities.products.Product;
 
+/**
+ * @deprecated
+ */
 public class ProductRequestOld {
 
     public static Product[] productsList;

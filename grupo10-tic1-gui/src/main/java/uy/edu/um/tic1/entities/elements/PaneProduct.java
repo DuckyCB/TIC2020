@@ -143,7 +143,7 @@ public class PaneProduct {
 
     }
 
-    public static Pane createCartItem(String image, String name, String brand, Float price, String color, String size) {
+    public static Pane createCartItem(Image image, String name, String brand, Float price, String color, String size) {
 
         Pane paneProduct = new Pane();
         paneProduct.setPrefSize(685, 150);
