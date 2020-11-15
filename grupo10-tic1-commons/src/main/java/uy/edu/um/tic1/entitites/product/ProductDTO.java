@@ -18,6 +18,7 @@ import uy.edu.um.tic1.entitites.SizeAndColorDTO;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @JsonTypeInfo(
@@ -60,4 +61,24 @@ public abstract class ProductDTO {
 
     private byte[] image;
 
+
+
+    public void removeSizeAndColorBySize(String size){
+        this.setSizeAndColor(this.getSizeAndColor().stream().filter(sc -> !sc.getSize().equals(size)).collect(Collectors.toSet()));
+
+    }
+
+    public void removeSizeAndColorByColor(String color){
+        this.setSizeAndColor(this.getSizeAndColor().stream().filter(sc -> !sc.getColor().equals(color)).collect(Collectors.toSet()));
+
+    }
+
+    public void removeSizeAndColorBySizeAndColor(String size, String color){
+        this.setSizeAndColor(this.getSizeAndColor().stream().filter(sc -> !(sc.getColor().equals(color) && sc.getSize().equals(size))).collect(Collectors.toSet()));
+
+    }
+    
+    public void addSizeAndColor(SizeAndColorDTO sizeAndColor){
+        this.getSizeAndColor().add(sizeAndColor);
+    }
 }

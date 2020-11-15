@@ -8,12 +8,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import net.rgielen.fxweaver.core.FxWeaver;
 
+import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entities.products.Product;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
+import uy.edu.um.tic1.entitites.cart.CartItemDTO;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
 import uy.edu.um.tic1.scenes.*;
@@ -21,6 +23,8 @@ import uy.edu.um.tic1.scenes.admin.brand.ProductDisplayBrandController;
 import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
 import uy.edu.um.tic1.scenes.exceptions.ErrorController;
 import uy.edu.um.tic1.scenes.user.*;
+
+import java.util.LinkedHashSet;
 
 @Component
 public class StoreApplication extends Application {
@@ -33,6 +37,10 @@ public class StoreApplication extends Application {
     static Stage stageComparator;
 
     public CartDTO getCart() {
+        if (cart == null) {
+            this.cart = new CartDTO();
+            this.cart.setItems(new LinkedHashSet<>());
+        }
         return cart;
     }
 
