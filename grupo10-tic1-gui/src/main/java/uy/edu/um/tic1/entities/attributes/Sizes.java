@@ -5,6 +5,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import uy.edu.um.tic1.entities.ProductFilters;
+import uy.edu.um.tic1.entitites.product.HoodieDTO;
+import uy.edu.um.tic1.entitites.product.ShirtDTO;
+import uy.edu.um.tic1.entitites.product.TrousersDTO;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Sizes {
 
@@ -31,6 +39,29 @@ public class Sizes {
         pane.setStyle("-fx-background-color: #e2e2e2");
 
         return pane;
+
+    }
+
+    public static List<String> getSizes(String type) {
+
+        List<String> sizes = new ArrayList<>();
+        if (type == null)
+            sizes = Arrays.asList(Sizes.getListAdults());
+        else {
+            switch (type) {
+                case "shirt":
+                    sizes = ShirtDTO.getSizes();
+                    break;
+                case "hoodie":
+                    sizes = HoodieDTO.getSizes();
+                    break;
+                case "trousers":
+                    sizes = TrousersDTO.getSizes();
+                    break;
+            }
+        }
+
+        return sizes;
 
     }
 

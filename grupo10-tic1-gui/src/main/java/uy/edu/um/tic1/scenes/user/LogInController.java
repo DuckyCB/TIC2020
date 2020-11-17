@@ -73,6 +73,7 @@ public class LogInController implements Initializable {
         if (!user.isEmpty() && !password.isEmpty()) {
 
             AppUserDTO userEntity = userRestController.getUser(user, password);
+            // TODO : agregar la contraseña para que se guarde
             storeApplication.setAppUser(userEntity);
 
         }

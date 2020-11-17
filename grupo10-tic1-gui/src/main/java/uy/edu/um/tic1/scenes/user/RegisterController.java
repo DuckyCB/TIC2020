@@ -58,6 +58,26 @@ public class RegisterController implements Initializable {
     @FXML
     private Button buttonCreate;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        errorA.setVisible(false);
+        errorB.setVisible(false);
+        errorC.setVisible(false);
+        errorD.setVisible(false);
+        errorE.setVisible(false);
+
+        a.setPromptText("Nombre");
+        b.setPromptText("Apellido");
+        c.setPromptText("Dirección de correo");
+        d.setVisible(false);
+        e.setVisible(false);
+        pass.setPromptText("Contraseña");
+
+        buttonCreate.setVisible(false);
+
+    }
+
     @FXML
     void inicioPressed(ActionEvent event) { storeApplication.sceneMain(); }
 
@@ -192,23 +212,4 @@ public class RegisterController implements Initializable {
 
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        errorA.setVisible(false);
-        errorB.setVisible(false);
-        errorC.setVisible(false);
-        errorD.setVisible(false);
-        errorE.setVisible(false);
-
-        a.setPromptText("Nombre");
-        b.setPromptText("Apellido");
-        c.setPromptText("Dirección de correo");
-        d.setVisible(false);
-        e.setVisible(false);
-        pass.setPromptText("Contraseña");
-
-        buttonCreate.setVisible(false);
-
-    }
 }

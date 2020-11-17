@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entities.elements.PaneProduct;
-import uy.edu.um.tic1.entities.products.Product;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.cart.CartItemDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
@@ -67,12 +66,14 @@ public class CartController implements Initializable {
 
             CartItemDTO[] cartItemList = cartItemDTO.toArray(new CartItemDTO[0]);
 
+            float finalPrice = 0.0f;
+
             for (CartItemDTO cartItem : cartItemList) {
 
                 ProductDTO product = cartItem.getProduct();
 
                 byte[] image = product.getImage();
-                Image productImg = null;
+                Image productImg;
                 if (image != null) {
                     productImg = new Image(new ByteArrayInputStream(image));
                 } else {
@@ -93,6 +94,8 @@ public class CartController implements Initializable {
                 pane.getChildren().add(close);
 
                 flowPaneProducts.getChildren().add(pane);
+
+                finalPrice += cartItem.getPrice().floatValue();
             }
 
             Pane paneProduct = new Pane();
@@ -111,7 +114,7 @@ public class CartController implements Initializable {
             stackPane.setPrefSize(200, 40);
             stackPane.setLayoutX(243);
             stackPane.setLayoutY(46);
-            Label totalPrice = new Label("999.99" + " $UY");
+            Label totalPrice = new Label(finalPrice + " $UY");
             totalPrice.setFont(Font.font("Cambria", FontWeight.BOLD, FontPosture.ITALIC, 22));
             stackPane.getChildren().add(totalPrice);
             paneProduct.getChildren().add(stackPane);
@@ -123,7 +126,7 @@ public class CartController implements Initializable {
             buy.setLayoutX(282);
             buy.setLayoutY(98);
             buy.setOnMouseClicked(event -> {
-                // scene buy details
+                // TODO : scene buy details
             });
             paneProduct.getChildren().add(buy);
 

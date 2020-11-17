@@ -13,9 +13,4 @@ public class RequestMain {
 
     }
 
-    public static String[] getBrands() {
-
-        return new String[]{"Levi's", "Linus Tech Tips", "SiSi", "Haleiwa", "El Juanito"};
-
-    }
 }

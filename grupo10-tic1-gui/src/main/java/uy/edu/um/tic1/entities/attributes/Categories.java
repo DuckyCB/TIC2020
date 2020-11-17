@@ -1,9 +1,5 @@
 package uy.edu.um.tic1.entities.attributes;
 
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
-
 public class Categories {
 
     private static final String[] shirts = new String[]{"Manga corta", "Manga larga", "Musculosa"};
@@ -100,6 +96,18 @@ public class Categories {
         }
 
         return new String[]{};
+
+    }
+
+    /**
+     * Funcion que recibe un string de categoria, y lo convierte en un numero
+     * @param category Categoria que se desea tomar
+     * @return Integer asociado a la categoría
+     */
+    public static int getIntCategory(String category) {
+
+        //TODO : hacer que esto funcione
+        return 1;
 
     }
 

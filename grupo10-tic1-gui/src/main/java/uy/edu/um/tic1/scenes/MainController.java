@@ -222,7 +222,7 @@ public class MainController implements Initializable {
 
         Button newProduct = new Button("Nuevo producto");
         newProduct.setStyle("-fx-background-color: #ffffff");
-        newProduct.setOnAction(event -> storeApplication.sceneBrandNewProduct());
+        newProduct.setOnAction(event -> storeApplication.sceneBrandDisplayProduct(null));
         flowPaneButtons.getChildren().add(newProduct);
 
     }
@@ -241,7 +241,12 @@ public class MainController implements Initializable {
 
         Button newProduct = new Button("Agregar producto");
         newProduct.setStyle("-fx-background-color: #ffffff");
-        newProduct.setOnAction(event -> storeApplication.sceneStoreAddProduct());
+        newProduct.setOnAction(event -> storeApplication.sceneStoreDisplayProduct());
+        flowPaneButtons.getChildren().add(newProduct);
+
+        Button sales = new Button("Ventas");
+        sales.setStyle("-fx-background-color: #ffffff");
+        sales.setOnAction(event -> storeApplication.sceneStoreSales());
         flowPaneButtons.getChildren().add(newProduct);
 
     }
@@ -373,22 +378,7 @@ public class MainController implements Initializable {
 
         flowPaneSizes.getChildren().clear();
 
-        List<String> sizes = new ArrayList<>();
-        if (productFilters.getType() == null)
-            sizes = Arrays.asList(Sizes.getListAdults());
-        else{
-            switch (productFilters.getType()) {
-                case "shirt":
-                    sizes = ShirtDTO.getSizes();
-                    break;
-                case "hoodie":
-                    sizes = HoodieDTO.getSizes();
-                    break;
-                case "trousers":
-                    sizes = TrousersDTO.getSizes();
-                    break;
-            }
-        }
+        List<String> sizes = Sizes.getSizes(productFilters.getType());
 
         for (String size: sizes) {
 

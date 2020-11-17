@@ -77,7 +77,7 @@ public class ProductDisplayController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         byte[] image = product.getImage();
-        Image  productImg = null;
+        Image  productImg;
         if (image != null){
             productImg = new Image(new ByteArrayInputStream(image));
         }else{

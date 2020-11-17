@@ -5,20 +5,20 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uy.edu.um.tic1.scenes.admin.brand.ProductDisplayBrandController">
     <children>
-        <AnchorPane layoutX="540.0" minWidth="500.0" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #202020;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane layoutX="540.0" minWidth="500.0" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #202020;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-            <Button fx:id="buttonNewProduct" layoutX="1163.0" layoutY="13.0" mnemonicParsing="false" onAction="#pressedNewProduct" text="Nuevo producto" AnchorPane.rightAnchor="15.0" />
-                <Button fx:id="inicio" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#inicioPressed" text="Inicio" AnchorPane.leftAnchor="15.0" />
-            <Button fx:id="buttonProductManager" layoutX="1020.0" layoutY="13.0" mnemonicParsing="false" onAction="#pressedProductManager" text="Gestionar productos" AnchorPane.rightAnchor="135.0" />
+                <Button fx:id="inicio" layoutX="14.0" layoutY="8.0" mnemonicParsing="false" onAction="#inicioPressed" style="-fx-background-color: ffffff;" text="Inicio" AnchorPane.leftAnchor="14.0" />
             </children>
         </AnchorPane>
       <FlowPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
@@ -28,58 +28,76 @@
                   <Insets />
                </FlowPane.margin>
                <children>
-                  <TextField fx:id="productTitle" layoutX="640.0" layoutY="90.0" prefHeight="31.0" prefWidth="350.0" promptText="Titulo">
+                  <TextField fx:id="productTitle" layoutX="30.0" layoutY="14.0" prefHeight="61.0" prefWidth="554.0" promptText="Titulo">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="productPrice" layoutX="640.0" layoutY="182.0" prefHeight="31.0" prefWidth="350.0" promptText="Precio">
+                  <TextField fx:id="productPrice" layoutX="439.0" layoutY="104.0" prefHeight="31.0" prefWidth="145.0" promptText="Precio">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </TextField>
-                  <Label layoutX="640.0" layoutY="130.0" text="Marca:">
+                  <Label layoutX="30.0" layoutY="109.0" text="Marca:">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="productBrand" layoutX="710.0" layoutY="130.0" text="Brand">
+                  <Label fx:id="productBrand" layoutX="83.0" layoutY="109.0" text="Brand">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label layoutX="640.0" layoutY="244.0" text="Colores">
-                     <font>
-                        <Font size="18.0" />
-                     </font></Label>
-                  <StackPane layoutX="468.0" layoutY="14.0" prefHeight="76.0" prefWidth="428.0">
-                     <children>
-                        <Label fx:id="pageTitle" text="Titulo">
-                           <font>
-                              <Font name="System Bold" size="30.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </StackPane>
-                  <ScrollPane layoutX="640.0" layoutY="271.0" prefHeight="379.0" prefWidth="600.0">
+                  <ScrollPane layoutX="640.0" layoutY="3.0" prefHeight="647.0" prefWidth="600.0">
                      <content>
-                        <FlowPane fx:id="flowPaneColors" hgap="5.0" prefWidth="575.0" style="-fx-background-color: #E2E2E2;" vgap="5.0">
+                        <FlowPane fx:id="flowPaneColors" hgap="5.0" prefWidth="575.0" vgap="5.0">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                           <children>
+                              <Pane prefHeight="60.0" prefWidth="565.0" style="-fx-background-color: E2E2E2;">
+                                 <children>
+                                    <Circle fill="DODGERBLUE" layoutX="44.0" layoutY="30.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <FlowPane hgap="5.0" layoutX="81.0" prefHeight="60.0" prefWidth="482.0" vgap="5.0">
+                                       <children>
+                                          <StackPane prefHeight="50.0" prefWidth="48.0" style="-fx-background-color: CDCDCD;">
+                                             <children>
+                                                <Label text="XXXL">
+                                                   <font>
+                                                      <Font name="Cambria Bold" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </StackPane>
+                                       </children>
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding>
+                                    </FlowPane>
+                                 </children>
+                              </Pane>
+                           </children>
                         </FlowPane>
                      </content>
                   </ScrollPane>
-                  <ImageView fx:id="productImage" fitHeight="400.0" fitWidth="300.0" layoutX="168.0" layoutY="44.0" pickOnBounds="true" preserveRatio="true" />
-                  <Pane fx:id="productNewImage" layoutX="218.0" layoutY="461.0" onDragDropped="#droppedNewImage" prefHeight="103.0" prefWidth="200.0" style="-fx-background-color: #cdcdcd;">
+                  <ImageView fx:id="productImage" fitHeight="400.0" fitWidth="300.0" layoutX="53.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/Men/Jean/black.jpg" />
+                     </image></ImageView>
+                  <Pane fx:id="productNewImage" layoutX="413.0" layoutY="239.0" onDragDropped="#droppedNewImage" prefHeight="78.0" prefWidth="200.0" style="-fx-background-color: #cdcdcd;">
                      <children>
-                        <Label layoutX="32.0" layoutY="38.0" text="Dropear imagen">
+                        <Label layoutX="32.0" layoutY="25.0" text="Dropear imagen">
                            <font>
                               <Font size="19.0" />
                            </font>
                         </Label>
                      </children>
                   </Pane>
+                  <Button fx:id="save" layoutX="460.0" layoutY="459.0" mnemonicParsing="false" onAction="#pressedSave" style="-fx-background-color: BBBBBB;" text="Guardar">
+                     <font>
+                        <Font name="Cambria Bold" size="20.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
          </children>
