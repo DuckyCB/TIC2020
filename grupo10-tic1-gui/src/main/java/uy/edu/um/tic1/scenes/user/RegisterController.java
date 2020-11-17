@@ -203,6 +203,7 @@ public class RegisterController implements Initializable {
         userRestController.registerClient(newClient);
 
 
+        storeApplication.sceneMain();
     }
 
     private void getSecond() {

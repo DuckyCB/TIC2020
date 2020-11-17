@@ -105,6 +105,8 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+
+        MainController.productFilters = new ProductFilters();
         // Agrega los botones acordes al usuario
         AppUserDTO user = storeApplication.getAppUser();
         if (user instanceof ClientDTO)
@@ -149,6 +151,7 @@ public class MainController implements Initializable {
         banner.setPreserveRatio(true);
         flowPaneBackground.getChildren().add(banner);
 
+
         ScrollPane brandsPane = PaneBrands.getScroll(brandRestController.getAllBrands(brandFilters));
         brandsPane.setPrefWidth(1000);
         flowPaneBackground.getChildren().add(brandsPane);
@@ -162,7 +165,7 @@ public class MainController implements Initializable {
     public void selectedBrand(BrandDTO brand) {
 
         productFilters.setBrand_id(brand.getId());
-//        setProducts(productRestController.getProducts(productFilters));
+        setProducts(productRestController.getProducts(productFilters));
 
     }
 
@@ -202,7 +205,14 @@ public class MainController implements Initializable {
         config.setOnAction(event -> storeApplication.sceneConfig());
         user.getItems().add(config);
         MenuItem logOut = new MenuItem("Cerrar sesión");
-        logOut.setOnAction(event -> System.out.println("cerrar sesión"));
+        logOut.setOnAction(event -> {
+            System.out.println("cerrar sesión");
+            storeApplication.setAppUser(null);
+            storeApplication.setCart(null);
+            storeApplication.setPassword(null);
+            storeApplication.sceneMain();
+                }
+        );
         user.getItems().add(logOut);
         flowPaneButtons.getChildren().add(user);
 
@@ -540,7 +550,8 @@ public class MainController implements Initializable {
     @FXML
     void pressedHighFirst(ActionEvent event) {
 
-        //RequestProducts.getSortedByHighFirst();
+        productFilters.setOrder(-1);
+        setProducts(productRestController.getProducts(productFilters));
 
     }
 
@@ -548,7 +559,8 @@ public class MainController implements Initializable {
     @FXML
     void pressedLowFirst(ActionEvent event) {
 
-        //RequestProducts.getSortedByLowFirst();
+        productFilters.setOrder(1);
+        setProducts(productRestController.getProducts(productFilters));
 
     }
 

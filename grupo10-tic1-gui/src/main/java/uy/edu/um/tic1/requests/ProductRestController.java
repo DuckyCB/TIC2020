@@ -31,7 +31,7 @@ public class ProductRestController {
             restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor("admin1", "admin1"));
         }
         ResponseEntity<List<ProductDTO>> response
-                = restTemplate.exchange("http://localhost:8080/products/" + filters.toString() + "hasStock=false",
+                = restTemplate.exchange("http://localhost:8080/products/" + filters.toString() ,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<ProductDTO>>(){});

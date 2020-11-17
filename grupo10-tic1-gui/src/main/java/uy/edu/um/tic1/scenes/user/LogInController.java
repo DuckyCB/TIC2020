@@ -85,6 +85,9 @@ public class LogInController implements Initializable {
                 storeApplication.setCart(cartRestController.getCurrentCart());
 
         }
+
+
+        storeApplication.sceneMain();
     }
 
     @FXML

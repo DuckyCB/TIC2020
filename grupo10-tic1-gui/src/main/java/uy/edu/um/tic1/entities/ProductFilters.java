@@ -20,6 +20,7 @@ public class ProductFilters {
     private Double to;
     private String type;
     private Boolean hasStock;
+    private Integer order;
 
 
     @Override
@@ -60,6 +61,8 @@ public class ProductFilters {
         if (hasStock != null)
             query += "hasStock=" + hasStock.toString() + "&";
 
+        if (order != null)
+            query += "order=" + order.toString() + "&";
         return query;
     }
 
@@ -67,7 +70,7 @@ public class ProductFilters {
     public Boolean filtering(){
 
         if (id!=null || name!=null || gender!=null || brand_id!=null || size!=null || color!=null ||
-                stock!=null || from!=null || to!=null || type!=null || hasStock!= null){
+                stock!=null || from!=null || to!=null || type!=null || hasStock!= null || order != null){
             return true;
         }
         else {
@@ -79,7 +82,7 @@ public class ProductFilters {
     public ProductFilters() {
     }
 
-    public ProductFilters(Integer id, String name, Character gender, Integer brand_id, String size, String color, Integer stock, Double from, Double to, String type, Boolean hasStock) {
+    public ProductFilters(Integer id, String name, Character gender, Integer brand_id, String size, String color, Integer stock, Double from, Double to, String type, Boolean hasStock, Integer order) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -91,6 +94,7 @@ public class ProductFilters {
         this.to = to;
         this.type = type;
         this.hasStock = hasStock;
+        this.order = order;
     }
 
     public Integer getId() {
@@ -179,5 +183,13 @@ public class ProductFilters {
 
     public void setHasStock(Boolean hasStock) {
         this.hasStock = hasStock;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 }

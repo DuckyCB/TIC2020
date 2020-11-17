@@ -8,6 +8,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entitites.BrandDTO;
 import uy.edu.um.tic1.scenes.MainController;
 
@@ -15,9 +18,9 @@ import java.util.List;
 
 public class PaneBrands {
 
-
     @Autowired
     private static MainController mainController;
+
 
 
     public static ScrollPane getScroll(List<BrandDTO> brands) {
