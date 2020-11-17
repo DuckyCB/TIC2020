@@ -8,6 +8,7 @@ import uy.edu.um.tic1.entitites.users.ClientDTO;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Set;
 
 
 @Data
@@ -27,5 +28,5 @@ public class PurchaseDTO {
 
     private ClientDTO client;
 
-    private CartItemDTO cartItem;
+    private Set<PurchaseItemDTO> purchaseItems;
 }

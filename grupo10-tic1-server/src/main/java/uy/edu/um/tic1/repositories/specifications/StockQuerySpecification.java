@@ -87,15 +87,15 @@ public class StockQuerySpecification implements Specification<Stock> {
 
 
         if (desiredStock != null)
-            query.having(criteriaBuilder.greaterThan(criteriaBuilder.sum(root.get("stock")), desiredStock));
+            query.having(criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.max(root.get("stock")), desiredStock));
 
         query.groupBy(root.get("product"));
 
         if(order != null){
             if (order == 1){
-                query.orderBy((Order) new Sort.Order(Sort.Direction.ASC, "price"));
+                query.orderBy(criteriaBuilder.asc(stockProductJoin.get("price")));
             } else if (order == -1){
-                query.orderBy((Order) new Sort.Order(Sort.Direction.DESC, "price"));
+                query.orderBy(criteriaBuilder.desc(stockProductJoin.get("price")));
             }
         }
 

@@ -56,13 +56,13 @@ public class BrandController {
         brandRepository.delete(brand);
     }
 
-    public void newStore(Brand brand, Store store) {
-        storeController.addBrand(store, brand);
-    }
-
-    public void deleteStore(Brand brand, Store store) {
-        storeController.deleteBrand(store, brand);
-    }
+//    public void newStore(Brand brand, Store store) {
+//        storeController.addBrand(store, brand);
+//    }
+//
+//    public void deleteStore(Brand brand, Store store) {
+//        storeController.deleteBrand(store, brand);
+//    }
 
     public BrandDTO findById(Integer id) {
         Optional<Brand> optionalBrand = brandRepository.findById(id);

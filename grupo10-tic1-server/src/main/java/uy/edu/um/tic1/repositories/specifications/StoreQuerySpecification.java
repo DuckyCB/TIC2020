@@ -19,6 +19,7 @@ public class StoreQuerySpecification implements Specification<Store> {
     private TelephoneNumber telephoneNumber;
     private Brand brand;
     private Product product;
+    private Integer stock;
 
 
     @Override
@@ -45,6 +46,10 @@ public class StoreQuerySpecification implements Specification<Store> {
         if (product != null) {
             Join<Store, Stock> storeStockJoin = root.joinSet("stockSet");
             predicates.add(criteriaBuilder.equal(storeStockJoin.get("product"), product));
+
+            if (stock != null){
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(storeStockJoin.get("stock"), stock));
+            }
         }
 
 

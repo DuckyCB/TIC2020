@@ -43,18 +43,18 @@ public class BrandRestController {
         brandController.delete(brand);
     }
 
-    @PutMapping("/new-store/")
-    @PreAuthorize("hasAuthority('brand:write, store:wrte')")
-    public void newStore(@RequestBody Brand brand, Store store){
-
-        brandController.newStore(brand, store);
-    }
-
-    @DeleteMapping("/delete-store/")
-    @PreAuthorize("hasAuthority('brand:write, store:wrte')")
-    public void deleteStore(@RequestBody Brand brand, Store store){
-        brandController.deleteStore(brand, store);
-    }
+//    @PutMapping("/new-store/")
+//    @PreAuthorize("hasAuthority('brand:write, store:wrte')")
+//    public void newStore(@RequestBody Brand brand, Store store){
+//
+//        brandController.newStore(brand, store);
+//    }
+//
+//    @DeleteMapping("/delete-store/")
+//    @PreAuthorize("hasAuthority('brand:write, store:wrte')")
+//    public void deleteStore(@RequestBody Brand brand, Store store){
+//        brandController.deleteStore(brand, store);
+//    }
 
     @GetMapping("/products/")
     //@PreAuthorize("hasRole('ROLE_BRAND')")

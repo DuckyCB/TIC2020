@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uy.edu.um.tic1.entities.*;
+import uy.edu.um.tic1.entities.cart.CartItem;
 import uy.edu.um.tic1.entities.contact.Email;
 import uy.edu.um.tic1.entities.contact.TelephoneNumber;
 import uy.edu.um.tic1.entities.products.Product;
@@ -325,4 +326,19 @@ public class ProductController {
     public void delete(Product product) {
         productRepository.delete(product);
     }
+
+
+//    public List<ProductDTO> findStoreWithStock(CartItem cartItem, Integer stock){
+//
+//
+//        Product product = cartItem.getProduct();
+//
+//        List<Stock> stocks = stockRepository.findAll(StockQuerySpecification.builder()
+//                .product_id(cartItem.getProduct().getId())
+//                .size(cartItem.getSizeAndColor().getSize())
+//                .color(cartItem.getSizeAndColor().getColor())
+//                .desiredStock(stock)
+//                .build());
+//
+//        return stocks.stream().map(S)
 }

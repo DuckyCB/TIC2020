@@ -1,4 +1,8 @@
 
+
+CREATE USER 'grupo10_tic_2020'@'localhost' IDENTIFIED BY 'grupo10_tic_2020';
+GRANT ALL PRIVILEGES ON proyecto_tic1.* TO 'grupo10_tic_2020'@'localhost';
+
     create table admin_user (
        id integer not null,
         primary key (id)

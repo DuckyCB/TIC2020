@@ -28,15 +28,17 @@ public class StockRestController {
 
     @PutMapping("/insert/")
     @PreAuthorize("hasAuthority('stock:write')")
-    public void insert(@RequestBody Stock stock, Store store){
-        stockController.save(stock);
-        storeController.updateStock(store, stock);
+    public void insert(@RequestHeader("authorization") String auth,
+            @RequestBody Stock stock){
+        //stockController.save(stock);
+        storeController.addStock(auth, stock);
     }
 
     @DeleteMapping("/delete/")
-    @PreAuthorize("hasAuthority('store:write')")
-    public void delete(@RequestBody Stock stock, Store store){
-        storeController.deleteStock(store, stock);
+    @PreAuthorize("hasAuthority('stock:write')")
+    public void delete(@RequestHeader("authorization") String auth,
+            @RequestBody Stock stock){
+        storeController.deleteStock(auth, stock);
     }
 
 

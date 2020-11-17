@@ -15,6 +15,7 @@ import uy.edu.um.tic1.entitites.users.ClientDTO;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -72,9 +73,31 @@ public class Cart {
         purchased = true;
         this.toDeliver = toDeliver;
 
+        HashMap<Store, Purchase> purchases = new HashMap<>();
+
+        Store store = null;
+        Purchase purchase = null;
         for (CartItem item : items){
-            item.getStore().addPurchase(item.generatePurchase(this.client));
+
+            store = item.getStore();
+            purchase = purchases.get(store);
+
+            if(purchase != null){
+                purchase.addPurchaseItem(item.toPurchaseItem());
+            } else{
+                purchase = Purchase.builder().purchaseItems(new LinkedHashSet<>()).client(this.client).build();
+                purchase.addPurchaseItem(item.toPurchaseItem());
+                purchases.put(store, purchase);
+            }
+
+
+
+//            item.getStore().addPurchase(item.generatePurchase(this.client));
         }
+
+        purchases.forEach(Store::addPurchase);
+
+
 
     }
 

@@ -24,7 +24,8 @@ public enum ApplicationUserRole {
 
     STORE(Set.of(BRAND_READ,
             STORE_READ,
-            PRODUCT_READ)),
+            PRODUCT_READ,
+            STOCK_READ, STOCK_WRITE)),
 
     CLIENT(Set.of(BRAND_READ,
             STORE_READ,

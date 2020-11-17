@@ -96,4 +96,12 @@ public class Client extends AppUser{
         return client;
     }
 
+    public void buyCurrentCart(Boolean toDeliver){
+        if (currentCart != null){
+
+            //TODO: FACTURAR IMPORTE --> Se va a facturar importe redireccionando la factura a un medio de pago online
+            this.currentCart.processCart(toDeliver);
+        }
+    }
+
 }

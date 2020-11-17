@@ -57,7 +57,7 @@ public class StoreRestController {
     @GetMapping("/products/")
     @PreAuthorize("hasRole('ROLE_STORE')")
     public List<ProductDTO> getProducts(@RequestHeader("authorization") String auth,
-                                        @RequestParam(name="inStock",required = false) Boolean inStock){
+                                        @RequestParam(name="inStock",required = true) Boolean inStock){
 
         return storeController.getProducts(auth, inStock);
     }

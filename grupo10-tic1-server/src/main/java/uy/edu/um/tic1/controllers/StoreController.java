@@ -15,6 +15,7 @@ import uy.edu.um.tic1.entities.users.StoreUser;
 import uy.edu.um.tic1.entitites.StoreDTO;
 import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
+import uy.edu.um.tic1.repositories.ProductRepository;
 import uy.edu.um.tic1.repositories.StoreRepository;
 import uy.edu.um.tic1.repositories.specifications.StoreQuerySpecification;
 import uy.edu.um.tic1.security.user.ApplicationUserService;
@@ -34,6 +35,16 @@ public class StoreController {
     @Autowired
     private ProductController productController;
 
+
+    public StoreUser getStoreUserFromHeader(String auth) {
+        AppUser userFromHeader = applicationUserService.getUserFromHeader(auth);
+
+        if (userFromHeader != null && userFromHeader instanceof StoreUser) {
+            StoreUser storeUser = (StoreUser) userFromHeader;
+            return storeUser;
+        }
+        return null;
+    }
 
     public void save(Store store){
         storeRepository.save(store);
@@ -58,24 +69,54 @@ public class StoreController {
         storeRepository.delete(store);
     }
 
-    public void updateStock(Store store, Stock stock) {
-        store.updateStock(stock);
-        storeRepository.save(store);
+    public void addStock(String auth, Stock stock) {
+
+        StoreUser storeUser = getStoreUserFromHeader(auth);
+
+        if(storeUser != null){
+            Store store = storeUser.getStore();
+            store.addStock(stock);
+            storeRepository.save(store);
+        }
+
     }
 
-    public void deleteStock(Store store, Stock stock) {
-        store.deleteStock(stock);
-        storeRepository.save(store);
+    public void deleteStock(String auth, Stock stock) {
+        StoreUser storeUser = getStoreUserFromHeader(auth);
+
+        if(storeUser != null){
+            Store store = storeUser.getStore();
+            store.deleteStock(stock);
+            storeRepository.save(store);
+        }
     }
 
-    public void addBrand(Store store, Brand brand) {
-        store.addBrand(brand);
-        storeRepository.save(store);
+
+
+    public void addBrand(String auth, Brand brand) {
+
+        StoreUser storeUser = getStoreUserFromHeader(auth);
+
+        if(storeUser != null){
+            Store store = storeUser.getStore();
+            store.addBrand(brand);
+            storeRepository.save(store);
+        }
+
     }
 
-    public void deleteBrand(Store store, Brand brand) {
-        store.deleteBrand(brand);
-        storeRepository.save(store);
+    public void deleteBrand(String auth, Brand brand) {
+
+        StoreUser storeUser = getStoreUserFromHeader(auth);
+
+        if(storeUser != null){
+            Store store = storeUser.getStore();
+            store.deleteBrand(brand);
+            storeRepository.save(store);
+        }
+
+
+
     }
 
     public List<PurchaseDTO> getPurchases(String auth, Boolean delivered) {
@@ -118,4 +159,15 @@ public class StoreController {
         return null;
 
     }
+
+
+    public List<Store> getStoreByProduct(Product product, Integer stock){
+
+        return storeRepository.findAll(StoreQuerySpecification.builder()
+                                                .product(product)
+                                                .stock(stock)
+                                                .build());
+
+    }
+
 }
