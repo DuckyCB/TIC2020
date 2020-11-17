@@ -3,61 +3,195 @@ package uy.edu.um.tic1.scenes.admin.store;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
+import uy.edu.um.tic1.entities.attributes.Categories;
+import uy.edu.um.tic1.entities.attributes.Colors;
+import uy.edu.um.tic1.entities.attributes.Sizes;
+import uy.edu.um.tic1.entitites.SizeAndColorDTO;
+import uy.edu.um.tic1.entitites.product.ProductDTO;
+import uy.edu.um.tic1.requests.SizeAndColorRestController;
+
+import java.io.ByteArrayInputStream;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 @Component
-@FxmlView("/uy/edu/um/tic1/scenes/admin/brand/adminProductStore.fxml")
-public class ProductDisplayStoreController {
+@FxmlView("/uy/edu/um/tic1/scenes/admin/store/productDisplayStore.fxml")
+public class ProductDisplayStoreController implements Initializable {
 
     @Autowired
     StoreApplication storeApplication;
 
-    @FXML
-    private Button inicio;
+    public static ProductDTO product;
+
+    @Autowired
+    SizeAndColorRestController sizeAndColorRestController;
+
 
     @FXML
-    private Button buttonNewProduct;
-    @FXML
-    private Button buttonProductManager;
-    @FXML
-    private TextField productTitle;
+    private Button inicio;
     @FXML
     private Label productBrand;
     @FXML
-    private FlowPane paneColor;
+    private FlowPane flowPaneColors;
     @FXML
-    private Button buttonColorNew;
+    private ImageView productImage;
     @FXML
-    private ScrollPane paneSizeStock;
+    private Label labelTitle;
     @FXML
-    private Label pageTitle;
-
-
+    private Label labelPrice;
     @FXML
-    void pressedNewProduct(ActionEvent event) {
-
-    }
-
+    private Label labelGenre;
     @FXML
-    void pressedProductManager(ActionEvent event) {
+    private Label labelCategory;
 
-    }
 
     @FXML
     void inicioPressed(ActionEvent event) {
         storeApplication.sceneMain();
     }
 
-    @FXML
-    void pressedNewColour(ActionEvent event) {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        labelTitle.setText(product.getName());
+        productBrand.setText(product.getBrand().getName());
+        labelPrice.setText(product.getPrice().toString() + "$");
+        labelGenre.setText(product.getGender().toString());
+        //labelCategory.setText(product.getSubcategory());
+        byte[] image = product.getImage();
+        Image productImg;
+        if (image != null) {
+            productImg = new Image(new ByteArrayInputStream(image));
+        } else {
+            productImg = new Image("/uy/edu/um/tic1/images/no_image.jpg");
+        }
+        productImage.setImage(productImg);
+
+
+        initSizeAndColors();
+
+    }
+
+    private void setPage() {
+
+        byte[] image = product.getImage();
+        Image productImg;
+        if (image != null) {
+            productImg = new Image(new ByteArrayInputStream(image));
+        } else {
+            productImg = new Image("/uy/edu/um/tic1/images/no_image.jpg");
+        }
+        productImage.setImage(productImg);
+
+        initSizeAndColors();
+
+    }
+
+    // ****************************************************************************************************************
+    //                  Gestionar colores y talles
+    // ****************************************************************************************************************
+
+    private void initSizeAndColors() {
+
+        //TODO: recuperar los colores y talles de un producto, separarlo en listas por color,
+        // cada color debe tener una lista de talles
+
+        for (String color: ProductDTO.getColors()) {
+
+            Pane paneColor = new Pane();
+            paneColor.setPrefSize(606, 65);
+            paneColor.setStyle("-fx-background-color: #E2E2E2");
+
+            Circle circle = Colors.getCircle(color, 16.0f);
+            circle.setLayoutX(42);
+            circle.setLayoutY(33);
+            paneColor.getChildren().add(circle);
+
+            Label labelSize = new Label("Talle:");
+            labelSize.setFont(Font.font("Cambria", FontWeight.BOLD, FontPosture.ITALIC, 14));
+            labelSize.setLayoutX(102);
+            labelSize.setLayoutY(6);
+            paneColor.getChildren().add(labelSize);
+
+            Label labelQuantity = new Label("Cantidad:");
+            labelQuantity.setFont(Font.font("Cambria", FontWeight.BOLD, FontPosture.ITALIC, 14));
+            labelQuantity.setLayoutX(76);
+            labelQuantity.setLayoutY(37);
+            paneColor.getChildren().add(labelQuantity);
+
+            FlowPane flowPaneSizes = new FlowPane();
+            flowPaneSizes.setHgap(5);
+            flowPaneSizes.setVgap(5);
+            flowPaneSizes.setPrefSize(463, 63);
+            flowPaneSizes.setPadding(new Insets(3, 3, 3, 3));
+            flowPaneSizes.setLayoutX(143);
+            flowPaneSizes.setLayoutY(0);
+            flowPaneSizes.setStyle("-fx-background-color: #e2e2e2");
+            paneColor.getChildren().add(flowPaneSizes);
+
+            List<String> sizes = Sizes.getSizes(null);
+
+            for (String size: sizes) {
+
+                Integer quantity = 2;
+
+                Pane paneSize = new Pane();
+                paneSize.setPrefSize(60,56);
+                paneSize.setStyle("-fx-background-color: #E2E2E2");
+
+                StackPane stackPaneSize = new StackPane();
+                stackPaneSize.setPrefSize(56, 25);
+                stackPaneSize.setLayoutX(2);
+                stackPaneSize.setLayoutY(2);
+                Label sizeLetter = new Label(size);
+                sizeLetter.setFont(Font.font("Cambria", FontWeight.BOLD, 16));
+                stackPaneSize.getChildren().add(sizeLetter);
+                paneSize.getChildren().add(stackPaneSize);
+                TextField fieldQuantity = new TextField();
+                fieldQuantity.setPromptText(quantity.toString());
+                fieldQuantity.setStyle("-fx-background-color: #FFFFFF");
+                fieldQuantity.setLayoutX(8);
+                fieldQuantity.setLayoutY(27);
+                fieldQuantity.setOnAction(event -> {
+                    try {
+                        int newQuantity = Integer.parseInt(fieldQuantity.getCharacters().toString());
+                        if (newQuantity < 0) newQuantity = 0;
+                        fieldQuantity.clear();
+                        fieldQuantity.setPromptText(Integer.toString(newQuantity));
+                        // TODO: Actualiza el valor de cantidad del producto
+                    } catch (NumberFormatException e) {
+                        fieldQuantity.clear();
+                        fieldQuantity.setPromptText(quantity.toString());
+                    }
+                });
+                paneSize.getChildren().add(fieldQuantity);
+
+                flowPaneSizes.getChildren().add(paneSize);
+
+            }
+
+            flowPaneColors.getChildren().add(paneColor);
+
+        }
 
     }
 

@@ -180,11 +180,11 @@ public class PaneProduct {
         labelPrice.setFont(Font.font("Cambria", FontWeight.BOLD, FontPosture.ITALIC, 20));
         labelPrice.setLayoutX(137);
         labelPrice.setLayoutY(112);
+        paneProduct.getChildren().add(labelPrice);
         Label productPrice = new Label(price.toString()+" $UY");
         productPrice.setFont(Font.font("Cambria", FontWeight.BOLD, FontPosture.ITALIC, 20));
         productPrice.setLayoutX(210);
         productPrice.setLayoutY(112);
-        paneProduct.getChildren().add(labelPrice);
         paneProduct.getChildren().add(productPrice);
 
         // COLORS
@@ -196,21 +196,30 @@ public class PaneProduct {
         Circle circleColor = Colors.getCircle(color, 23f);
         circleColor.setLayoutX(364);
         circleColor.setLayoutY(112);
+        paneProduct.getChildren().add(circleColor);
 
         // SIZE
         Label labelSize = new Label("Talle:");
         labelSize.setFont(Font.font("Cambria", FontWeight.BOLD, FontPosture.ITALIC, 20));
-        labelSize.setLayoutX(467);
+        labelSize.setLayoutX(427);
         labelSize.setLayoutY(64);
         paneProduct.getChildren().add(labelSize);
         StackPane stackPane = new StackPane();
         stackPane.setPrefSize(50, 50);
-        stackPane.setLayoutX(468);
+        stackPane.setLayoutX(427);
         stackPane.setLayoutY(87);
         Label letterSize = new Label(size);
         letterSize.setFont(Font.font("Cambria", FontWeight.BOLD, 32));
         stackPane.getChildren().add(letterSize);
         paneProduct.getChildren().add(stackPane);
+
+        // QUANTITY
+        Label labelQuantity = new Label("Cantidad");
+        labelQuantity.setFont(Font.font("Cambria", FontWeight.BOLD, FontPosture.ITALIC, 20));
+        labelQuantity.setLayoutX(513);
+        labelQuantity.setLayoutY(64);
+        paneProduct.getChildren().add(labelQuantity);
+
 
         return paneProduct;
 

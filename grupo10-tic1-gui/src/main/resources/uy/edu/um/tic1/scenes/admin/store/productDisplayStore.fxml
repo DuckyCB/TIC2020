@@ -4,15 +4,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uy.edu.um.tic1.scenes.admin.brand.ProductDisplayBrandController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController">
     <children>
         <AnchorPane layoutX="540.0" minWidth="500.0" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #202020;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -26,27 +24,17 @@
                   <Insets />
                </FlowPane.margin>
                <children>
-                  <TextField fx:id="productTitle" layoutX="30.0" layoutY="14.0" prefHeight="61.0" prefWidth="554.0" promptText="Titulo">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </TextField>
-                  <TextField fx:id="productPrice" layoutX="439.0" layoutY="104.0" prefHeight="31.0" prefWidth="145.0" promptText="Precio">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                  </TextField>
-                  <Label layoutX="30.0" layoutY="109.0" text="Marca:">
+                  <Label layoutX="30.0" layoutY="99.0" text="Marca:">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="productBrand" layoutX="83.0" layoutY="109.0" text="Brand">
+                  <Label fx:id="productBrand" layoutX="83.0" layoutY="99.0" text="Brand">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <ScrollPane layoutX="640.0" layoutY="3.0" prefHeight="647.0" prefWidth="600.0">
+                  <ScrollPane layoutX="608.0" prefHeight="647.0" prefWidth="623.0">
                      <content>
                         <FlowPane fx:id="flowPaneColors" hgap="5.0" prefWidth="575.0" vgap="5.0">
                            <padding>
@@ -55,24 +43,45 @@
                         </FlowPane>
                      </content>
                   </ScrollPane>
-                  <ImageView fx:id="productImage" fitHeight="400.0" fitWidth="300.0" layoutX="53.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="productImage" fitHeight="400.0" fitWidth="300.0" layoutX="146.0" layoutY="183.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../images/Men/Jean/black.jpg" />
                      </image></ImageView>
-                  <Pane fx:id="productNewImage" layoutX="413.0" layoutY="239.0" onDragDropped="#droppedNewImage" prefHeight="78.0" prefWidth="200.0" style="-fx-background-color: #cdcdcd;">
-                     <children>
-                        <Label layoutX="32.0" layoutY="25.0" text="Dropear imagen">
-                           <font>
-                              <Font size="19.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Button fx:id="save" layoutX="460.0" layoutY="459.0" mnemonicParsing="false" onAction="#pressedSave" style="-fx-background-color: BBBBBB;" text="Guardar">
+                  <Label fx:id="labelTitle" layoutX="30.0" layoutY="14.0" maxWidth="350.0" text="Titulo" wrapText="true">
                      <font>
                         <Font name="Cambria Bold" size="20.0" />
                      </font>
-                  </Button>
+                  </Label>
+                  <Label layoutX="30.0" layoutY="136.0" text="Precio:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelPrice" layoutX="83.0" layoutY="136.0" text="0.00">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="221.0" layoutY="136.0" text="Género:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="378.0" layoutY="136.0" text="Categoría:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelGenre" layoutX="280.0" layoutY="136.0" text="X">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelCategory" layoutX="455.0" layoutY="136.0" text="categoría">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children>

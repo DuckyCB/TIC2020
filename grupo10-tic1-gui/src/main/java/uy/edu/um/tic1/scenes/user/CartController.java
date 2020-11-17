@@ -60,15 +60,15 @@ public class CartController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        Set<CartItemDTO> cartItemDTO = requestCartList();
+        Set<CartItemDTO> cartItemSet = requestCartList();
 
-        if (cartItemDTO != null) {
+        if (cartItemSet != null) {
 
-            CartItemDTO[] cartItemList = cartItemDTO.toArray(new CartItemDTO[0]);
+            CartItemDTO[] cartItemList = cartItemSet.toArray(new CartItemDTO[0]);
 
             float finalPrice = 0.0f;
 
-            for (CartItemDTO cartItem : cartItemList) {
+            for (CartItemDTO cartItem : cartItemSet) {
 
                 ProductDTO product = cartItem.getProduct();
 
@@ -83,13 +83,23 @@ public class CartController implements Initializable {
                 Pane pane = PaneProduct.createCartItem(productImg, product.getName(), product.getBrand().getName(), product.getPrice().floatValue(),
                         cartItem.getSizeAndColor().getColor(), cartItem.getSizeAndColor().getSize());
 
+                Label numberQuantity = getQuantityLabel(cartItem.getQuantity().toString());
+                pane.getChildren().add(numberQuantity);
+
                 Pane close = new Pane();
-                close.setPrefSize(50, 50);
-                close.setLayoutX(587);
-                close.setLayoutY(51);
+                close.setPrefSize(40, 40);
+                close.setLayoutX(625);
+                close.setLayoutY(56);
                 close.setStyle("-fx-background-color: #ff0000");
                 close.setOnMouseClicked(event -> {
-                    flowPaneProducts.getChildren().remove(pane);
+                    cartItem.setQuantity(cartItem.getQuantity()-1);
+                    if (cartItem.getQuantity() == 0) {
+                        pane.getChildren().remove(numberQuantity);
+                        pane.getChildren().add(getQuantityLabel(cartItem.getQuantity().toString()));
+                    } else {
+                        flowPaneProducts.getChildren().remove(pane);
+                        cartItemSet.remove(cartItem);
+                    }
                 });
                 pane.getChildren().add(close);
 
@@ -145,6 +155,16 @@ public class CartController implements Initializable {
             flowPaneProducts.getChildren().add(paneProduct);
 
         }
+
+    }
+
+    private Label getQuantityLabel(String quantity) {
+
+        Label numberQuantity = new Label(quantity);
+        numberQuantity.setFont(Font.font("Cambria", FontWeight.BOLD, 32));
+        numberQuantity.setLayoutX(513);
+        numberQuantity.setLayoutY(87);
+        return numberQuantity;
 
     }
 
