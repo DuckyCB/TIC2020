@@ -23,13 +23,22 @@ public class ClientController {
     private CartRepository cartRepository;
 
 
+    public Client getClientFromHeader(String auth) {
+        AppUser userFromHeader = applicationUserService.getUserFromHeader(auth);
+
+        if (userFromHeader != null && userFromHeader instanceof Client) {
+            Client client = (Client) userFromHeader;
+            return client;
+        }
+        return null;
+    }
+
 
     public List<CartDTO> getCarts(String auth) {
 
-        AppUser userFromHeader = applicationUserService.getUserFromHeader(auth);
+        Client client = getClientFromHeader(auth);
 
-        if (userFromHeader != null && userFromHeader instanceof Client){
-            Client client = (Client) userFromHeader;
+        if (client != null){
 
             List<Cart> carts = cartRepository.findAll(CartQuerySpecification.builder()
                     .client(client).build());
@@ -43,13 +52,9 @@ public class ClientController {
 
     public CartDTO getCurrentCart(String auth) {
 
-        AppUser userFromHeader = applicationUserService.getUserFromHeader(auth);
+        Client client = getClientFromHeader(auth);
 
-        if (userFromHeader != null && userFromHeader instanceof Client){
-            Client client = (Client) userFromHeader;
-
-
-
+        if (client != null && client.getCurrentCart() != null){
             return client.getCurrentCart().toDTO();
         }
 
@@ -58,6 +63,12 @@ public class ClientController {
     }
 
 
+    public void saveCurrentCart(String auth, Cart currentCart) {
+        Client client = getClientFromHeader(auth);
 
-
+        if (client != null){
+            client.setCurrentCart(currentCart);
+            applicationUserService.update(client);
+        }
+    }
 }

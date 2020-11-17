@@ -19,17 +19,16 @@ public class UserRestController {
 
         RestTemplate restTemplate = new RestTemplate();
 
-//        if (storeApplication.getAppUser() != null)
-//            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(storeApplication.getAppUser().getUsername(),
-//                    storeApplication.getAppUser().getUsername()));
 
-        restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(user, password));
+//        restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(user, password));
+//        restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(user, password));
 
         ResponseEntity<AppUserDTO> response
                 = restTemplate.exchange("http://localhost:8080/admin/user/?username=" + user,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<AppUserDTO>(){});
+
 
 
 

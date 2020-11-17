@@ -19,6 +19,7 @@ import uy.edu.um.tic1.entities.attributes.Sizes;
 import uy.edu.um.tic1.entitites.SizeAndColorDTO;
 import uy.edu.um.tic1.entitites.cart.CartItemDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
+import uy.edu.um.tic1.requests.CartRestController;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
@@ -35,6 +36,8 @@ public class ProductDisplayController implements Initializable {
 
     @Autowired
     StoreApplication storeApplication;
+    @Autowired
+    private CartRestController cartRestController;
 
     private String selectedColor;
     private String selectedSize;
@@ -207,9 +210,11 @@ public class ProductDisplayController implements Initializable {
     @FXML
     void addToCartPressed(ActionEvent event) {
 
-        SizeAndColorDTO sizeAndColorDTO = SizeAndColorDTO.builder().color(selectedColor).size(selectedSize).build();
+
+        SizeAndColorDTO sizeAndColorDTO = product.getSizeAndColorBySizeAndColor(selectedSize, selectedColor);
         CartItemDTO cartItem = CartItemDTO.builder().price(product.getPrice()).product(product).sizeAndColor(sizeAndColorDTO).quantity(selectedQuantity).build();
         storeApplication.getCart().addItem(cartItem);
+        cartRestController.saveCurrentCart(storeApplication.getCart());
 
     }
 

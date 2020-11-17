@@ -95,7 +95,7 @@ public class CartController implements Initializable {
 
                 flowPaneProducts.getChildren().add(pane);
 
-                finalPrice += cartItem.getPrice().floatValue();
+                finalPrice += cartItem.getPrice().floatValue() * cartItem.getQuantity().floatValue();
             }
 
             Pane paneProduct = new Pane();

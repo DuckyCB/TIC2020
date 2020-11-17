@@ -26,11 +26,13 @@ public class SizeAndColorRestController {
     public List<SizeAndColorDTO> getSizeAndColor(String size, String color) {
         RestTemplate restTemplate = new RestTemplate();
 
-//        if (storeApplication.getAppUser() != null)
-//            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(storeApplication.getAppUser().getUsername(),
-//                    storeApplication.getAppUser().getUsername()));
+        if (storeApplication.getAppUser() != null)
+            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(storeApplication.getAppUser().getUsername(),
+                    storeApplication.getAppUser().getUsername()));
+        else {
+            //restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor("admin1", "admin1"));
 
-        restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor("admin1", "admin1"));
+        }
         ResponseEntity<List<SizeAndColorDTO>> response
                 = restTemplate.exchange("http://localhost:8080/size-color/?" + "size=" + size + "&color=" + color,
                 HttpMethod.GET,

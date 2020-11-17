@@ -26,11 +26,13 @@ public class BrandRestController {
     public List<BrandDTO> getAllBrands(BrandFilters filters) {
         RestTemplate restTemplate = new RestTemplate();
 
-//        if (storeApplication.getAppUser() != null)
-//            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(storeApplication.getAppUser().getUsername(),
-//                    storeApplication.getAppUser().getUsername()));
+        if (storeApplication.getAppUser() != null)
+            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(storeApplication.getAppUser().getUsername(),
+                    storeApplication.getPassword()));
+//        else {
+//            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor("admin1", "admin1"));
+//        }
 
-        restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor("admin1", "admin1"));
         ResponseEntity<List<BrandDTO>> response
                 = restTemplate.exchange("http://localhost:8080/brands/" + filters.toString(),
                 HttpMethod.GET,

@@ -23,7 +23,6 @@ public class BrandRestController {
 
 
     @GetMapping("/")
-    @PreAuthorize("hasAuthority('brand:read')")
     public List<BrandDTO> getAll(@RequestParam(name="id",required = false) Integer id,
                                  @RequestParam(name="name",required = false) String name
     ){

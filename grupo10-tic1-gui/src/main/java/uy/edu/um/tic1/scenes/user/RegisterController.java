@@ -12,6 +12,10 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
+import uy.edu.um.tic1.entitites.contact.AddressDTO;
+import uy.edu.um.tic1.entitites.contact.TelephoneNumberDTO;
+import uy.edu.um.tic1.entitites.users.ClientDTO;
+import uy.edu.um.tic1.requests.UserRestController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,6 +26,8 @@ public class RegisterController implements Initializable {
 
     @Autowired
     StoreApplication storeApplication;
+    @Autowired
+    private UserRestController userRestController;
 
     private String newUserName;
     private String newUserLastName;
@@ -184,6 +190,17 @@ public class RegisterController implements Initializable {
             storeApplication.sceneMain();
 
         }
+
+        ClientDTO newClient = ClientDTO.builder()
+                .username(newUserName)
+                .firstName(newUserName)
+                .lastName(newUserLastName)
+                .password(newUserPassword)
+                .address(AddressDTO.builder().street(street).doorNumber(streetNumber).optional(aditional).zipCode(Integer.valueOf(zip)).build())
+                .telephoneNumber(TelephoneNumberDTO.builder().number(Integer.valueOf(phone)).build())
+                .build();
+
+        userRestController.registerClient(newClient);
 
 
     }

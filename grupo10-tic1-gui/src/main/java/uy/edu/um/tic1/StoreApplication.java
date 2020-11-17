@@ -34,6 +34,14 @@ public class StoreApplication extends Application {
     static Stage primaryStage;
     static Stage stageComparator;
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public CartDTO getCart() {
         if (cart == null) {
             this.cart = new CartDTO();
@@ -146,10 +154,11 @@ public class StoreApplication extends Application {
 
         if (getAppUser() != null && getAppUser() instanceof ClientDTO) {
             ClientDTO client = (ClientDTO) getAppUser();
-            cart = client.getCurrentCart();
+            if (client.getCurrentCart() != null)
+                this.setCart(client.getCurrentCart());
         }
 
-        setCart(cart);
+        setCart(this.getCart());
 
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(CartController.class);

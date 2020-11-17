@@ -107,14 +107,18 @@ public class MainController implements Initializable {
 
         // Agrega los botones acordes al usuario
         AppUserDTO user = storeApplication.getAppUser();
-        if (user instanceof ClientDTO) setButtonsClient();
+        if (user instanceof ClientDTO)
+            setButtonsClient();
         else if (user instanceof BrandUserDTO) {
             labelBrands.setVisible(false);
             flowPaneBrands.setVisible(false);
             setButtonsBrand();
         }
-        else if (user instanceof StoreUserDTO) setButtonsStore();
-        if (user instanceof AdminUserDTO) setButtonsStore();
+        else if (user instanceof StoreUserDTO)
+            setButtonsStore();
+
+
+//        if (user instanceof AdminUserDTO) setButtonsStore();
         else setButtonsDefault();
 
         // Setea el panel de filtros
@@ -122,6 +126,7 @@ public class MainController implements Initializable {
         setColors();
         setSizes();
         setBrands();
+
 
         paneFiltersLeft.setVisible(false);
         menuButtonSort.setVisible(false);

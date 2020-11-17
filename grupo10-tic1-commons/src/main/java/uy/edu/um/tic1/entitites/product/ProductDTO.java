@@ -17,6 +17,7 @@ import uy.edu.um.tic1.entitites.SizeAndColorDTO;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -80,5 +81,17 @@ public abstract class ProductDTO {
     
     public void addSizeAndColor(SizeAndColorDTO sizeAndColor){
         this.getSizeAndColor().add(sizeAndColor);
+    }
+
+
+    public SizeAndColorDTO getSizeAndColorBySizeAndColor(String size, String color){
+
+        Optional<SizeAndColorDTO> optionalSizeAndColorDTO =  this.getSizeAndColor().stream().filter(sc -> sc.getColor().equals(color) && sc.getSize().equals(size)).findFirst();
+
+        if (optionalSizeAndColorDTO.isPresent()){
+            return optionalSizeAndColorDTO.get();
+        }
+        return null;
+
     }
 }

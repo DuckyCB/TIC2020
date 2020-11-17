@@ -39,7 +39,7 @@ public class Client extends AppUser{
     @Embedded
     private Email email;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "current_cart",
             foreignKey = @ForeignKey(name = "fk_client_cart")
     )
@@ -79,15 +79,21 @@ public class Client extends AppUser{
 
     @Override
     public ClientDTO toDTO() {
-        return ClientDTO.builder()
+        ClientDTO client =  ClientDTO.builder()
                 .id(this.getId())
                 .firstName(this.firstName)
                 .lastName(this.lastName)
                 .username(this.getUsername())
                 .address(this.address.toDTO())
-                .currentCart(this.currentCart.toDTO())
+                .currentCart(null)
                 .telephoneNumber(this.telephoneNumber.toDTO())
                 .build();
+
+
+        if (this.currentCart != null){
+            client.setCurrentCart(this.currentCart.toDTO());
+        }
+        return client;
     }
 
 }

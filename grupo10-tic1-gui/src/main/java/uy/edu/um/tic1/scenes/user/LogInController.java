@@ -12,6 +12,8 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
+import uy.edu.um.tic1.entitites.users.ClientDTO;
+import uy.edu.um.tic1.requests.CartRestController;
 import uy.edu.um.tic1.requests.UserRestController;
 import uy.edu.um.tic1.StoreApplication;
 
@@ -26,6 +28,8 @@ public class LogInController implements Initializable {
     private StoreApplication storeApplication;
     @Autowired
     private UserRestController userRestController;
+    @Autowired
+    private CartRestController cartRestController;
 
     @FXML
     private Button inicio;
@@ -75,6 +79,10 @@ public class LogInController implements Initializable {
             AppUserDTO userEntity = userRestController.getUser(user, password);
             // TODO : agregar la contraseña para que se guarde
             storeApplication.setAppUser(userEntity);
+            storeApplication.setPassword(password);
+
+            if(userEntity instanceof ClientDTO)
+                storeApplication.setCart(cartRestController.getCurrentCart());
 
         }
     }

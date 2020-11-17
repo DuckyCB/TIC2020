@@ -30,5 +30,7 @@ public abstract class AppUserDTO {
 
     private String username;
 
+    private String password;
+
 
 }

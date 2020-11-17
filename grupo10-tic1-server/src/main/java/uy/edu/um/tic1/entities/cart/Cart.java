@@ -30,7 +30,7 @@ public class Cart {
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart",
             foreignKey = @ForeignKey(name = "fk_cart_item_cart")
     )
@@ -114,15 +114,19 @@ public class Cart {
 
     public CartDTO toDTO(){
 
-        return CartDTO.builder()
+        CartDTO cart =  CartDTO.builder()
                 .id(this.id)
-                .client((ClientDTO) this.client.toDTO())
                 .purchased(this.purchased)
                 .items(this.items.stream().map(CartItem::toDTO).collect(Collectors.toSet()))
                 .date(this.date)
                 .time(this.time)
                 .toDeliver(this.toDeliver)
                 .build();
+
+        if (client != null)
+            cart.setClient(this.client.toDTO());
+
+        return cart;
 
     }
 
