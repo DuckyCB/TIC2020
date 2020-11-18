@@ -23,7 +23,7 @@ public enum ApplicationUserRole {
             PRODUCT_READ, PRODUCT_WRITE)),
 
     STORE(Set.of(BRAND_READ,
-            STORE_READ,
+            STORE_READ, STORE_WRITE,
             PRODUCT_READ,
             STOCK_READ, STOCK_WRITE)),
 

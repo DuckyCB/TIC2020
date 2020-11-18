@@ -8,7 +8,9 @@ import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
 import uy.edu.um.tic1.entitites.contact.AddressDTO;
 import uy.edu.um.tic1.entitites.contact.TelephoneNumberDTO;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -31,12 +33,19 @@ public class StoreDTO {
 
     private Set<PurchaseDTO> purchaseSet;
 
-    public void updateStock(StockDTO stock) {
+    public void updateStock(String size, String color, Integer stock) {
+        Boolean updated = false;
+        this.stockSet.stream().forEach(st -> {
+            SizeAndColorDTO sc = st.getSizeAndColor();
+            if (sc.getSize().equals(size) && sc.getColor().equals(color))
+                st.setStock(stock);
 
-        stockSet.remove(stock);
-        stockSet.add(stock);
+        });
 
+    }
 
+    public void addStock(StockDTO stock){
+        this.getStockSet().add(stock);
     }
 
     public void deleteStock(StockDTO stock) {
@@ -48,5 +57,23 @@ public class StoreDTO {
     }
     public void deleteBrand(BrandDTO brand) {
         brandSet.remove(brand);
+    }
+
+
+
+    public StockDTO getStockBySizeAndColor(String size, String color){
+        List<StockDTO> stocks = this.stockSet.stream().filter(st -> {
+            SizeAndColorDTO sc = st.getSizeAndColor();
+            if (sc.getSize().equals(size) && sc.getColor().equals(color))
+                return true;
+            return false;
+        }).collect(Collectors.toList());
+
+        if(!stocks.isEmpty()){
+            return stocks.get(0);
+        }
+        return null;
+
+
     }
 }

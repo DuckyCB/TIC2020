@@ -191,7 +191,7 @@ public class StoreApplication extends Application {
         Parent root = fxWeaver.loadView(ProductDisplayStoreController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Brand admin");
+        primaryStage.setTitle("Store admin");
         primaryStage.show();
 
     }

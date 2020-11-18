@@ -24,14 +24,18 @@ import uy.edu.um.tic1.entities.attributes.Categories;
 import uy.edu.um.tic1.entities.attributes.Colors;
 import uy.edu.um.tic1.entities.attributes.Sizes;
 import uy.edu.um.tic1.entitites.SizeAndColorDTO;
+import uy.edu.um.tic1.entitites.StockDTO;
+import uy.edu.um.tic1.entitites.StoreDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.requests.SizeAndColorRestController;
+import uy.edu.um.tic1.requests.StoreRestController;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @FxmlView("/uy/edu/um/tic1/scenes/admin/store/productDisplayStore.fxml")
@@ -39,6 +43,12 @@ public class ProductDisplayStoreController implements Initializable {
 
     @Autowired
     StoreApplication storeApplication;
+
+    @Autowired
+    private StoreRestController storeRestController;
+
+
+
 
     public static ProductDTO product;
 
@@ -112,10 +122,11 @@ public class ProductDisplayStoreController implements Initializable {
 
     private void initSizeAndColors() {
 
-        //TODO: recuperar los colores y talles de un producto, separarlo en listas por color,
-        // cada color debe tener una lista de talles
+        StoreDTO store = storeRestController.getStore();
 
-        for (String color: ProductDTO.getColors()) {
+        List<String> colors = product.getColorsList().stream().map(SizeAndColorDTO::getColor).collect(Collectors.toList());
+
+        for (String color: colors) {
 
             Pane paneColor = new Pane();
             paneColor.setPrefSize(606, 65);
@@ -148,11 +159,16 @@ public class ProductDisplayStoreController implements Initializable {
             flowPaneSizes.setStyle("-fx-background-color: #e2e2e2");
             paneColor.getChildren().add(flowPaneSizes);
 
-            List<String> sizes = Sizes.getSizes(null);
+            List<String> sizes = product.getSizeAndColorByColor(color).stream().map(SizeAndColorDTO::getSize).collect(Collectors.toList());
 
             for (String size: sizes) {
 
-                Integer quantity = 2;
+                Integer quantity = 0;
+                StockDTO stock = store.getStockBySizeAndColor(size, color);
+                if(stock != null){
+                    quantity = stock.getStock();
+                }
+
 
                 Pane paneSize = new Pane();
                 paneSize.setPrefSize(60,56);
@@ -171,18 +187,27 @@ public class ProductDisplayStoreController implements Initializable {
                 fieldQuantity.setStyle("-fx-background-color: #FFFFFF");
                 fieldQuantity.setLayoutX(8);
                 fieldQuantity.setLayoutY(27);
+                Integer finalQuantity = quantity;
+
                 fieldQuantity.setOnAction(event -> {
                     try {
                         int newQuantity = Integer.parseInt(fieldQuantity.getCharacters().toString());
+
                         if (newQuantity < 0) newQuantity = 0;
                         fieldQuantity.clear();
                         fieldQuantity.setPromptText(Integer.toString(newQuantity));
                         // TODO: Actualiza el valor de cantidad del producto
+
+                        updateStock(size, color, newQuantity);
+
                     } catch (NumberFormatException e) {
                         fieldQuantity.clear();
-                        fieldQuantity.setPromptText(quantity.toString());
+                        fieldQuantity.setPromptText(finalQuantity.toString());
                     }
+
                 });
+
+
                 paneSize.getChildren().add(fieldQuantity);
 
                 flowPaneSizes.getChildren().add(paneSize);
@@ -192,6 +217,28 @@ public class ProductDisplayStoreController implements Initializable {
             flowPaneColors.getChildren().add(paneColor);
 
         }
+
+    }
+
+
+
+
+    public void updateStock(String size, String color, Integer quantity){
+        StoreDTO store = storeRestController.getStore();
+        StockDTO stock = store.getStockBySizeAndColor(size, color);
+
+        if(stock == null){
+            stock = StockDTO.builder()
+                    .product(product)
+                    .sizeAndColor( product.getSizeAndColorBySizeAndColor(size, color) )
+                    .stock(quantity)
+                    .build();
+            store.addStock(stock);
+        } else{
+            store.updateStock(size, color, quantity);
+        }
+
+        storeRestController.save(store);
 
     }
 

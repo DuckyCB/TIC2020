@@ -58,7 +58,7 @@ public class Store {
 
 
     @Lazy
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
         @JoinColumn(name = "store",
                 foreignKey = @ForeignKey(name = "fk_stock_store")
         )

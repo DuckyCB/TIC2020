@@ -37,6 +37,7 @@ import uy.edu.um.tic1.entitites.product.ShirtDTO;
 import uy.edu.um.tic1.entitites.product.TrousersDTO;
 import uy.edu.um.tic1.requests.RequestMain;
 import uy.edu.um.tic1.StoreApplication;
+import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
 import uy.edu.um.tic1.scenes.user.ProductDisplayController;
 
 import java.net.URL;
@@ -205,14 +206,7 @@ public class MainController implements Initializable {
         config.setOnAction(event -> storeApplication.sceneConfig());
         user.getItems().add(config);
         MenuItem logOut = new MenuItem("Cerrar sesión");
-        logOut.setOnAction(event -> {
-            System.out.println("cerrar sesión");
-            storeApplication.setAppUser(null);
-            storeApplication.setCart(null);
-            storeApplication.setPassword(null);
-            storeApplication.sceneMain();
-                }
-        );
+        logOut.setOnAction(event -> cerrarCesion());
         user.getItems().add(logOut);
         flowPaneButtons.getChildren().add(user);
 
@@ -232,7 +226,7 @@ public class MainController implements Initializable {
 
         Button logOut = new Button("Cerrar sesión");
         logOut.setStyle("-fx-background-color: #ffffff");
-        logOut.setOnAction(event -> System.out.println("Cerrar sesión"));
+        logOut.setOnAction(event -> cerrarCesion());
         flowPaneButtons.getChildren().add(logOut);
 
         Button newProduct = new Button("Nuevo producto");
@@ -251,7 +245,7 @@ public class MainController implements Initializable {
 
         Button logOut = new Button("Cerrar sesión");
         logOut.setStyle("-fx-background-color: #ffffff");
-        logOut.setOnAction(event -> System.out.println("Cerrar sesión"));
+        logOut.setOnAction(event -> cerrarCesion());
         flowPaneButtons.getChildren().add(logOut);
 
         Button newProduct = new Button("Agregar producto");
@@ -262,8 +256,16 @@ public class MainController implements Initializable {
         Button sales = new Button("Ventas");
         sales.setStyle("-fx-background-color: #ffffff");
         sales.setOnAction(event -> storeApplication.sceneStoreSales());
-        flowPaneButtons.getChildren().add(newProduct);
+        flowPaneButtons.getChildren().add(sales);
 
+    }
+
+
+    private void cerrarCesion(){
+        storeApplication.setAppUser(null);
+        storeApplication.setCart(null);
+        storeApplication.setPassword(null);
+        storeApplication.sceneMain();
     }
 
     // ****************************************************************************************************************
@@ -515,7 +517,23 @@ public class MainController implements Initializable {
 
                 pane.setOnMouseClicked(event -> {
                     ProductDisplayController.product = product;
-                    storeApplication.sceneProductDisplay(product.getName());
+
+                    AppUserDTO user = storeApplication.getAppUser();
+                    if (user instanceof ClientDTO){
+                        storeApplication.sceneProductDisplay(product.getName());
+                    }
+                    else if (user instanceof BrandUserDTO) {
+
+                    }
+                    else if (user instanceof StoreUserDTO){
+                        ProductDisplayStoreController.product = product;
+                        storeApplication.sceneStoreDisplayProduct();
+                    } else{
+                        storeApplication.sceneProductDisplay(product.getName());
+                    }
+
+
+
                 });
 
                 flowPaneBackground.getChildren().add(pane);

@@ -15,10 +15,7 @@ import lombok.experimental.SuperBuilder;
 import uy.edu.um.tic1.entitites.BrandDTO;
 import uy.edu.um.tic1.entitites.SizeAndColorDTO;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -87,11 +84,39 @@ public abstract class ProductDTO {
     public SizeAndColorDTO getSizeAndColorBySizeAndColor(String size, String color){
 
         Optional<SizeAndColorDTO> optionalSizeAndColorDTO =  this.getSizeAndColor().stream().filter(sc -> sc.getColor().equals(color) && sc.getSize().equals(size)).findFirst();
-
         if (optionalSizeAndColorDTO.isPresent()){
             return optionalSizeAndColorDTO.get();
         }
         return null;
 
+    }
+
+    public List<SizeAndColorDTO> getSizeList(){
+        HashMap<String, SizeAndColorDTO> uniqueSize = new HashMap<>();
+        this.getSizeAndColor().stream().forEach(sc ->{
+            uniqueSize.put(sc.getSize(), sc);
+        });
+        return uniqueSize.values().stream().collect(Collectors.toList());
+
+    }
+
+
+    public List<SizeAndColorDTO> getColorsList(){
+        HashMap<String, SizeAndColorDTO> uniqueSize = new HashMap<>();
+        this.getSizeAndColor().stream().forEach(sc ->{
+            uniqueSize.put(sc.getSize(), sc);
+        });
+        return uniqueSize.values().stream().collect(Collectors.toList());
+
+    }
+
+
+
+    public List<SizeAndColorDTO> getSizeAndColorByColor(String color){
+        return this.sizeAndColor.stream().filter(sc -> sc.getColor().equals(color)).collect(Collectors.toList());
+    }
+
+    public List<SizeAndColorDTO> getSizeAndColorBySize(String size){
+        return this.sizeAndColor.stream().filter(sc -> sc.getSize().equals(size)).collect(Collectors.toList());
     }
 }

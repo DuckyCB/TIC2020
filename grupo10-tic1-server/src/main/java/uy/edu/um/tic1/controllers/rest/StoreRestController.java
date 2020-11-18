@@ -32,6 +32,14 @@ public class StoreRestController {
         return storeController.findAll(id, address, null, null, null);
     }
 
+    @GetMapping("/my-store/")
+    @PreAuthorize("hasRole('ROLE_STORE')")
+    public StoreDTO getStore(@RequestHeader("authorization") String auth){
+
+        return storeController.getStore(auth);
+    }
+
+
 
     @PutMapping("/insert/")
     @PreAuthorize("hasAuthority('store:write')")

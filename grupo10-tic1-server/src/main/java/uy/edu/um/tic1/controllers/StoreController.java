@@ -16,6 +16,7 @@ import uy.edu.um.tic1.entitites.StoreDTO;
 import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.repositories.ProductRepository;
+import uy.edu.um.tic1.repositories.StockRepository;
 import uy.edu.um.tic1.repositories.StoreRepository;
 import uy.edu.um.tic1.repositories.specifications.StoreQuerySpecification;
 import uy.edu.um.tic1.security.user.ApplicationUserService;
@@ -30,6 +31,8 @@ public class StoreController {
 
     @Autowired
     private StoreRepository storeRepository;
+    @Autowired
+    private StockRepository stockRepository;
     @Autowired
     private ApplicationUserService applicationUserService;
     @Autowired
@@ -47,6 +50,7 @@ public class StoreController {
     }
 
     public void save(Store store){
+
         storeRepository.save(store);
     }
 
@@ -75,7 +79,9 @@ public class StoreController {
 
         if(storeUser != null){
             Store store = storeUser.getStore();
+//            stockRepository.save(stock);
             store.addStock(stock);
+
             storeRepository.save(store);
         }
 
@@ -170,4 +176,13 @@ public class StoreController {
 
     }
 
+    public StoreDTO getStore(String auth) {
+        AppUser userFromHeader = applicationUserService.getUserFromHeader(auth);
+
+        if (userFromHeader != null && userFromHeader instanceof StoreUser) {
+            StoreUser storeUser = (StoreUser) userFromHeader;
+            return storeUser.getStore().toDTO();
+        }
+        return null;
+    }
 }
