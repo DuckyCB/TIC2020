@@ -210,7 +210,7 @@ public class MainController implements Initializable {
         user.getItems().add(logOut);
         flowPaneButtons.getChildren().add(user);
 
-        Button cart = new Button();
+        Button cart = new Button("Carrito");
         cart.setStyle("-fx-background-color: #ffffff");
         cart.setOnMouseClicked(event -> storeApplication.sceneCart());
         flowPaneButtons.getChildren().add(cart);

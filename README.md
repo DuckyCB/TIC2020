@@ -1,13 +1,14 @@
-PROYECTO TIC2020	
+#PROYECTO TIC2020	
 
-Universidad de Montevideo
+##Universidad de Montevideo
 	
-Laboratorio TIC 1 - 2do. Semestre 2020
+##Laboratorio TIC 1 - 2do. Semestre 2020
 
-Prof.: D. Pereda
+Prof.: 
+- D. Pereda
 
- Grupo.: 
-	P. Carrau
- 	R. D'Ambrosio
- 	G. González
+Grupo.: 
+- P. Carrau
+- R. D'Ambrosio
+- G. González
 	 
