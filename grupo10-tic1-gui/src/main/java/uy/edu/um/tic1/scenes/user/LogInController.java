@@ -3,17 +3,16 @@ package uy.edu.um.tic1.scenes.user;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
+import uy.edu.um.tic1.entitites.users.StoreUserDTO;
 import uy.edu.um.tic1.requests.CartRestController;
+import uy.edu.um.tic1.requests.StoreRestController;
 import uy.edu.um.tic1.requests.UserRestController;
 import uy.edu.um.tic1.StoreApplication;
 
@@ -30,6 +29,8 @@ public class LogInController implements Initializable {
     private UserRestController userRestController;
     @Autowired
     private CartRestController cartRestController;
+    @Autowired
+    private StoreRestController storeRestController;
 
     @FXML
     private Button inicio;
@@ -69,6 +70,7 @@ public class LogInController implements Initializable {
         if (password.isEmpty()) {
             errorPassword.setVisible(true);
             Label newPasswordError = new Label("El campo no puede ser vacío");
+            errorPassword.getChildren().clear();
             errorPassword.getChildren().add(newPasswordError);
         } else {
             errorPassword.setVisible(false);
@@ -77,17 +79,35 @@ public class LogInController implements Initializable {
         if (!user.isEmpty() && !password.isEmpty()) {
 
             AppUserDTO userEntity = userRestController.getUser(user, password);
-            // TODO : agregar la contraseña para que se guarde
-            storeApplication.setAppUser(userEntity);
-            storeApplication.setPassword(password);
 
-            if(userEntity instanceof ClientDTO)
-                storeApplication.setCart(cartRestController.getCurrentCart());
+            if (userEntity == null) {
+
+                errorUser.setVisible(true);
+                errorUser.getChildren().clear();
+                Label newUserError = new Label("Posible usuario incorrecto");
+                errorUser.getChildren().add(newUserError);
+
+                errorPassword.setVisible(true);
+                errorPassword.getChildren().clear();
+                Label newPasswordError = new Label("Posible contraseña incorrecta");
+                errorPassword.getChildren().add(newPasswordError);
+
+            } else {
+
+                storeApplication.setAppUser(userEntity);
+                storeApplication.setPassword(password);
+
+                if (userEntity instanceof ClientDTO)
+                    storeApplication.setCart(cartRestController.getCurrentCart());
+                else if (userEntity instanceof StoreUserDTO)
+                    storeApplication.setPurchases(storeRestController.getStore().getPurchaseSet());
+
+                storeApplication.sceneMain();
+
+            }
 
         }
 
-
-        storeApplication.sceneMain();
     }
 
     @FXML
@@ -98,7 +118,10 @@ public class LogInController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         errorUser.setVisible(false);
         errorPassword.setVisible(false);
+
     }
+
 }

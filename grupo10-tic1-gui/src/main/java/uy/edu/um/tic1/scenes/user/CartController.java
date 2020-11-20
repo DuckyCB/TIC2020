@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entities.elements.PaneProduct;
-import uy.edu.um.tic1.entitites.SizeAndColorDTO;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.cart.CartItemDTO;
 import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
@@ -45,9 +44,11 @@ public class CartController implements Initializable {
 
     AppUserDTO user;
 
+    private Set<PurchaseDTO> purchaseSet;
+    private Set<CartItemDTO> cartItemSet;
+
     @FXML
     private FlowPane flowPaneProducts;
-
     @FXML
     private Button inicio;
 
@@ -60,9 +61,15 @@ public class CartController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         user = storeApplication.getAppUser();
-        if (user instanceof ClientDTO) setProducts(Objects.requireNonNull(requestCartList()).toArray());
+        if (user instanceof ClientDTO) {
+            cartItemSet = requestCartList();
+            setProducts(Objects.requireNonNull(requestCartList()).toArray());
+        }
         else if (user instanceof StoreUserDTO) setStoreSales();
-        else setProducts(Objects.requireNonNull(requestCartList()).toArray());
+        else {
+            purchaseSet = storeApplication.getPurchases();
+            setProducts(Objects.requireNonNull(requestCartList()).toArray());
+        }
 
     }
 
@@ -80,7 +87,8 @@ public class CartController implements Initializable {
     //                  USER
     // ****************************************************************************************************************
 
-    private void setUserCart() {
+
+    /*private void setUserCart() {
 
         Set<CartItemDTO> cartItemSet = requestCartList();
 
@@ -164,7 +172,7 @@ public class CartController implements Initializable {
 
         } else flowPaneProducts.getChildren().add(getNoMesaggesPane("Carrito vacío"));
 
-    }
+    }*/
 
     /**
      * En el caso que haya un usuario ingresado, hace un request al server para tener los productos del carrito.
@@ -185,14 +193,9 @@ public class CartController implements Initializable {
 
     private void setStoreSales() {
 
-        //TODO : recuperar lista de purchases
+        if (purchaseSet != null) {
 
-        List<PurchaseDTO> sales = null;
-
-        //if (!sales.isEmpty()) {
-        if (sales != null) {
-
-            for (PurchaseDTO sale : sales) {
+            for (PurchaseDTO sale : purchaseSet) {
 
                 Pane paneProduct = new Pane();
                 paneProduct.setPrefSize(685, 150);
@@ -294,6 +297,8 @@ public class CartController implements Initializable {
 
     private void setProducts(Object[] itemSet) {
 
+        flowPaneProducts.getChildren().clear();
+
         if (itemSet != null) {
 
             float finalPrice = 0.0f;
@@ -303,14 +308,14 @@ public class CartController implements Initializable {
                 ProductDTO product;
                 String color;
                 String size;
-                String quantity;
+                Integer quantity;
                 float price;
                 if (newItem instanceof PurchaseItemDTO) {
                     PurchaseItemDTO item = (PurchaseItemDTO) newItem;
                     product = item.getProduct();
                     color = item.getSizeAndColor().getColor();
                     size = item.getSizeAndColor().getSize();
-                    quantity = item.getQuantity().toString();
+                    quantity = item.getQuantity();
                     price = item.getPrice().floatValue();
                 }
                 else {
@@ -318,44 +323,56 @@ public class CartController implements Initializable {
                     product = item.getProduct();
                     color = item.getSizeAndColor().getColor();
                     size = item.getSizeAndColor().getSize();
-                    quantity = item.getQuantity().toString();
+                    quantity = item.getQuantity();
                     price = item.getPrice().floatValue();
                 }
 
-                byte[] image = product.getImage();
-                Image productImg;
-                if (image != null) {
-                    productImg = new Image(new ByteArrayInputStream(image));
-                } else {
-                    productImg = new Image("/uy/edu/um/tic1/images/no_image.jpg");
+                if (quantity > 0) {
+
+                    byte[] image = product.getImage();
+                    Image productImg;
+                    if (image != null) {
+                        productImg = new Image(new ByteArrayInputStream(image));
+                    } else {
+                        productImg = new Image("/uy/edu/um/tic1/images/no_image.jpg");
+                    }
+
+                    Pane pane = PaneProduct.createCartItem(productImg, product.getName(), product.getBrand().getName(), product.getPrice().floatValue(),
+                            color, size);
+
+                    Label numberQuantity = getQuantityLabel(quantity.toString());
+                    pane.getChildren().add(numberQuantity);
+
+                    if (newItem instanceof CartItemDTO) {
+
+                        CartItemDTO cartItem = (CartItemDTO) newItem;
+
+                        Pane close = new Pane();
+                        close.setPrefSize(40, 40);
+                        close.setLayoutX(625);
+                        close.setLayoutY(56);
+                        close.setStyle("-fx-background-color: #ff0000");
+                        close.setOnMouseClicked(event -> {
+                            cartItem.setQuantity(cartItem.getQuantity()-1);
+                            if (cartItem.getQuantity() > 0) {
+                                pane.getChildren().remove(numberQuantity);
+                                pane.getChildren().add(getQuantityLabel(cartItem.getQuantity().toString()));
+                            } else {
+                                flowPaneProducts.getChildren().remove(pane);
+                                cartItemSet.remove(cartItem);
+                            }
+                        });
+
+                        pane.getChildren().add(close);
+
+                    }
+
+                    flowPaneProducts.getChildren().add(pane);
+
+                    finalPrice += price * quantity;
+
                 }
 
-                Pane pane = PaneProduct.createCartItem(productImg, product.getName(), product.getBrand().getName(), product.getPrice().floatValue(),
-                        color, size);
-
-                Label numberQuantity = getQuantityLabel(quantity);
-                pane.getChildren().add(numberQuantity);
-
-                Pane close = new Pane();
-                close.setPrefSize(40, 40);
-                close.setLayoutX(625);
-                close.setLayoutY(56);
-                close.setStyle("-fx-background-color: #ff0000");
-                close.setOnMouseClicked(event -> {
-                    setItemQuantity(newItem, getItemQuantity(newItem)-1);
-                    if (getItemQuantity(newItem) <= 0) {
-                        pane.getChildren().remove(numberQuantity);
-                        pane.getChildren().add(getQuantityLabel(getItemQuantity(newItem).toString()));
-                    } else {
-                        flowPaneProducts.getChildren().remove(pane);
-                        removeSizeAndColor(itemSet, newItem);
-                    }
-                });
-                pane.getChildren().add(close);
-
-                flowPaneProducts.getChildren().add(pane);
-
-                finalPrice += price * Integer.parseInt(quantity);
             }
 
             Pane paneProduct = new Pane();
@@ -386,54 +403,15 @@ public class CartController implements Initializable {
             buy.setLayoutX(282);
             buy.setLayoutY(98);
             buy.setOnMouseClicked(event -> {
-                // TODO : scene buy details
+                if (!cartItemSet.isEmpty()) {
+                    // TODO : Realizar compra
+                }
             });
             paneProduct.getChildren().add(buy);
 
             flowPaneProducts.getChildren().add(paneProduct);
 
         } else flowPaneProducts.getChildren().add(getNoMesaggesPane("Carrito vacío"));
-
-    }
-
-    private void removeSizeAndColor(Object itemSet, Object item) {
-
-        if (item instanceof PurchaseItemDTO) {
-            Set<PurchaseItemDTO> purchaseItemSet = (Set<PurchaseItemDTO>) itemSet;
-            PurchaseItemDTO itemp = (PurchaseItemDTO) item;
-            purchaseItemSet.remove(itemp);
-        }
-        else {
-            Set<CartItemDTO> cartItemSet = (Set<CartItemDTO>) itemSet;
-            CartItemDTO itemc = (CartItemDTO) item;
-            cartItemSet.remove(itemc);
-        }
-
-    }
-
-    private Integer getItemQuantity (Object item) {
-
-        if (item instanceof PurchaseItemDTO) {
-            PurchaseItemDTO itemp = (PurchaseItemDTO) item;
-            return itemp.getQuantity();
-        }
-        else {
-            CartItemDTO itemc = (CartItemDTO) item;
-            return itemc.getQuantity();
-        }
-
-    }
-
-    private void setItemQuantity (Object item, Integer quantity) {
-
-        if (item instanceof PurchaseItemDTO) {
-            PurchaseItemDTO itemp = (PurchaseItemDTO) item;
-            itemp.setQuantity(quantity);
-        }
-        else {
-            CartItemDTO itemc = (CartItemDTO) item;
-            itemc.setQuantity(quantity);
-        }
 
     }
 

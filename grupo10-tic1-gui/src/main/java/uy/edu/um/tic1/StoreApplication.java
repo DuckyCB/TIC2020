@@ -13,6 +13,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
+import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
@@ -22,6 +23,7 @@ import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
 import uy.edu.um.tic1.scenes.user.*;
 
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Component
 public class StoreApplication extends Application {
@@ -31,13 +33,13 @@ public class StoreApplication extends Application {
     private AppUserDTO appUser;
     private String password;
     private CartDTO cart;
+    private Set<PurchaseDTO> purchases;
     static Stage primaryStage;
     static Stage stageComparator;
 
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -49,9 +51,15 @@ public class StoreApplication extends Application {
         }
         return cart;
     }
-
     public void setCart(CartDTO cart) {
         this.cart = cart;
+    }
+
+    public Set<PurchaseDTO> getPurchases() {
+        return purchases;
+    }
+    public void setPurchases(Set<PurchaseDTO> purchases) {
+        this.purchases = purchases;
     }
 
     public AppUserDTO getAppUser() {

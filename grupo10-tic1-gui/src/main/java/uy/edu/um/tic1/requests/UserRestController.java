@@ -29,9 +29,6 @@ public class UserRestController {
                 null,
                 new ParameterizedTypeReference<AppUserDTO>(){});
 
-
-
-
         return response.getBody();
 
     }

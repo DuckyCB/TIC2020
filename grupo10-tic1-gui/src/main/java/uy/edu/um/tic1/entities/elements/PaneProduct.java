@@ -151,10 +151,10 @@ public class PaneProduct {
 
         // IMAGE
         ImageView productImage = new ImageView(image);
-        productImage.setFitWidth(150);
-        productImage.setFitHeight(200);
+        productImage.setFitWidth(111);
+        productImage.setFitHeight(148);
         productImage.setLayoutX(15);
-        productImage.setLayoutY(0);
+        productImage.setLayoutY(1);
         paneProduct.getChildren().add(productImage);
 
         // NAME
