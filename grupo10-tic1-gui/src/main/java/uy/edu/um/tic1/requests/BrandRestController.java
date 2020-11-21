@@ -1,6 +1,7 @@
 package uy.edu.um.tic1.requests;
 
 
+import javafx.scene.image.ImageView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -41,6 +42,14 @@ public class BrandRestController {
 
 
         return response.getBody();
+    }
+
+    public static ImageView getBanner() {
+
+        // TODO: Esta imagen deberia recuperarla de la bdd
+
+        return new ImageView("/uy/edu/um/tic1/images/Banner/teens.jpg");
+
     }
 
 }

@@ -1,5 +1,6 @@
 package uy.edu.um.tic1.entities.elements;
 
+import javafx.geometry.Orientation;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
@@ -8,9 +9,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entitites.BrandDTO;
 import uy.edu.um.tic1.scenes.MainController;
 
@@ -32,13 +30,12 @@ public class PaneBrands {
 
         FlowPane flow = new FlowPane();
         flow.setPrefHeight(135);
-        flow.setMinHeight(135);
         flow.setMaxHeight(135);
-        flow.setMinWidth(490);
-        flow.setPrefWidth(1200);
         flow.setMaxWidth(Region.USE_COMPUTED_SIZE);
         flow.setVgap(10);
         flow.setHgap(10);
+        flow.setOrientation(Orientation.VERTICAL);
+        flow.setPrefWrapLength(140);
 
         for (BrandDTO brand: brands) {
 

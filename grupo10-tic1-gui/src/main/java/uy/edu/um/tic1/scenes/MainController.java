@@ -29,13 +29,7 @@ import uy.edu.um.tic1.entities.attributes.Sizes;
 import uy.edu.um.tic1.entities.elements.PaneBrands;
 import uy.edu.um.tic1.entities.elements.PaneProduct;
 import uy.edu.um.tic1.entitites.BrandDTO;
-import uy.edu.um.tic1.entitites.SizeAndColorDTO;
-import uy.edu.um.tic1.entitites.cart.CartDTO;
-import uy.edu.um.tic1.entitites.product.HoodieDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
-import uy.edu.um.tic1.entitites.product.ShirtDTO;
-import uy.edu.um.tic1.entitites.product.TrousersDTO;
-import uy.edu.um.tic1.requests.RequestMain;
 import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.requests.StoreRestController;
 import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
@@ -150,7 +144,7 @@ public class MainController implements Initializable {
 
         flowPaneBackground.getChildren().clear();
 
-        ImageView banner = RequestMain.getBanner();
+        ImageView banner = BrandRestController.getBanner();
         banner.setFitWidth(1000);
         banner.setPreserveRatio(true);
         flowPaneBackground.getChildren().add(banner);
@@ -184,15 +178,15 @@ public class MainController implements Initializable {
 
         flowPaneButtons.getChildren().clear();
 
-        Button login = new Button("Ingresar");
-        login.setStyle("-fx-background-color: #ffffff");
-        login.setOnAction(event -> storeApplication.sceneLogIn());
-        flowPaneButtons.getChildren().add(login);
-
         Button cart = new Button("Carrito");
         cart.setStyle("-fx-background-color: #ffffff");
         cart.setOnAction(event -> storeApplication.sceneCart());
         flowPaneButtons.getChildren().add(cart);
+
+        Button login = new Button("Ingresar");
+        login.setStyle("-fx-background-color: #ffffff");
+        login.setOnAction(event -> storeApplication.sceneLogIn());
+        flowPaneButtons.getChildren().add(login);
 
     }
 
@@ -203,20 +197,24 @@ public class MainController implements Initializable {
 
         flowPaneButtons.getChildren().clear();
 
-        MenuButton user = new MenuButton("Usuario");
-        user.setStyle("-fx-background-color: #ffffff");
-        MenuItem config = new MenuItem("Configuración");
-        config.setOnAction(event -> storeApplication.sceneConfig());
-        user.getItems().add(config);
-        MenuItem logOut = new MenuItem("Cerrar sesión");
-        logOut.setOnAction(event -> cerrarCesion());
-        user.getItems().add(logOut);
-        flowPaneButtons.getChildren().add(user);
-
         Button cart = new Button("Carrito");
         cart.setStyle("-fx-background-color: #ffffff");
         cart.setOnMouseClicked(event -> storeApplication.sceneCart());
         flowPaneButtons.getChildren().add(cart);
+
+        // TODO: Esto capaz se saca
+        Button seePurchases = new Button("Ver compras");
+        seePurchases.setStyle("-fx-background-color: #ffffff");
+        seePurchases.setOnMouseClicked(event -> {
+            ListItemsController.isCart = false;
+            storeApplication.sceneListItems("Lista de compras");
+        });
+        flowPaneButtons.getChildren().add(seePurchases);
+
+        Button logOut = new Button("Cerrar sesión");
+        logOut.setStyle("-fx-background-color: #ffffff");
+        logOut.setOnAction(event -> logOut());
+        flowPaneButtons.getChildren().add(logOut);
 
     }
 
@@ -227,15 +225,15 @@ public class MainController implements Initializable {
 
         flowPaneButtons.getChildren().clear();
 
-        Button logOut = new Button("Cerrar sesión");
-        logOut.setStyle("-fx-background-color: #ffffff");
-        logOut.setOnAction(event -> cerrarCesion());
-        flowPaneButtons.getChildren().add(logOut);
-
         Button newProduct = new Button("Nuevo producto");
         newProduct.setStyle("-fx-background-color: #ffffff");
         newProduct.setOnAction(event -> storeApplication.sceneBrandDisplayProduct(null));
         flowPaneButtons.getChildren().add(newProduct);
+
+        Button logOut = new Button("Cerrar sesión");
+        logOut.setStyle("-fx-background-color: #ffffff");
+        logOut.setOnAction(event -> logOut());
+        flowPaneButtons.getChildren().add(logOut);
 
     }
 
@@ -246,25 +244,25 @@ public class MainController implements Initializable {
 
         flowPaneButtons.getChildren().clear();
 
-        Button logOut = new Button("Cerrar sesión");
-        logOut.setStyle("-fx-background-color: #ffffff");
-        logOut.setOnAction(event -> cerrarCesion());
-        flowPaneButtons.getChildren().add(logOut);
+        Button sales = new Button("Ventas");
+        sales.setStyle("-fx-background-color: #ffffff");
+        sales.setOnAction(event -> storeApplication.sceneListItems("Ventas"));
+        flowPaneButtons.getChildren().add(sales);
 
         Button newProduct = new Button("Agregar producto");
         newProduct.setStyle("-fx-background-color: #ffffff");
         newProduct.setOnAction(event -> storeApplication.sceneStoreDisplayProduct());
         flowPaneButtons.getChildren().add(newProduct);
 
-        Button sales = new Button("Ventas");
-        sales.setStyle("-fx-background-color: #ffffff");
-        sales.setOnAction(event -> storeApplication.sceneStoreSales());
-        flowPaneButtons.getChildren().add(sales);
+        Button logOut = new Button("Cerrar sesión");
+        logOut.setStyle("-fx-background-color: #ffffff");
+        logOut.setOnAction(event -> logOut());
+        flowPaneButtons.getChildren().add(logOut);
 
     }
 
 
-    private void cerrarCesion(){
+    private void logOut(){
         storeApplication.setAppUser(null);
         storeApplication.setCart(null);
         storeApplication.setPassword(null);

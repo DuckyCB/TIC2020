@@ -20,9 +20,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
-import uy.edu.um.tic1.entities.attributes.Categories;
 import uy.edu.um.tic1.entities.attributes.Colors;
-import uy.edu.um.tic1.entities.attributes.Sizes;
 import uy.edu.um.tic1.entitites.SizeAndColorDTO;
 import uy.edu.um.tic1.entitites.StockDTO;
 import uy.edu.um.tic1.entitites.StoreDTO;
@@ -34,7 +32,6 @@ import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component

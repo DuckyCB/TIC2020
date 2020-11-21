@@ -1,8 +1,8 @@
 package uy.edu.um.tic1.entities.elements;
 
-
-
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,12 +11,10 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import org.springframework.beans.factory.annotation.Autowired;
+import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entities.attributes.Colors;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
+import uy.edu.um.tic1.entitites.cart.CartItemDTO;
 
 import java.io.ByteArrayInputStream;
 
@@ -24,6 +22,9 @@ import java.util.List;
 
 
 public class PaneProduct {
+
+    @Autowired
+    private static StoreApplication storeApplication;
 
     public static Pane paneGeneric(byte[] image, String name, String brand, Double price, List<String> colors, List<String>  sizes) {
 
@@ -225,7 +226,104 @@ public class PaneProduct {
 
     }
 
+    public static Pane getComparatedItem(CartItemDTO product) {
 
+        Pane paneProduct = new Pane();
+        paneProduct.setPrefSize(240, 645);
+        paneProduct.setStyle("-fx-background-color: #e2e2e2");
+
+        // IMAGE
+        ImageView  productImage;
+        byte[] image = product.getProduct().getImage();
+        if (image != null){
+            Image img = new Image(new ByteArrayInputStream(image));
+            productImage = new ImageView(img);
+        }else{
+            productImage = new ImageView("/uy/edu/um/tic1/images/no_image.jpg");
+        }
+
+        productImage.setFitWidth(225);
+        productImage.setFitHeight(300);
+        productImage.setLayoutX(8);
+        productImage.setLayoutY(4);
+        paneProduct.getChildren().add(productImage);
+
+        // NAME
+        StackPane paneName = new StackPane();
+        paneName.setPrefSize(225, 64);
+        paneName.setLayoutX(8);
+        paneName.setLayoutY(323);
+        paneName.setAlignment(Pos.TOP_CENTER);
+        Label productName = new Label(product.getProduct().getName());
+        productName.setFont(Font.font("Cambria", FontWeight.BOLD, FontPosture.ITALIC, 16));
+        productName.setWrapText(true);
+        paneName.getChildren().add(productName);
+        paneProduct.getChildren().add(paneName);
+
+        // BRAND
+        Label productBrand = new Label(product.getProduct().getBrand().getName());
+        productBrand.setFont(Font.font("Cambria", FontPosture.ITALIC, 14));
+        productBrand.setLayoutX(14);
+        productBrand.setLayoutY(387);
+        paneProduct.getChildren().add(productBrand);
+
+        // COLOR
+        Label labelColor = new Label("Color:");
+        labelColor.setFont(Font.font("Cambria", 13));
+        labelColor.setLayoutX(27);
+        labelColor.setLayoutY(442);
+        paneProduct.getChildren().add(labelColor);
+        Circle circleColor = Colors.getCircle(product.getSizeAndColor().getColor(), 16f);
+        circleColor.setLayoutX(87);
+        circleColor.setLayoutY(451);
+        paneProduct.getChildren().add(circleColor);
+
+        // SIZE
+        Label labelSize = new Label("Talle:");
+        labelSize.setFont(Font.font("Cambria", 13));
+        labelSize.setLayoutX(121);
+        labelSize.setLayoutY(434);
+        paneProduct.getChildren().add(labelSize);
+        Label letterSize = new Label(product.getSizeAndColor().getSize());
+        letterSize.setFont(Font.font("Cambria", 13));
+        letterSize.setLayoutX(159);
+        letterSize.setLayoutY(442);
+        paneProduct.getChildren().add(letterSize);
+
+        // QUANTITY
+        Label labelQuantity = new Label("Cantidad:");
+        labelQuantity.setFont(Font.font("Cambria", 13));
+        labelQuantity.setLayoutX(121);
+        labelQuantity.setLayoutY(459);
+        paneProduct.getChildren().add(labelQuantity);
+        Label numberQUantity = new Label(product.getQuantity().toString());
+        numberQUantity.setFont(Font.font("Cambria", 13));
+        numberQUantity.setLayoutX(159);
+        numberQUantity.setLayoutY(442);
+        paneProduct.getChildren().add(numberQUantity);
+
+        // PRICE
+        StackPane panePrice = new StackPane();
+        panePrice.setPrefSize(225, 25);
+        panePrice.setLayoutX(9);
+        panePrice.setLayoutY(496);
+        Label productPrice = new Label(product.getPrice().toString()+" $UY");
+        productPrice.setFont(Font.font("Cambria", FontWeight.BOLD, FontPosture.ITALIC, 30));
+        panePrice.getChildren().add(productPrice);
+        paneProduct.getChildren().add(panePrice);
+
+        Button addToCart = new Button("Agregar al carrito");
+        addToCart.setFont(Font.font("Cambria", FontWeight.BOLD, 16));
+        addToCart.setLayoutX(44);
+        addToCart.setLayoutY(543);
+        addToCart.setOnAction(event -> {
+            storeApplication.getCart().addItem(product);
+        });
+        paneProduct.getChildren().add(addToCart);
+
+        return paneProduct;
+
+    }
 
 
 }

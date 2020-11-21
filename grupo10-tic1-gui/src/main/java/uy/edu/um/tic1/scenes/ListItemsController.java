@@ -1,4 +1,4 @@
-package uy.edu.um.tic1.scenes.user;
+package uy.edu.um.tic1.scenes;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,8 +37,8 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 @Component
-@FxmlView("/uy/edu/um/tic1/scenes/user/cart.fxml")
-public class CartController implements Initializable {
+@FxmlView("/uy/edu/um/tic1/scenes/sceneListItems.fxml")
+public class ListItemsController implements Initializable {
 
     @Autowired
     StoreApplication storeApplication;
@@ -46,6 +46,8 @@ public class CartController implements Initializable {
     @Autowired
     private CartRestController cartRestController;
     AppUserDTO user;
+
+    public static Boolean isCart;
 
     private Set<PurchaseDTO> purchaseSet;
     private Set<CartItemDTO> cartItemSet;
@@ -67,8 +69,17 @@ public class CartController implements Initializable {
         user = storeApplication.getAppUser();
         if (user instanceof ClientDTO) {
 
-            cartItemSet = requestCartList();
-            setProducts(Objects.requireNonNull(requestCartList()).toArray());
+            if (isCart) {
+
+                cartItemSet = requestCartList();
+                setProducts(cartItemSet.toArray());
+
+            } else {
+
+                setUserPurchases();
+
+            }
+
         }
         else if (user instanceof StoreUserDTO) setStoreSales();
         else {
@@ -93,92 +104,85 @@ public class CartController implements Initializable {
     //                  USER
     // ****************************************************************************************************************
 
+    private void setUserPurchases() {
 
-    /*private void setUserCart() {
+        ClientDTO client = (ClientDTO) storeApplication.getAppUser();
 
-        Set<CartItemDTO> cartItemSet = requestCartList();
+        // TODO: mostrar compras del usuario
+        /*client.get
 
-        if (cartItemSet != null) {
+        if (items != null) {
 
-            float finalPrice = 0.0f;
+            for (CartItemDTO item : items) {
 
-            for (CartItemDTO cartItem : cartItemSet) {
+                Pane paneProduct = new Pane();
+                paneProduct.setPrefSize(685, 150);
+                paneProduct.setStyle("-fx-background-color: #E2E2E2");
 
-                ProductDTO product = cartItem.getProduct();
+                // NAME:
+                Label labelName = new Label("Nombre: " + sale.getClient().getFirstName());
+                labelName.setFont(Font.font("Cambria", FontWeight.BOLD, 18));
+                labelName.setLayoutX(28);
+                labelName.setLayoutY(21);
+                paneProduct.getChildren().add(labelName);
 
-                byte[] image = product.getImage();
-                Image productImg;
-                if (image != null) {
-                    productImg = new Image(new ByteArrayInputStream(image));
-                } else {
-                    productImg = new Image("/uy/edu/um/tic1/images/no_image.jpg");
-                }
+                // LAST NAME
+                Label labelLastName = new Label("Apellido: " + sale.getClient().getLastName());
+                labelLastName.setFont(Font.font("Cambria", FontWeight.BOLD, 18));
+                labelLastName.setLayoutX(28);
+                labelLastName.setLayoutY(64);
+                paneProduct.getChildren().add(labelLastName);
 
-                Pane pane = PaneProduct.createCartItem(productImg, product.getName(), product.getBrand().getName(), product.getPrice().floatValue(),
-                        cartItem.getSizeAndColor().getColor(), cartItem.getSizeAndColor().getSize());
+                // ADDRESS
+                Label labelAdress = new Label("Dirección: " + sale.getClient().getAddress());
+                labelAdress.setFont(Font.font("Cambria", FontWeight.BOLD, 18));
+                labelAdress.setLayoutX(28);
+                labelAdress.setLayoutY(105);
+                paneProduct.getChildren().add(labelAdress);
 
-                Label numberQuantity = getQuantityLabel(cartItem.getQuantity().toString());
-                pane.getChildren().add(numberQuantity);
+                // PRICE
+                int price = 0;
+                for (PurchaseItemDTO item: sale.getPurchaseItems()) price += item.getPrice();
+                Label labelPrice = new Label("Precio total: " + price + "$");
+                labelPrice.setFont(Font.font("Cambria", FontWeight.BOLD, 26));
+                labelPrice.setLayoutX(241);
+                labelPrice.setLayoutY(16);
+                paneProduct.getChildren().add(labelPrice);
 
-                Pane close = new Pane();
-                close.setPrefSize(40, 40);
-                close.setLayoutX(625);
-                close.setLayoutY(56);
-                close.setStyle("-fx-background-color: #ff0000");
-                close.setOnMouseClicked(event -> {
-                    cartItem.setQuantity(cartItem.getQuantity()-1);
-                    if (cartItem.getQuantity() == 0) {
-                        pane.getChildren().remove(numberQuantity);
-                        pane.getChildren().add(getQuantityLabel(cartItem.getQuantity().toString()));
-                    } else {
-                        flowPaneProducts.getChildren().remove(pane);
-                        cartItemSet.remove(cartItem);
-                    }
+                // SEE PRODUCTS
+                Button viewProducts = new Button("Ver productos");
+                viewProducts.setFont(Font.font("Cambria", FontWeight.BOLD, 12));
+                viewProducts.setLayoutX(295);
+                viewProducts.setLayoutY(52);
+                viewProducts.setOnAction( event -> {
+                    setProducts(Objects.requireNonNull(sale.getPurchaseItems()).toArray());
                 });
-                pane.getChildren().add(close);
+                paneProduct.getChildren().add(viewProducts);
 
-                flowPaneProducts.getChildren().add(pane);
+                // ACCEPT PURCHASE
+                if (!sale.getDelivered()) {
 
-                finalPrice += cartItem.getPrice().floatValue() * cartItem.getQuantity().floatValue();
+                    Button acceptPurchase = new Button("Aceptar Compra");
+                    acceptPurchase.setFont(Font.font("Cambria", FontWeight.BOLD, 12));
+                    acceptPurchase.setLayoutX(519);
+                    acceptPurchase.setLayoutY(60);
+                    acceptPurchase.setOnAction(event -> {
+                        sale.setDelivered(true);
+                        sale.setDeliveryDate(LocalDate.now());
+                        sale.setDeliveryTime(LocalTime.now());
+                        acceptPurchase.setVisible(false);
+                    });
+                    paneProduct.getChildren().add(acceptPurchase);
+
+                } else setPurchaseDelivered(paneProduct, sale);
+
+                flowPaneProducts.getChildren().add(paneProduct);
+
             }
 
-            Pane paneProduct = new Pane();
-            paneProduct.setPrefSize(685, 150);
-            paneProduct.setStyle("-fx-background-color: #cdcdcd");
+        } else flowPaneProducts.getChildren().add(getNoMesaggesPane("No hay compras"));*/
 
-            // PRICE LABEL
-            Label labelPrice = new Label("Total:");
-            labelPrice.setFont(Font.font("Cambria", FontWeight.BOLD, FontPosture.ITALIC, 22));
-            labelPrice.setLayoutX(316);
-            labelPrice.setLayoutY(14);
-            paneProduct.getChildren().add(labelPrice);
-
-            // PRICE TOTAL
-            StackPane stackPane = new StackPane();
-            stackPane.setPrefSize(200, 40);
-            stackPane.setLayoutX(243);
-            stackPane.setLayoutY(46);
-            Label totalPrice = new Label(finalPrice + " $UY");
-            totalPrice.setFont(Font.font("Cambria", FontWeight.BOLD, FontPosture.ITALIC, 22));
-            stackPane.getChildren().add(totalPrice);
-            paneProduct.getChildren().add(stackPane);
-
-            // BUY BUTTON
-            Button buy = new Button();
-            buy.setText("COMPRAR");
-            buy.setFont(Font.font("Cambria", FontWeight.BOLD, 20));
-            buy.setLayoutX(282);
-            buy.setLayoutY(98);
-            buy.setOnMouseClicked(event -> {
-                // TODO : scene buy details
-            });
-            paneProduct.getChildren().add(buy);
-
-            flowPaneProducts.getChildren().add(paneProduct);
-
-        } else flowPaneProducts.getChildren().add(getNoMesaggesPane("Carrito vacío"));
-
-    }*/
+    }
 
     /**
      * En el caso que haya un usuario ingresado, hace un request al server para tener los productos del carrito.
@@ -353,12 +357,12 @@ public class CartController implements Initializable {
 
                         CartItemDTO cartItem = (CartItemDTO) newItem;
 
-                        Pane close = new Pane();
-                        close.setPrefSize(40, 40);
+                        Button close = new Button("X");
+                        close.setFont(Font.font("Cambria", FontWeight.BOLD, 15));
                         close.setLayoutX(625);
                         close.setLayoutY(56);
-                        close.setStyle("-fx-background-color: #ff0000");
-                        close.setOnMouseClicked(event -> {
+                        close.setStyle("-fx-background-color: #ff7373");
+                        close.setOnAction(event -> {
                             boolean deleted = storeApplication.getCart().decreaseQuantity(cartItem);
                             if (user != null){
                                 cartRestController.saveCurrentCart(storeApplication.getCart());

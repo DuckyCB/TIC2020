@@ -1,6 +1,5 @@
 package uy.edu.um.tic1;
 
-import com.mysql.cj.xdevapi.Client;
 import javafx.application.Application;
 import javafx.application.Platform;
 
@@ -14,6 +13,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
+import uy.edu.um.tic1.entitites.cart.CartItemDTO;
 import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
@@ -25,6 +25,7 @@ import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
 import uy.edu.um.tic1.scenes.user.*;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -37,6 +38,7 @@ public class StoreApplication extends Application {
     private AppUserDTO appUser;
     private String password;
     private CartDTO cart;
+    private List<CartItemDTO> productsToCompare;
     private Set<PurchaseDTO> purchases;
     static Stage primaryStage;
     static Stage stageComparator;
@@ -60,6 +62,13 @@ public class StoreApplication extends Application {
         if (this.appUser != null && this.appUser instanceof ClientDTO){
             cartRestController.saveCurrentCart(this.cart);
         }
+    }
+
+    public List<CartItemDTO> getProductsToCompare() {
+        return productsToCompare;
+    }
+    public void setProductsToCompare(List<CartItemDTO> productsToCompare) {
+        this.productsToCompare = productsToCompare;
     }
 
     public Set<PurchaseDTO> getPurchases() {
@@ -165,7 +174,7 @@ public class StoreApplication extends Application {
 
     public void sceneCart() {
 
-        CartDTO cart = null;
+        ListItemsController.isCart = true;
 
         if (getAppUser() != null && getAppUser() instanceof ClientDTO) {
             ClientDTO client = (ClientDTO) getAppUser();
@@ -175,11 +184,28 @@ public class StoreApplication extends Application {
 
         setCart(this.getCart());
 
+        sceneListItems("Carrito");
+
+    }
+
+    public void sceneListItems(String sceneName) {
+
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(CartController.class);
+        Parent root = fxWeaver.loadView(ListItemsController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Carrito");
+        primaryStage.setTitle(sceneName);
+        primaryStage.show();
+
+    }
+
+    public void sceneCompare() {
+
+        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
+        Parent root = fxWeaver.loadView(CompareController.class);
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Comparar productos");
         primaryStage.show();
 
     }
@@ -207,17 +233,6 @@ public class StoreApplication extends Application {
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Store admin");
-        primaryStage.show();
-
-    }
-
-    public void sceneStoreSales() {
-
-        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(ProductDisplayStoreController.class);
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Ventas");
         primaryStage.show();
 
     }

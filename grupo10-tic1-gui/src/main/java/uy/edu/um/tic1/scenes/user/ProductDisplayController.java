@@ -14,25 +14,21 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
-import uy.edu.um.tic1.entities.attributes.Colors;
-import uy.edu.um.tic1.entities.attributes.Sizes;
 import uy.edu.um.tic1.entitites.SizeAndColorDTO;
-import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.cart.CartItemDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.requests.CartRestController;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 
 @Component
-@FxmlView("/uy/edu/um/tic1/scenes/user/productDisplay.fxml")
+@FxmlView("/uy/edu/um/tic1/scenes/user/sceneProductDisplay.fxml")
 public class ProductDisplayController implements Initializable {
 
     @Autowired
@@ -199,6 +195,7 @@ public class ProductDisplayController implements Initializable {
 
             menuQuantity.getItems().add(newItem);
 
+
         }
 
     }
@@ -211,12 +208,9 @@ public class ProductDisplayController implements Initializable {
     @FXML
     void addToCartPressed(ActionEvent event) {
 
-
         SizeAndColorDTO sizeAndColorDTO = product.getSizeAndColorBySizeAndColor(selectedSize, selectedColor);
         CartItemDTO cartItem = CartItemDTO.builder().price(product.getPrice()).product(product).sizeAndColor(sizeAndColorDTO).quantity(selectedQuantity).build();
-        CartDTO cart = storeApplication.getCart();
-        cart.addItem(cartItem);
-        storeApplication.setCart(cart);
+        storeApplication.getCart().addItem(cartItem);
         storeApplication.sceneCart();
 
     }
@@ -228,7 +222,17 @@ public class ProductDisplayController implements Initializable {
 
     @FXML
     void comparePressed(ActionEvent event) {
-        System.out.println("En construccion");
+
+        SizeAndColorDTO sizeAndColorDTO = product.getSizeAndColorBySizeAndColor(selectedSize, selectedColor);
+        CartItemDTO cartItem = CartItemDTO.builder().price(product.getPrice()).product(product).sizeAndColor(sizeAndColorDTO).quantity(selectedQuantity).build();
+        if (storeApplication.getProductsToCompare() != null) storeApplication.getProductsToCompare().add(cartItem);
+        else {
+            List<CartItemDTO> newList = new LinkedList<>();
+            newList.add(cartItem);
+            storeApplication.setProductsToCompare(newList);
+        }
+        storeApplication.sceneCompare();
+
     }
 
     @FXML
