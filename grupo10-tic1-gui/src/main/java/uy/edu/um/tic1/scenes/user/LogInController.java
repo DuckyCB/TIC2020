@@ -8,6 +8,7 @@ import javafx.scene.layout.StackPane;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
 import uy.edu.um.tic1.entitites.users.StoreUserDTO;
@@ -97,8 +98,15 @@ public class LogInController implements Initializable {
                 storeApplication.setAppUser(userEntity);
                 storeApplication.setPassword(password);
 
-                if (userEntity instanceof ClientDTO)
+                if (userEntity instanceof ClientDTO){
+                    CartDTO userCart = cartRestController.getCurrentCart();
+                    if(userCart == null || userCart.getItems().isEmpty()){
+                        ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
+                        cartRestController.saveCurrentCart(storeApplication.getCart());
+                    }
                     storeApplication.setCart(cartRestController.getCurrentCart());
+                }
+
                 else if (userEntity instanceof StoreUserDTO)
                     storeApplication.setPurchases(storeRestController.getStore().getPurchaseSet());
 

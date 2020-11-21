@@ -37,6 +37,7 @@ import uy.edu.um.tic1.entitites.product.ShirtDTO;
 import uy.edu.um.tic1.entitites.product.TrousersDTO;
 import uy.edu.um.tic1.requests.RequestMain;
 import uy.edu.um.tic1.StoreApplication;
+import uy.edu.um.tic1.requests.StoreRestController;
 import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
 import uy.edu.um.tic1.scenes.user.ProductDisplayController;
 
@@ -55,6 +56,8 @@ public class MainController implements Initializable {
     private ProductRestController productRestController;
     @Autowired
     private BrandRestController brandRestController;
+    @Autowired
+    private StoreRestController storeRestController;
 
     private Boolean filters = Boolean.FALSE;
 
@@ -166,7 +169,7 @@ public class MainController implements Initializable {
     public void selectedBrand(BrandDTO brand) {
 
         productFilters.setBrand_id(brand.getId());
-        setProducts(productRestController.getProducts(productFilters));
+        setProducts();
 
     }
 
@@ -330,7 +333,7 @@ public class MainController implements Initializable {
         Label label = new Label(type);
         flowPaneCategoryLabels.getChildren().add(label);
 
-        setProducts(productRestController.getProducts(productFilters));
+        setProducts();
 
     }
 
@@ -377,7 +380,7 @@ public class MainController implements Initializable {
     private void colorRequest(String color) {
 
         productFilters.setColor(color);
-        setProducts(productRestController.getProducts(productFilters));
+        setProducts();
         setColors();
 
     }
@@ -422,7 +425,7 @@ public class MainController implements Initializable {
 
         menuButtonSort.setVisible(true);
         productFilters.setSize(size);
-        setProducts(productRestController.getProducts(productFilters));
+        setProducts();
         setSizes();
 
     }
@@ -469,7 +472,7 @@ public class MainController implements Initializable {
     private void brandRequest(Integer brand) {
 
         productFilters.setBrand_id(brand);
-        setProducts(productRestController.getProducts(productFilters));
+        setProducts();
         setBrands();
 
     }
@@ -483,16 +486,18 @@ public class MainController implements Initializable {
      * @see ProductFilters
      * @return Lista de productos
      */
-    public List<ProductDTO> getProducts(){
-        return productRestController.getProducts(productFilters);
-    }
+//    //public List<ProductDTO> getProducts(){
+//        return productRestController.getProducts(productFilters);
+//    }
 
     /**
      * Muestra una lista de productos en pantalla.
      * Borra los productos mostrados anteriormente.
-     * @param productsList Lista de productos para mostrar en pantalla
+   //  * @param productsList Lista de productos para mostrar en pantalla
      */
-    private void setProducts(List<ProductDTO> productsList) {
+    private void setProducts() {
+
+        List<ProductDTO> productsList = productsQuery();
 
         flowPaneBackground.getChildren().clear();
         menuButtonSort.setVisible(true);
@@ -569,7 +574,7 @@ public class MainController implements Initializable {
     void pressedHighFirst(ActionEvent event) {
 
         productFilters.setOrder(-1);
-        setProducts(productRestController.getProducts(productFilters));
+        setProducts();
 
     }
 
@@ -578,7 +583,7 @@ public class MainController implements Initializable {
     void pressedLowFirst(ActionEvent event) {
 
         productFilters.setOrder(1);
-        setProducts(productRestController.getProducts(productFilters));
+        setProducts();
 
     }
 
@@ -614,7 +619,7 @@ public class MainController implements Initializable {
         productFilters = new ProductFilters();
 
         setCategory(Categories.getGenre());
-        setProducts(productRestController.getProducts(productFilters));
+        setProducts();
         setColors();
 
     }
@@ -629,7 +634,7 @@ public class MainController implements Initializable {
             try {
                 Double max = Double.parseDouble(maxStr);
                 productFilters.setTo(max);
-                setProducts(productRestController.getProducts(productFilters));
+                setProducts();
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 System.out.println("El valor debe ser un numero");
@@ -649,7 +654,7 @@ public class MainController implements Initializable {
             try {
                 Double min = Double.parseDouble(minStr);
                 productFilters.setFrom(min);
-                setProducts(productRestController.getProducts(productFilters));
+                setProducts();
             } catch (NumberFormatException e) {
                 System.out.println("El valor debe ser un numero");
             }
@@ -667,13 +672,39 @@ public class MainController implements Initializable {
 
             clearFilters();
             productFilters.setName(text);
-            setProducts(productRestController.getProducts(productFilters));
+            setProducts();
 
         }
 
     }
 
     public MainController() {
+    }
+
+
+    public List<ProductDTO> productsQuery(){
+
+        List<ProductDTO> productList = null;
+
+        AppUserDTO user = storeApplication.getAppUser();
+        if (user instanceof ClientDTO)
+            productList =productRestController.getProducts(productFilters);
+        else if (user instanceof BrandUserDTO) {
+            productFilters.setBrand_id(((BrandUserDTO) user).getBrand().getId());
+            productList = productRestController.getProducts(productFilters);
+
+        }
+        else if (user instanceof StoreUserDTO) {
+            System.out.println("Entre");
+            productList = storeRestController.getStoreProducts(false);
+        }
+
+//        if (user instanceof AdminUserDTO) setButtonsStore();
+        else setButtonsDefault();
+        productList = productRestController.getProducts(productFilters);
+
+
+        return productList;
     }
 
 }

@@ -25,6 +25,7 @@ import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
 import uy.edu.um.tic1.entitites.users.StoreUserDTO;
+import uy.edu.um.tic1.requests.CartRestController;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
@@ -42,10 +43,13 @@ public class CartController implements Initializable {
     @Autowired
     StoreApplication storeApplication;
 
+    @Autowired
+    private CartRestController cartRestController;
     AppUserDTO user;
 
     private Set<PurchaseDTO> purchaseSet;
     private Set<CartItemDTO> cartItemSet;
+
 
     @FXML
     private FlowPane flowPaneProducts;
@@ -62,6 +66,7 @@ public class CartController implements Initializable {
 
         user = storeApplication.getAppUser();
         if (user instanceof ClientDTO) {
+
             cartItemSet = requestCartList();
             setProducts(Objects.requireNonNull(requestCartList()).toArray());
         }
@@ -69,6 +74,7 @@ public class CartController implements Initializable {
         else {
             purchaseSet = storeApplication.getPurchases();
             setProducts(Objects.requireNonNull(requestCartList()).toArray());
+
         }
 
     }
@@ -353,13 +359,14 @@ public class CartController implements Initializable {
                         close.setLayoutY(56);
                         close.setStyle("-fx-background-color: #ff0000");
                         close.setOnMouseClicked(event -> {
-                            cartItem.setQuantity(cartItem.getQuantity()-1);
-                            if (cartItem.getQuantity() > 0) {
-                                pane.getChildren().remove(numberQuantity);
-                                pane.getChildren().add(getQuantityLabel(cartItem.getQuantity().toString()));
-                            } else {
+                            boolean deleted = storeApplication.getCart().decreaseQuantity(cartItem);
+                            if (user != null){
+                                cartRestController.saveCurrentCart(storeApplication.getCart());
+                            }
+                            pane.getChildren().remove(numberQuantity);
+                            pane.getChildren().add(getQuantityLabel(cartItem.getQuantity().toString()));
+                            if(deleted) {
                                 flowPaneProducts.getChildren().remove(pane);
-                                cartItemSet.remove(cartItem);
                             }
                         });
 

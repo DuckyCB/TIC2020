@@ -98,7 +98,12 @@ public class ProductDisplayBrandController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        if (product == null) setGenre();
+        this.menuButtonGenre = new MenuButton();
+        this.menuButtonCategory = new MenuButton();
+
+
+        if (product == null)
+            setGenre();
 
         else {
 

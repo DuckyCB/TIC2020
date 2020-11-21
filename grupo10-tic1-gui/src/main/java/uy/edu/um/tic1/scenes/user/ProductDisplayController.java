@@ -17,6 +17,7 @@ import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entities.attributes.Colors;
 import uy.edu.um.tic1.entities.attributes.Sizes;
 import uy.edu.um.tic1.entitites.SizeAndColorDTO;
+import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.cart.CartItemDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.requests.CartRestController;
@@ -213,8 +214,10 @@ public class ProductDisplayController implements Initializable {
 
         SizeAndColorDTO sizeAndColorDTO = product.getSizeAndColorBySizeAndColor(selectedSize, selectedColor);
         CartItemDTO cartItem = CartItemDTO.builder().price(product.getPrice()).product(product).sizeAndColor(sizeAndColorDTO).quantity(selectedQuantity).build();
-        storeApplication.getCart().addItem(cartItem);
-        cartRestController.saveCurrentCart(storeApplication.getCart());
+        CartDTO cart = storeApplication.getCart();
+        cart.addItem(cartItem);
+        storeApplication.setCart(cart);
+        storeApplication.sceneCart();
 
     }
 

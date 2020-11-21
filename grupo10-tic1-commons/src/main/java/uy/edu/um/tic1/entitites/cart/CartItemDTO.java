@@ -27,4 +27,9 @@ public class CartItemDTO {
 
     private Integer quantity;
 
+
+    public void decreaseQuantity(){
+        this.setQuantity(this.getQuantity()-1);
+    }
+
 }

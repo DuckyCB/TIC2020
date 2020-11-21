@@ -1,5 +1,6 @@
 package uy.edu.um.tic1;
 
+import com.mysql.cj.xdevapi.Client;
 import javafx.application.Application;
 import javafx.application.Platform;
 
@@ -17,6 +18,7 @@ import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
+import uy.edu.um.tic1.requests.CartRestController;
 import uy.edu.um.tic1.scenes.*;
 import uy.edu.um.tic1.scenes.admin.brand.ProductDisplayBrandController;
 import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
@@ -30,6 +32,8 @@ public class StoreApplication extends Application {
 
     @Autowired
     private ConfigurableApplicationContext applicationContext;
+    @Autowired
+    private CartRestController cartRestController;
     private AppUserDTO appUser;
     private String password;
     private CartDTO cart;
@@ -53,6 +57,9 @@ public class StoreApplication extends Application {
     }
     public void setCart(CartDTO cart) {
         this.cart = cart;
+        if (this.appUser != null && this.appUser instanceof ClientDTO){
+            cartRestController.saveCurrentCart(this.cart);
+        }
     }
 
     public Set<PurchaseDTO> getPurchases() {

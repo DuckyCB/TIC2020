@@ -14,6 +14,7 @@ import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entities.BrandFilters;
 import uy.edu.um.tic1.entitites.BrandDTO;
 import uy.edu.um.tic1.entitites.StoreDTO;
+import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
 import uy.edu.um.tic1.entitites.users.StoreUserDTO;
 
@@ -75,6 +76,29 @@ public class StoreRestController {
                 httpEntity,
                 new ParameterizedTypeReference<Void>(){});
 
+
+    }
+
+
+    public List<ProductDTO> getStoreProducts(Boolean inStock) {
+        RestTemplate restTemplate = new RestTemplate();
+
+
+        if (storeApplication.getAppUser() != null && storeApplication.getAppUser() instanceof StoreUserDTO)
+            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(storeApplication.getAppUser().getUsername(),
+                    storeApplication.getPassword()));
+//        else {
+//            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor("admin1", "admin1"));
+//        }
+
+        ResponseEntity<List<ProductDTO>> response
+                = restTemplate.exchange("http://localhost:8080/stores/products/?inStock=" + inStock.toString(),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<ProductDTO>>(){});
+
+
+        return response.getBody();
 
     }
 }
