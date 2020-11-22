@@ -100,9 +100,16 @@ public class LogInController implements Initializable {
 
                 if (userEntity instanceof ClientDTO){
                     CartDTO userCart = cartRestController.getCurrentCart();
+                    CartDTO savedCart = storeApplication.getCart();
                     if(userCart == null || userCart.getItems().isEmpty()){
-                        ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
-                        cartRestController.saveCurrentCart(storeApplication.getCart());
+                        if(userCart == null){
+                            ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
+                            cartRestController.saveCurrentCart(storeApplication.getCart());
+                        }
+                        else if (!savedCart.getItems().isEmpty()){
+                            ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
+                            cartRestController.saveCurrentCart(storeApplication.getCart());
+                        }
                     }
                     storeApplication.setCart(cartRestController.getCurrentCart());
                 }

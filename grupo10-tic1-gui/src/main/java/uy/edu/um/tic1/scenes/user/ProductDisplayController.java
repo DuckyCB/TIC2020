@@ -217,6 +217,7 @@ public class ProductDisplayController implements Initializable {
         CartDTO cart = storeApplication.getCart();
         cart.addItem(cartItem);
         storeApplication.setCart(cart);
+        cartRestController.saveCurrentCart(storeApplication.getCart());
         storeApplication.sceneCart();
 
     }

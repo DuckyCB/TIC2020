@@ -57,7 +57,7 @@ public class StoreRestController {
     @GetMapping("/purchases/")
     @PreAuthorize("hasRole('ROLE_STORE')")
     public List<PurchaseDTO> getPurchases(@RequestHeader("authorization") String auth,
-                                          @RequestParam(name="delivered",required = false) Boolean delivered){
+                                          @RequestParam(name="delivered",required = true) Boolean delivered){
 
         return storeController.getPurchases(auth, delivered);
     }

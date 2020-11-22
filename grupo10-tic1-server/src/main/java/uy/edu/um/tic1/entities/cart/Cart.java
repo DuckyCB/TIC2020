@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uy.edu.um.tic1.controllers.StoreController;
 import uy.edu.um.tic1.entities.SizeAndColor;
 import uy.edu.um.tic1.entities.Store;
 import uy.edu.um.tic1.entities.products.Product;
@@ -26,6 +27,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 public class Cart {
+
+
 
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
@@ -67,7 +70,7 @@ public class Cart {
     }
 
 
-    public void processCart(Boolean toDeliver) {
+    public void processCart(Client client, Boolean toDeliver) {
         time = LocalTime.now();
         date = LocalDate.now();
         purchased = true;
@@ -85,7 +88,8 @@ public class Cart {
             if(purchase != null){
                 purchase.addPurchaseItem(item.toPurchaseItem());
             } else{
-                purchase = Purchase.builder().purchaseItems(new LinkedHashSet<>()).client(this.client).build();
+                purchase = Purchase.builder().delivered(false).purchaseItems(new LinkedHashSet<>()).client(this.client).build();
+                purchase.setClient(client);
                 purchase.addPurchaseItem(item.toPurchaseItem());
                 purchases.put(store, purchase);
             }
@@ -95,7 +99,9 @@ public class Cart {
 //            item.getStore().addPurchase(item.generatePurchase(this.client));
         }
 
-        purchases.forEach(Store::addPurchase);
+        purchases.forEach( (st, pch) ->{
+            st.addPurchase(pch);
+        });
 
 
 

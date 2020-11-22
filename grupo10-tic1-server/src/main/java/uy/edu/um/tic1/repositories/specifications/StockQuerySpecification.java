@@ -54,7 +54,7 @@ public class StockQuerySpecification implements Specification<Stock> {
             predicates.add(criteriaBuilder.equal(root.get("id"), id));
 
         if (product_id != null)
-            predicates.add(criteriaBuilder.equal(stockProductJoin.get("product_id"), product_id));
+            predicates.add(criteriaBuilder.equal(stockProductJoin.get("id"), product_id));
         if (name != null)
             predicates.add(criteriaBuilder.like(stockProductJoin.get("name"), "%"+name+"%"));
         if (gender != null)

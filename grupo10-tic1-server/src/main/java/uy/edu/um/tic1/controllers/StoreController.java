@@ -22,6 +22,8 @@ import uy.edu.um.tic1.repositories.specifications.StoreQuerySpecification;
 import uy.edu.um.tic1.security.user.ApplicationUserService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -148,8 +150,15 @@ public class StoreController {
         if (userFromHeader != null && userFromHeader instanceof StoreUser){
             StoreUser storeUser = (StoreUser) userFromHeader;
 
-            if(inStock)
-                return storeUser.getStore().getStockSet().stream().map(stock -> stock.getProduct().toDTO()).collect(Collectors.toList());
+            if(inStock) {
+                HashMap<Integer, ProductDTO> productsHash = new LinkedHashMap<>();
+
+                storeUser.getStore().getStockSet().stream().forEach(stock -> {
+                            ProductDTO productDTO = stock.getProduct().toDTO();
+                            productsHash.put(productDTO.getId(), productDTO);
+                        });
+                return productsHash.values().stream().collect(Collectors.toList());
+            }
             else{
                 List<ProductDTO> productsList = new ArrayList<>();
                 storeUser.getStore().getBrandSet().stream().forEach(brand -> {

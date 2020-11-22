@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Data
@@ -32,7 +33,23 @@ public class CartDTO {
 
     private LocalDate date;
 
-    public void addItem(CartItemDTO cartItem) { items.add(cartItem); }
+    public void addItem(CartItemDTO cartItem) {
+        AtomicReference<Boolean> alreadyInCart = new AtomicReference<>(false);
+
+        this.getItems().stream().forEach(item ->{
+            if (item.getProduct().equals(cartItem.getProduct()) &&
+                    item.getSizeAndColor().getColor().equals(cartItem.getSizeAndColor().getColor()) &&
+                    item.getSizeAndColor().getSize().equals(cartItem.getSizeAndColor().getSize())
+            ){
+                item.setQuantity(item.getQuantity() + cartItem.getQuantity());
+                alreadyInCart.set(true);
+            }
+                }
+        );
+
+        if (!alreadyInCart.get())
+            items.add(cartItem);
+    }
 
     public boolean decreaseQuantity(CartItemDTO cartItem){
         AtomicBoolean deleted = new AtomicBoolean(false);
