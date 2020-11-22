@@ -111,4 +111,27 @@ public class Categories {
 
     }
 
+    public static String getCategoryFromInt(Integer category) {
+
+        switch (category) {
+            case 0:
+                return "Remeras";
+            case 1:
+                return "Buzos";
+            case 2:
+                return "Pantalones";
+            case 3:
+                return "Shorts";
+            case 4:
+                return "Vestidos";
+            case 5:
+                return "Polleras";
+            case 6:
+                return "Ropa interior";
+            default:
+                return "categoría desconocida";
+        }
+
+    }
+
 }

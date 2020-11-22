@@ -8,7 +8,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -20,6 +19,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
+import uy.edu.um.tic1.entities.attributes.Categories;
 import uy.edu.um.tic1.entities.attributes.Colors;
 import uy.edu.um.tic1.entitites.SizeAndColorDTO;
 import uy.edu.um.tic1.entitites.StockDTO;
@@ -29,6 +29,7 @@ import uy.edu.um.tic1.requests.SizeAndColorRestController;
 import uy.edu.um.tic1.requests.StoreRestController;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -40,17 +41,12 @@ public class ProductDisplayStoreController implements Initializable {
 
     @Autowired
     StoreApplication storeApplication;
-
     @Autowired
     private StoreRestController storeRestController;
-
-
-
-
-    public static ProductDTO product;
-
     @Autowired
     SizeAndColorRestController sizeAndColorRestController;
+
+    public static ProductDTO product;
 
 
     @FXML
@@ -70,11 +66,9 @@ public class ProductDisplayStoreController implements Initializable {
     @FXML
     private Label labelCategory;
 
-
-    @FXML
-    void inicioPressed(ActionEvent event) {
-        storeApplication.sceneMain();
-    }
+    // ****************************************************************************************************************
+    //                  INITIALIZE
+    // ****************************************************************************************************************
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -83,7 +77,7 @@ public class ProductDisplayStoreController implements Initializable {
         productBrand.setText(product.getBrand().getName());
         labelPrice.setText(product.getPrice().toString() + "$");
         labelGenre.setText(product.getGender().toString());
-        //labelCategory.setText(product.getSubcategory());
+        labelCategory.setText(Categories.getCategoryFromInt(product.getSubcategory()));
         byte[] image = product.getImage();
         Image productImg;
         if (image != null) {
@@ -97,6 +91,19 @@ public class ProductDisplayStoreController implements Initializable {
         initSizeAndColors();
 
     }
+
+    // ****************************************************************************************************************
+    //                  BUTTONS FXML
+    // ****************************************************************************************************************
+
+    @FXML
+    void inicioPressed(ActionEvent event) {
+        storeApplication.sceneMain();
+    }
+
+    // ****************************************************************************************************************
+    //                  SET PAGE
+    // ****************************************************************************************************************
 
     private void setPage() {
 
@@ -217,23 +224,21 @@ public class ProductDisplayStoreController implements Initializable {
 
     }
 
-
-
-
     public void updateStock(String size, String color, Integer quantity){
         StoreDTO store = storeRestController.getStore();
         StockDTO stock = store.getStockBySizeAndColor(size, color);
 
-        if(stock == null){
+        if (stock == null) {
+
             stock = StockDTO.builder()
                     .product(product)
                     .sizeAndColor( product.getSizeAndColorBySizeAndColor(size, color) )
                     .stock(quantity)
                     .build();
             store.addStock(stock);
-        } else{
-            store.updateStock(size, color, quantity);
-        }
+
+        } else store.updateStock(size, color, quantity);
+
 
         storeRestController.save(store);
 

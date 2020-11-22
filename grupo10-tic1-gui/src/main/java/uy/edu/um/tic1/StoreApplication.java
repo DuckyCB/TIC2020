@@ -31,17 +31,31 @@ import java.util.Set;
 @Component
 public class StoreApplication extends Application {
 
+    // WIRES
     @Autowired
     private ConfigurableApplicationContext applicationContext;
     @Autowired
     private CartRestController cartRestController;
+
+    // USER
     private AppUserDTO appUser;
     private String password;
+
+    // CLIENT
     private CartDTO cart;
     private List<CartItemDTO> productsToCompare;
+
+    // STORE
     private Set<PurchaseDTO> purchases;
+
+    // SCENE
     static Stage primaryStage;
-    static Stage stageComparator;
+
+    // ****************************************************************************************************************
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
 
     public String getPassword() {
         return password;
@@ -81,7 +95,6 @@ public class StoreApplication extends Application {
     public AppUserDTO getAppUser() {
         return appUser;
     }
-
     public void setAppUser(AppUserDTO appUser) {
         this.appUser = appUser;
     }
@@ -94,6 +107,10 @@ public class StoreApplication extends Application {
                 .sources(ApplicationGui.class)
                 .run(args);
     }
+
+    // ****************************************************************************************************************
+    //                  START AND STOP
+    // ****************************************************************************************************************
 
     @Override
     public void start(Stage primaryStage) {
@@ -113,6 +130,10 @@ public class StoreApplication extends Application {
         this.applicationContext.close();
         Platform.exit();
     }
+
+    // ****************************************************************************************************************
+    //                  MAIN
+    // ****************************************************************************************************************
 
     public void sceneMain(){
 
@@ -151,30 +172,25 @@ public class StoreApplication extends Application {
 
     }
 
-    public void sceneConfig() {
-
-
-
-    }
-
     // ****************************************************************************************************************
     //                  CLIENTE
     // ****************************************************************************************************************
 
-    public void sceneProductDisplay(String productName) {
+    public void sceneProductDisplay(ProductDTO product) {
 
+        ProductDisplayController.product = product;
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(ProductDisplayController.class);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Mostrando producto "+productName);
+        primaryStage.setTitle("Mostrando "+product.getName());
         primaryStage.show();
 
     }
 
     public void sceneCart() {
 
-        ListItemsController.isCart = true;
+        //ListItemsController.isCart = true;
 
         if (getAppUser() != null && getAppUser() instanceof ClientDTO) {
             ClientDTO client = (ClientDTO) getAppUser();
@@ -216,7 +232,7 @@ public class StoreApplication extends Application {
 
     public void sceneBrandDisplayProduct(ProductDTO product) {
 
-        ProductDisplayBrandController.product = product;
+        ProductDisplayBrandController.tempProduct = product;
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(ProductDisplayBrandController.class);
         Scene scene = new Scene(root);
@@ -226,8 +242,9 @@ public class StoreApplication extends Application {
 
     }
 
-    public void sceneStoreDisplayProduct() {
+    public void sceneStoreDisplayProduct(ProductDTO product) {
 
+        ProductDisplayStoreController.product = product;
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(ProductDisplayStoreController.class);
         Scene scene = new Scene(root);

@@ -73,6 +73,10 @@ public class ProductDisplayController implements Initializable {
     @FXML
     private Button carrito;
 
+    // ****************************************************************************************************************
+    //                  INITIALIZE
+    // ****************************************************************************************************************
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -117,6 +121,55 @@ public class ProductDisplayController implements Initializable {
         }
 
     }
+
+    // ****************************************************************************************************************
+    //                  BUTTONS FXML
+    // ****************************************************************************************************************
+
+    @FXML
+    void inicioPressed(ActionEvent event) {
+        storeApplication.sceneMain();
+    }
+
+    /**
+     * Crea una instancia de
+     * @see CartItemDTO Crea una instancia de CartItemDTO y la añade al carrito.
+     * @see #storeApplication
+     */
+    @FXML
+    void addToCartPressed(ActionEvent event) {
+
+        SizeAndColorDTO sizeAndColorDTO = product.getSizeAndColorBySizeAndColor(selectedSize, selectedColor);
+        CartItemDTO cartItem = CartItemDTO.builder().price(product.getPrice()).product(product).sizeAndColor(sizeAndColorDTO).quantity(selectedQuantity).build();
+        storeApplication.getCart().addItem(cartItem);
+        cartRestController.saveCurrentCart(storeApplication.getCart());
+        storeApplication.sceneCart();
+
+    }
+
+    @FXML
+    void carritoPressed(ActionEvent event) {
+        storeApplication.sceneCart();
+    }
+
+    @FXML
+    void comparePressed(ActionEvent event) {
+
+        SizeAndColorDTO sizeAndColorDTO = product.getSizeAndColorBySizeAndColor(selectedSize, selectedColor);
+        CartItemDTO cartItem = CartItemDTO.builder().price(product.getPrice()).product(product).sizeAndColor(sizeAndColorDTO).quantity(selectedQuantity).build();
+        if (storeApplication.getProductsToCompare() != null) storeApplication.getProductsToCompare().add(cartItem);
+        else {
+            List<CartItemDTO> newList = new LinkedList<>();
+            newList.add(cartItem);
+            storeApplication.setProductsToCompare(newList);
+        }
+        storeApplication.sceneCompare();
+
+    }
+
+    // ****************************************************************************************************************
+    //                  SIZE AND COLOR
+    // ****************************************************************************************************************
 
     private void resetSize() {
 
@@ -198,47 +251,5 @@ public class ProductDisplayController implements Initializable {
         }
 
     }
-
-    /**
-     * Crea una instancia de
-     * @see CartItemDTO Crea una instancia de CartItemDTO y la añade al carrito.
-     * @see #storeApplication
-     */
-    @FXML
-    void addToCartPressed(ActionEvent event) {
-
-        SizeAndColorDTO sizeAndColorDTO = product.getSizeAndColorBySizeAndColor(selectedSize, selectedColor);
-        CartItemDTO cartItem = CartItemDTO.builder().price(product.getPrice()).product(product).sizeAndColor(sizeAndColorDTO).quantity(selectedQuantity).build();
-        storeApplication.getCart().addItem(cartItem);
-        cartRestController.saveCurrentCart(storeApplication.getCart());
-        storeApplication.sceneCart();
-
-    }
-
-    @FXML
-    void carritoPressed(ActionEvent event) {
-        storeApplication.sceneCart();
-    }
-
-    @FXML
-    void comparePressed(ActionEvent event) {
-
-        SizeAndColorDTO sizeAndColorDTO = product.getSizeAndColorBySizeAndColor(selectedSize, selectedColor);
-        CartItemDTO cartItem = CartItemDTO.builder().price(product.getPrice()).product(product).sizeAndColor(sizeAndColorDTO).quantity(selectedQuantity).build();
-        if (storeApplication.getProductsToCompare() != null) storeApplication.getProductsToCompare().add(cartItem);
-        else {
-            List<CartItemDTO> newList = new LinkedList<>();
-            newList.add(cartItem);
-            storeApplication.setProductsToCompare(newList);
-        }
-        storeApplication.sceneCompare();
-
-    }
-
-    @FXML
-    void inicioPressed(ActionEvent event) {
-        storeApplication.sceneMain();
-    }
-
 
 }

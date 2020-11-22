@@ -14,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.FileChooser;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,6 +36,7 @@ import uy.edu.um.tic1.requests.StoreRestController;
 import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
 import uy.edu.um.tic1.scenes.user.ProductDisplayController;
 
+import java.io.File;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -45,7 +47,6 @@ public class MainController implements Initializable {
 
     @Autowired
     StoreApplication storeApplication;
-
     @Autowired
     private ProductRestController productRestController;
     @Autowired
@@ -100,25 +101,24 @@ public class MainController implements Initializable {
     @FXML
     private Pane labelBrands;
 
+    // ****************************************************************************************************************
+    //                  INITIALIZE
+    // ****************************************************************************************************************
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-
         MainController.productFilters = new ProductFilters();
+
         // Agrega los botones acordes al usuario
         AppUserDTO user = storeApplication.getAppUser();
-        if (user instanceof ClientDTO)
-            setButtonsClient();
+        if (user instanceof ClientDTO) setButtonsClient();
         else if (user instanceof BrandUserDTO) {
             labelBrands.setVisible(false);
             flowPaneBrands.setVisible(false);
             setButtonsBrand();
         }
-        else if (user instanceof StoreUserDTO)
-            setButtonsStore();
-
-
-//        if (user instanceof AdminUserDTO) setButtonsStore();
+        else if (user instanceof StoreUserDTO) setButtonsStore();
         else setButtonsDefault();
 
         // Setea el panel de filtros
@@ -126,7 +126,6 @@ public class MainController implements Initializable {
         setColors();
         setSizes();
         setBrands();
-
 
         paneFiltersLeft.setVisible(false);
         menuButtonSort.setVisible(false);
@@ -148,7 +147,6 @@ public class MainController implements Initializable {
         banner.setFitWidth(1000);
         banner.setPreserveRatio(true);
         flowPaneBackground.getChildren().add(banner);
-
 
         ScrollPane brandsPane = PaneBrands.getScroll(brandRestController.getAllBrands(brandFilters));
         brandsPane.setPrefWidth(1000);
@@ -202,15 +200,6 @@ public class MainController implements Initializable {
         cart.setOnMouseClicked(event -> storeApplication.sceneCart());
         flowPaneButtons.getChildren().add(cart);
 
-        // TODO: Esto capaz se saca
-        Button seePurchases = new Button("Ver compras");
-        seePurchases.setStyle("-fx-background-color: #ffffff");
-        seePurchases.setOnMouseClicked(event -> {
-            ListItemsController.isCart = false;
-            storeApplication.sceneListItems("Lista de compras");
-        });
-        flowPaneButtons.getChildren().add(seePurchases);
-
         Button logOut = new Button("Cerrar sesión");
         logOut.setStyle("-fx-background-color: #ffffff");
         logOut.setOnAction(event -> logOut());
@@ -251,7 +240,7 @@ public class MainController implements Initializable {
 
         Button newProduct = new Button("Agregar producto");
         newProduct.setStyle("-fx-background-color: #ffffff");
-        newProduct.setOnAction(event -> storeApplication.sceneStoreDisplayProduct());
+        newProduct.setOnAction(event -> storeApplication.sceneStoreDisplayProduct(null));
         flowPaneButtons.getChildren().add(newProduct);
 
         Button logOut = new Button("Cerrar sesión");
@@ -321,7 +310,6 @@ public class MainController implements Initializable {
 
         } else {
 
-//            subcategory = type;
             Label arrow = new Label(" > ");
             flowPaneCategoryLabels.getChildren().add(arrow);
             flowPaneCategory.getChildren().clear();
@@ -351,19 +339,16 @@ public class MainController implements Initializable {
 
             Circle colorCircle = Colors.getCircle(color, 16f);
             StackPane colorPane = new StackPane(colorCircle);
+
             if (productFilters.getColor() != null) {
-                if (productFilters.getColor().equals(color)) {
-                    colorPane.setStyle("-fx-background-color: #888888");
-                } else {
-                    colorPane.setStyle("-fx-background-color: #E2E2E2");
-                }
-            } else {
-                colorPane.setStyle("-fx-background-color: #E2E2E2");
-            }
+
+                if (productFilters.getColor().equals(color)) colorPane.setStyle("-fx-background-color: #888888");
+                else colorPane.setStyle("-fx-background-color: #E2E2E2");
+
+            } else colorPane.setStyle("-fx-background-color: #E2E2E2");
+
             colorPane.setPrefSize(32, 32);
-            colorCircle.setOnMouseClicked(event -> {
-                colorRequest(color);
-            });
+            colorCircle.setOnMouseClicked(event -> colorRequest(color));
             flowPaneColors.getChildren().add(colorPane);
 
         }
@@ -401,14 +386,14 @@ public class MainController implements Initializable {
         for (String size: sizes) {
 
             Pane paneSize = Sizes.getPane(size);
+
             if (productFilters.getSize() != null) {
-                if (productFilters.getSize().equals(size)) {
-                    paneSize.setStyle("-fx-background-color: #888888");
-                }
+
+                if (productFilters.getSize().equals(size)) paneSize.setStyle("-fx-background-color: #888888");
+
             }
-            paneSize.setOnMouseClicked(event -> {
-                sizeRequest(size);
-            });
+
+            paneSize.setOnMouseClicked(event -> sizeRequest(size));
             flowPaneSizes.getChildren().add(paneSize);
 
         }
@@ -449,9 +434,11 @@ public class MainController implements Initializable {
                 Pane paneBrand;
 
                 if (productFilters.getBrand_id() != null) {
+
                     if (productFilters.getBrand_id().equals(brandID))
                         paneBrand = PaneFilter.getPane(brandName, "888888");
                     else paneBrand = PaneFilter.getPane(brandName, "E2E2E2");
+
                 } else paneBrand = PaneFilter.getPane(brandName, "E2E2E2");
 
                 paneBrand.setOnMouseClicked(event -> brandRequest(brandID));
@@ -480,18 +467,7 @@ public class MainController implements Initializable {
     // ****************************************************************************************************************
 
     /**
-     * Hace un request de productos en base a los filtros aplicados.
-     * @see ProductFilters
-     * @return Lista de productos
-     */
-//    //public List<ProductDTO> getProducts(){
-//        return productRestController.getProducts(productFilters);
-//    }
-
-    /**
-     * Muestra una lista de productos en pantalla.
-     * Borra los productos mostrados anteriormente.
-   //  * @param productsList Lista de productos para mostrar en pantalla
+     *
      */
     private void setProducts() {
 
@@ -505,37 +481,23 @@ public class MainController implements Initializable {
             for (ProductDTO product : productsList) {
 
                 HashMap<String, String> uniqueSize = new HashMap<>();
-                product.getSizeAndColor().stream().forEach(sc ->{
-                    uniqueSize.put(sc.getSize(), sc.getSize());
-                });
+                product.getSizeAndColor().stream().forEach(sc -> uniqueSize.put(sc.getSize(), sc.getSize()));
                 HashMap<String, String> uniqueColors = new HashMap<>();
-                product.getSizeAndColor().stream().forEach(sc ->{
-                    uniqueColors.put(sc.getColor(), sc.getColor());
-                });
+                product.getSizeAndColor().stream().forEach(sc -> uniqueColors.put(sc.getColor(), sc.getColor()));
 
 
-                Pane pane = PaneProduct.paneGeneric(product.getImage(), product.getName(), product.getBrand().getName(), product.getPrice(),
-                       uniqueColors.keySet().stream().collect(Collectors.toList()),
+                Pane pane = PaneProduct.paneGeneric(product.getImage(), product.getName(), product.getBrand().getName(),
+                        product.getPrice(), uniqueColors.keySet().stream().collect(Collectors.toList()),
                         uniqueSize.keySet().stream().collect(Collectors.toList()));
 
                 pane.setOnMouseClicked(event -> {
-                    ProductDisplayController.product = product;
 
                     AppUserDTO user = storeApplication.getAppUser();
-                    if (user instanceof ClientDTO){
-                        storeApplication.sceneProductDisplay(product.getName());
-                    }
-                    else if (user instanceof BrandUserDTO) {
 
-                    }
-                    else if (user instanceof StoreUserDTO){
-                        ProductDisplayStoreController.product = product;
-                        storeApplication.sceneStoreDisplayProduct();
-                    } else{
-                        storeApplication.sceneProductDisplay(product.getName());
-                    }
-
-
+                    if (user instanceof ClientDTO) storeApplication.sceneProductDisplay(product);
+                    else if (user instanceof BrandUserDTO) storeApplication.sceneBrandDisplayProduct(product);
+                    else if (user instanceof StoreUserDTO) storeApplication.sceneStoreDisplayProduct(product);
+                    else storeApplication.sceneProductDisplay(product);
 
                 });
 
@@ -558,7 +520,9 @@ public class MainController implements Initializable {
     // ****************************************************************************************************************
 
 
-    /** Vuelve al home, mostrando nuevamente la pantalla con banner y marcas */
+    /**
+     * Vuelve al home, mostrando nuevamente la pantalla con banner y marcas
+     */
     @FXML
     void homePressed(ActionEvent event) {
 
@@ -567,7 +531,6 @@ public class MainController implements Initializable {
 
     }
 
-    // TODO: Ordenar por precio de mayor a menor
     @FXML
     void pressedHighFirst(ActionEvent event) {
 
@@ -576,7 +539,6 @@ public class MainController implements Initializable {
 
     }
 
-    // TODO: Ordenar por precio de menor a mayor
     @FXML
     void pressedLowFirst(ActionEvent event) {
 
@@ -634,7 +596,6 @@ public class MainController implements Initializable {
                 productFilters.setTo(max);
                 setProducts();
             } catch (NumberFormatException e) {
-                e.printStackTrace();
                 System.out.println("El valor debe ser un numero");
             }
 
@@ -685,24 +646,16 @@ public class MainController implements Initializable {
         List<ProductDTO> productList = null;
 
         AppUserDTO user = storeApplication.getAppUser();
-        if (user == null || user instanceof ClientDTO)
-            productList =productRestController.getProducts(productFilters);
+        if (user == null || user instanceof ClientDTO) productList =productRestController.getProducts(productFilters);
         else if (user instanceof BrandUserDTO) {
             productFilters.setBrand_id(((BrandUserDTO) user).getBrand().getId());
             productList = productRestController.getProducts(productFilters);
 
         }
-        else if (user instanceof StoreUserDTO) {
-            System.out.println("Entre");
-            productList = storeRestController.getStoreProducts(false);
-        }
-
-//        if (user instanceof AdminUserDTO) setButtonsStore();
-//        else setButtonsDefault();
-//        productList = productRestController.getProducts(productFilters);
-
+        else if (user instanceof StoreUserDTO) productList = storeRestController.getStoreProducts(false);
 
         return productList;
+
     }
 
 }

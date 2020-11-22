@@ -35,7 +35,6 @@ public class LogInController implements Initializable {
 
     @FXML
     private Button inicio;
-
     @FXML
     private TextField userField;
     @FXML
@@ -49,7 +48,21 @@ public class LogInController implements Initializable {
     @FXML
     private StackPane errorPassword;
 
+    // ****************************************************************************************************************
+    //                  INITIALIZE
+    // ****************************************************************************************************************
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        errorUser.setVisible(false);
+        errorPassword.setVisible(false);
+
+    }
+
+    // ****************************************************************************************************************
+    //                  BUTTONS FXML
+    // ****************************************************************************************************************
 
     @FXML
     void inicioPressed(ActionEvent event) { storeApplication.sceneMain(); }
@@ -61,21 +74,22 @@ public class LogInController implements Initializable {
         String password = String.valueOf(passwordField.getCharacters());
 
         if (user.isEmpty()) {
+
             errorUser.setVisible(true);
             Label newUserError = new Label("El campo no puede ser vacío");
             errorUser.getChildren().add(newUserError);
-        } else {
-            errorUser.setVisible(false);
-        }
+
+        } else errorUser.setVisible(false);
 
         if (password.isEmpty()) {
+
             errorPassword.setVisible(true);
             Label newPasswordError = new Label("El campo no puede ser vacío");
             errorPassword.getChildren().clear();
             errorPassword.getChildren().add(newPasswordError);
-        } else {
-            errorPassword.setVisible(false);
-        }
+
+        } else errorPassword.setVisible(false);
+
 
         if (!user.isEmpty() && !password.isEmpty()) {
 
@@ -99,22 +113,29 @@ public class LogInController implements Initializable {
                 storeApplication.setPassword(password);
 
                 if (userEntity instanceof ClientDTO){
+
                     CartDTO userCart = cartRestController.getCurrentCart();
                     CartDTO savedCart = storeApplication.getCart();
-                    if(userCart == null || userCart.getItems().isEmpty()){
-                        if(userCart == null){
-                            ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
-                            cartRestController.saveCurrentCart(storeApplication.getCart());
-                        }
-                        else if (!savedCart.getItems().isEmpty()){
-                            ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
-                            cartRestController.saveCurrentCart(storeApplication.getCart());
-                        }
-                    }
-                    storeApplication.setCart(cartRestController.getCurrentCart());
-                }
 
-                else if (userEntity instanceof StoreUserDTO)
+                    if(userCart == null || userCart.getItems().isEmpty()){
+
+                        if(userCart == null){
+
+                            ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
+                            cartRestController.saveCurrentCart(storeApplication.getCart());
+
+                        } else if (!savedCart.getItems().isEmpty()){
+
+                            ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
+                            cartRestController.saveCurrentCart(storeApplication.getCart());
+
+                        }
+
+                    }
+
+                    storeApplication.setCart(cartRestController.getCurrentCart());
+
+                } else if (userEntity instanceof StoreUserDTO)
                     storeApplication.setPurchases(storeRestController.getStore().getPurchaseSet());
 
                 storeApplication.sceneMain();
@@ -128,15 +149,6 @@ public class LogInController implements Initializable {
     @FXML
     void registerPressed(ActionEvent event) {
         storeApplication.sceneRegister();
-    }
-
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        errorUser.setVisible(false);
-        errorPassword.setVisible(false);
-
     }
 
 }

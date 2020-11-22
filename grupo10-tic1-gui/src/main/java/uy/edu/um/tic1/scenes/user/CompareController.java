@@ -32,6 +32,10 @@ public class CompareController implements Initializable {
     @FXML
     private FlowPane flowPaneProducts;
 
+    // ****************************************************************************************************************
+    //                  INITIALIZE
+    // ****************************************************************************************************************
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -56,6 +60,10 @@ public class CompareController implements Initializable {
         }
 
     }
+
+    // ****************************************************************************************************************
+    //                  BUTTONS FXML
+    // ****************************************************************************************************************
 
     @FXML
     void pressedCart(ActionEvent event) {

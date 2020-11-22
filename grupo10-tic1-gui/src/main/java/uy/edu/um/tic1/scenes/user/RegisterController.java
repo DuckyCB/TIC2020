@@ -64,6 +64,10 @@ public class RegisterController implements Initializable {
     @FXML
     private Button buttonCreate;
 
+    // ****************************************************************************************************************
+    //                  INITIALIZE
+    // ****************************************************************************************************************
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -84,6 +88,10 @@ public class RegisterController implements Initializable {
 
     }
 
+    // ****************************************************************************************************************
+    //                  BUTTONS FXML
+    // ****************************************************************************************************************
+
     @FXML
     void inicioPressed(ActionEvent event) { storeApplication.sceneMain(); }
 
@@ -95,36 +103,28 @@ public class RegisterController implements Initializable {
             errorA.setVisible(true);
             Label newNameError = new Label("El campo no puede ser vacío");
             errorA.getChildren().add(newNameError);
-        } else {
-            errorA.setVisible(false);
-        }
+        } else errorA.setVisible(false);
 
         String lastName = String.valueOf(b.getCharacters());
         if (lastName.isEmpty()) {
             errorB.setVisible(true);
             Label newLastNameError = new Label("El campo no puede ser vacío");
             errorB.getChildren().add(newLastNameError);
-        } else {
-            errorB.setVisible(false);
-        }
+        } else errorB.setVisible(false);
 
         String mail = String.valueOf(c.getCharacters());
         if (mail.isEmpty()) {
             errorC.setVisible(true);
             Label newMailError = new Label("El campo no puede ser vacío");
             errorC.getChildren().add(newMailError);
-        } else {
-            errorC.setVisible(false);
-        }
+        } else errorC.setVisible(false);
 
         String password = String.valueOf(pass.getCharacters());
         if (password.isEmpty()) {
             errorE.setVisible(true);
             Label newPasswordError = new Label("El campo no puede ser vacío");
             errorE.getChildren().add(newPasswordError);
-        } else {
-            errorE.setVisible(false);
-        }
+        } else errorE.setVisible(false);
 
         if (!name.isEmpty() && !lastName.isEmpty() && !mail.isEmpty() && !password.isEmpty()) {
 
@@ -151,36 +151,28 @@ public class RegisterController implements Initializable {
             errorA.setVisible(true);
             Label newPhoneError = new Label("El campo no puede ser vacío");
             errorA.getChildren().add(newPhoneError);
-        } else {
-            errorA.setVisible(false);
-        }
+        } else errorA.setVisible(false);
 
         String zip = String.valueOf(b.getCharacters());
         if (zip.isEmpty()) {
             errorB.setVisible(true);
             Label newZIPError = new Label("El campo no puede ser vacío");
             errorB.getChildren().add(newZIPError);
-        } else {
-            errorB.setVisible(false);
-        }
+        } else errorB.setVisible(false);
 
         String street = String.valueOf(c.getCharacters());
         if (street.isEmpty()) {
             errorC.setVisible(true);
             Label newStreetError = new Label("El campo no puede ser vacío");
             errorC.getChildren().add(newStreetError);
-        } else {
-            errorC.setVisible(false);
-        }
+        } else errorC.setVisible(false);
 
         String streetNumber = String.valueOf(d.getCharacters());
         if (streetNumber.isEmpty()) {
             errorD.setVisible(true);
             Label newStreetNumberError = new Label("El campo no puede ser vacío");
             errorD.getChildren().add(newStreetNumberError);
-        } else {
-            errorD.setVisible(false);
-        }
+        } else errorD.setVisible(false);
 
         String aditional = String.valueOf(e.getCharacters());
 
@@ -206,11 +198,9 @@ public class RegisterController implements Initializable {
         storeApplication.sceneMain();
     }
 
-    private void getSecond() {
-
-
-
-    }
+    // ****************************************************************************************************************
+    //                  SET SECOND SCENE INFORMATION
+    // ****************************************************************************************************************
 
     private void setSecond(){
 

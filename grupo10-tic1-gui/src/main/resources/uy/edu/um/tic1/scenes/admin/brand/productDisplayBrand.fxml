@@ -3,13 +3,13 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uy.edu.um.tic1.scenes.admin.brand.ProductDisplayBrandController">
@@ -59,20 +59,28 @@
                      <image>
                         <Image url="@../../../images/Men/Jean/black.jpg" />
                      </image></ImageView>
-                  <Pane fx:id="productNewImage" layoutX="413.0" layoutY="239.0" onDragDropped="#droppedNewImage" prefHeight="78.0" prefWidth="200.0" style="-fx-background-color: #cdcdcd;">
-                     <children>
-                        <Label layoutX="32.0" layoutY="25.0" text="Dropear imagen">
-                           <font>
-                              <Font size="19.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </Pane>
-                  <Button fx:id="save" layoutX="460.0" layoutY="459.0" mnemonicParsing="false" onAction="#pressedSave" style="-fx-background-color: BBBBBB;" text="Guardar">
+                  <Button fx:id="save" layoutX="459.0" layoutY="534.0" mnemonicParsing="false" onAction="#pressedSave" style="-fx-background-color: BBBBBB;" text="Guardar">
                      <font>
                         <Font name="Cambria Bold" size="20.0" />
                      </font>
                   </Button>
+                  <Button fx:id="uploadImage" layoutX="435.0" layoutY="327.0" mnemonicParsing="false" onAction="#pressedUploadImage" style="-fx-background-color: CDCDCD;" text="Cargar imagen">
+                     <font>
+                        <Font name="Cambria" size="20.0" />
+                     </font>
+                  </Button>
+                  <MenuButton fx:id="menuButtonGenre" layoutX="436.0" layoutY="172.0" mnemonicParsing="false" style="-fx-background-color: CDCDCD;" text="Género" />
+                  <MenuButton fx:id="menuButtonCategory" layoutX="423.0" layoutY="234.0" mnemonicParsing="false" style="-fx-background-color: E2E2E2;" text="Categoría" />
+                  <Label fx:id="labelGenre" layoutX="517.0" layoutY="175.0" text="X">
+                     <font>
+                        <Font name="Cambria" size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="labelCategory" layoutX="517.0" layoutY="237.0" text="categoria">
+                     <font>
+                        <Font name="Cambria" size="16.0" />
+                     </font>
+                  </Label>
                </children>
             </AnchorPane>
          </children>

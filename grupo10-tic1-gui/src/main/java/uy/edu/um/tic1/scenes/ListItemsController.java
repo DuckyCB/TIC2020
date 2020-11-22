@@ -41,14 +41,12 @@ public class ListItemsController implements Initializable {
 
     @Autowired
     StoreApplication storeApplication;
-
     @Autowired
     private CartRestController cartRestController;
     @Autowired
     private ProductRestController productRestController;
-    AppUserDTO user;
 
-    public static Boolean isCart;
+    private AppUserDTO user;
 
     private Set<PurchaseDTO> purchaseSet;
     private Set<CartItemDTO> cartItemSet;
@@ -59,10 +57,9 @@ public class ListItemsController implements Initializable {
     @FXML
     private Button inicio;
 
-    @FXML
-    void inicioPressed(ActionEvent event) {
-        storeApplication.sceneMain();
-    }
+    // ****************************************************************************************************************
+    //                  INITIALIZE
+    // ****************************************************************************************************************
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -70,20 +67,13 @@ public class ListItemsController implements Initializable {
         user = storeApplication.getAppUser();
         if (user instanceof ClientDTO) {
 
-            if (isCart) {
-
-                cartItemSet = requestCartList();
-                setProducts(cartItemSet.toArray());
-
-            } else {
-
-                setUserPurchases();
-
-            }
+            cartItemSet = requestCartList();
+            setProducts(cartItemSet.toArray());
 
         }
         else if (user instanceof StoreUserDTO) setStoreSales();
         else {
+
             purchaseSet = storeApplication.getPurchases();
             setProducts(Objects.requireNonNull(requestCartList()).toArray());
 
@@ -102,88 +92,17 @@ public class ListItemsController implements Initializable {
     }
 
     // ****************************************************************************************************************
-    //                  USER
+    //                  BUTTONS FXML
     // ****************************************************************************************************************
 
-    private void setUserPurchases() {
-
-        ClientDTO client = (ClientDTO) storeApplication.getAppUser();
-
-        // TODO: mostrar compras del usuario
-        /*client.get
-
-        if (items != null) {
-
-            for (CartItemDTO item : items) {
-
-                Pane paneProduct = new Pane();
-                paneProduct.setPrefSize(685, 150);
-                paneProduct.setStyle("-fx-background-color: #E2E2E2");
-
-                // NAME:
-                Label labelName = new Label("Nombre: " + sale.getClient().getFirstName());
-                labelName.setFont(Font.font("Cambria", FontWeight.BOLD, 18));
-                labelName.setLayoutX(28);
-                labelName.setLayoutY(21);
-                paneProduct.getChildren().add(labelName);
-
-                // LAST NAME
-                Label labelLastName = new Label("Apellido: " + sale.getClient().getLastName());
-                labelLastName.setFont(Font.font("Cambria", FontWeight.BOLD, 18));
-                labelLastName.setLayoutX(28);
-                labelLastName.setLayoutY(64);
-                paneProduct.getChildren().add(labelLastName);
-
-                // ADDRESS
-                Label labelAdress = new Label("Dirección: " + sale.getClient().getAddress());
-                labelAdress.setFont(Font.font("Cambria", FontWeight.BOLD, 18));
-                labelAdress.setLayoutX(28);
-                labelAdress.setLayoutY(105);
-                paneProduct.getChildren().add(labelAdress);
-
-                // PRICE
-                int price = 0;
-                for (PurchaseItemDTO item: sale.getPurchaseItems()) price += item.getPrice();
-                Label labelPrice = new Label("Precio total: " + price + "$");
-                labelPrice.setFont(Font.font("Cambria", FontWeight.BOLD, 26));
-                labelPrice.setLayoutX(241);
-                labelPrice.setLayoutY(16);
-                paneProduct.getChildren().add(labelPrice);
-
-                // SEE PRODUCTS
-                Button viewProducts = new Button("Ver productos");
-                viewProducts.setFont(Font.font("Cambria", FontWeight.BOLD, 12));
-                viewProducts.setLayoutX(295);
-                viewProducts.setLayoutY(52);
-                viewProducts.setOnAction( event -> {
-                    setProducts(Objects.requireNonNull(sale.getPurchaseItems()).toArray());
-                });
-                paneProduct.getChildren().add(viewProducts);
-
-                // ACCEPT PURCHASE
-                if (!sale.getDelivered()) {
-
-                    Button acceptPurchase = new Button("Aceptar Compra");
-                    acceptPurchase.setFont(Font.font("Cambria", FontWeight.BOLD, 12));
-                    acceptPurchase.setLayoutX(519);
-                    acceptPurchase.setLayoutY(60);
-                    acceptPurchase.setOnAction(event -> {
-                        sale.setDelivered(true);
-                        sale.setDeliveryDate(LocalDate.now());
-                        sale.setDeliveryTime(LocalTime.now());
-                        acceptPurchase.setVisible(false);
-                    });
-                    paneProduct.getChildren().add(acceptPurchase);
-
-                } else setPurchaseDelivered(paneProduct, sale);
-
-                flowPaneProducts.getChildren().add(paneProduct);
-
-            }
-
-        } else flowPaneProducts.getChildren().add(getNoMesaggesPane("No hay compras"));*/
-
+    @FXML
+    void inicioPressed(ActionEvent event) {
+        storeApplication.sceneMain();
     }
+
+    // ****************************************************************************************************************
+    //                  USER
+    // ****************************************************************************************************************
 
     /**
      * En el caso que haya un usuario ingresado, hace un request al server para tener los productos del carrito.
@@ -323,7 +242,9 @@ public class ListItemsController implements Initializable {
                 Integer quantity;
                 float price;
                 Boolean enoughStock = false;
+
                 if (newItem instanceof PurchaseItemDTO) {
+
                     PurchaseItemDTO item = (PurchaseItemDTO) newItem;
                     product = item.getProduct();
                     color = item.getSizeAndColor().getColor();
@@ -331,8 +252,10 @@ public class ListItemsController implements Initializable {
                     quantity = item.getQuantity();
                     price = item.getPrice().floatValue();
                     enoughStock = true;
+
                 }
                 else {
+
                     CartItemDTO item = (CartItemDTO) newItem;
                     product = item.getProduct();
                     color = item.getSizeAndColor().getColor();
@@ -340,6 +263,7 @@ public class ListItemsController implements Initializable {
                     quantity = item.getQuantity();
                     price = item.getPrice().floatValue();
                     enoughStock = checkStock(item);
+
                 }
 
                 if (quantity > 0) {
@@ -352,8 +276,8 @@ public class ListItemsController implements Initializable {
                         productImg = new Image("/uy/edu/um/tic1/images/no_image.jpg");
                     }
 
-                    Pane pane = PaneProduct.createCartItem(productImg, product.getName(), product.getBrand().getName(), product.getPrice().floatValue(),
-                            color, size, enoughStock);
+                    Pane pane = PaneProduct.createCartItem(productImg, product.getName(), product.getBrand().getName(),
+                            product.getPrice().floatValue(), color, size, enoughStock);
 
                     Label numberQuantity = getQuantityLabel(quantity.toString());
                     pane.getChildren().add(numberQuantity);
@@ -368,18 +292,17 @@ public class ListItemsController implements Initializable {
                         close.setLayoutY(56);
                         close.setStyle("-fx-background-color: #ff7373");
                         close.setOnAction(event -> {
+
                             boolean deleted = storeApplication.getCart().decreaseQuantity(cartItem);
-                            if (user != null){
-                                cartRestController.saveCurrentCart(storeApplication.getCart());
-                            }
+                            if (user != null) cartRestController.saveCurrentCart(storeApplication.getCart());
+
                             pane.getChildren().remove(numberQuantity);
                             pane.getChildren().add(getQuantityLabel(cartItem.getQuantity().toString()));
-                            if(deleted) {
-                                flowPaneProducts.getChildren().remove(pane);
-                            }
-                        setProducts(storeApplication.getCart().getItems().toArray());
-                        }
-                        );
+                            if (deleted) flowPaneProducts.getChildren().remove(pane);
+
+                            setProducts(storeApplication.getCart().getItems().toArray());
+
+                        });
 
                         pane.getChildren().add(close);
 
@@ -421,7 +344,9 @@ public class ListItemsController implements Initializable {
             buy.setLayoutX(282);
             buy.setLayoutY(98);
             buy.setOnMouseClicked(event -> {
+
                 if (!cartItemSet.isEmpty()) {
+
                     // TODO : Realizar compra
                     buyCart();
                     storeApplication.setCart(CartDTO.builder().items(new LinkedHashSet<>()).build());
@@ -429,10 +354,12 @@ public class ListItemsController implements Initializable {
                     cartRestController.saveCurrentCart(storeApplication.getCart());
                     System.out.println("Carro comprado");
                     storeApplication.sceneMain();
-                }
-            });
-            paneProduct.getChildren().add(buy);
 
+                }
+
+            });
+
+            paneProduct.getChildren().add(buy);
             flowPaneProducts.getChildren().add(paneProduct);
 
         } else flowPaneProducts.getChildren().add(getNoMesaggesPane("Carrito vacío"));
@@ -453,6 +380,9 @@ public class ListItemsController implements Initializable {
 
     }
 
+    // ****************************************************************************************************************
+    //                  STOCK
+    // ****************************************************************************************************************
 
     public Boolean checkStock(CartItemDTO cartItem){
 
@@ -464,34 +394,34 @@ public class ListItemsController implements Initializable {
 
         List<ProductDTO> products = productRestController.getProducts(productFilters);
 
-        if(products.isEmpty())
-            return false;
-        else
-            return true;
+        return !products.isEmpty();
+
     }
 
+    // ****************************************************************************************************************
+    //                  CART
+    // ****************************************************************************************************************
+
     public void buyCart(){
+
         ClientDTO client = null;
         AppUserDTO appUserDTO = storeApplication.getAppUser();
-        if(appUserDTO != null && appUserDTO instanceof ClientDTO){
+
+        if (appUserDTO instanceof ClientDTO) {
+
             client = (ClientDTO) appUserDTO;
             CartDTO cart = storeApplication.getCart();
 
             Boolean stock = true;
 
             for (CartItemDTO item : cart.getItems()){
-                if(!checkStock(item)){
-                    stock = false;
-                }
-                if (!stock){
-                    break;
-                }
+
+                if (!checkStock(item)) stock = false;
+                if (!stock) break;
+
             }
 
-            if (stock){
-                cartRestController.buyCurrentCart(true);
-            }
-
+            if (stock) cartRestController.buyCurrentCart(true);
 
         }
 
