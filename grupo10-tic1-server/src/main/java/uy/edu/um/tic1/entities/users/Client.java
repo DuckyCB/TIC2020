@@ -19,6 +19,7 @@ import uy.edu.um.tic1.security.user.ApplicationUserRole;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -39,7 +40,7 @@ public class Client extends AppUser{
     @Embedded
     private Email email;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "current_cart",
             foreignKey = @ForeignKey(name = "fk_client_cart")
     )
@@ -63,13 +64,13 @@ public class Client extends AppUser{
 
     }
 
-    public void processCurrentCart(Boolean toDeliver){
-
-        if (this.currentCart != null)
-            this.currentCart.processCart(toDeliver);
-
-
-    }
+//    public void processCurrentCart(Boolean toDeliver){
+//
+//        if (this.currentCart != null)
+//            this.currentCart.processCart(this, toDeliver);
+//
+//
+//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -96,12 +97,23 @@ public class Client extends AppUser{
         return client;
     }
 
-    public void buyCurrentCart(Boolean toDeliver){
-        if (currentCart != null){
+//    public void buyCurrentCart(Boolean toDeliver){
+//        if (currentCart != null){
+//
+//            //TODO: FACTURAR IMPORTE --> Se va a facturar importe redireccionando la factura a un medio de pago online
+//            this.currentCart.processCart(this, toDeliver);
+//            Cart cart = this.getCurrentCart();
+//            this.setCurrentCart(Cart.builder().items(new LinkedHashSet<>()).build());
+//            cart.setClient(this);
+//        }
+//    }
 
-            //TODO: FACTURAR IMPORTE --> Se va a facturar importe redireccionando la factura a un medio de pago online
-            this.currentCart.processCart(toDeliver);
+    public void buyCart(Cart cart, Boolean toDeliver) {
+
+        if (cart != null){
+            cart.processCart(this, toDeliver);
+            cart.setClient(this);
         }
-    }
 
+    }
 }

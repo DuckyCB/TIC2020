@@ -121,7 +121,7 @@ public class ProductDisplayStoreController implements Initializable {
 
         StoreDTO store = storeRestController.getStore();
 
-        List<String> colors = product.getColorsList().stream().map(SizeAndColorDTO::getColor).collect(Collectors.toList());
+        List<String> colors = product.colorsList().stream().map(SizeAndColorDTO::getColor).collect(Collectors.toList());
 
         for (String color: colors) {
 

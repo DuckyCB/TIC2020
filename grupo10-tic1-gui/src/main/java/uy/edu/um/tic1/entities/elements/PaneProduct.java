@@ -144,7 +144,7 @@ public class PaneProduct {
 
     }
 
-    public static Pane createCartItem(Image image, String name, String brand, Float price, String color, String size) {
+    public static Pane createCartItem(Image image, String name, String brand, Float price, String color, String size, Boolean enoughStock) {
 
         Pane paneProduct = new Pane();
         paneProduct.setPrefSize(685, 150);
@@ -219,7 +219,18 @@ public class PaneProduct {
         labelQuantity.setFont(Font.font("Cambria", FontWeight.BOLD, FontPosture.ITALIC, 20));
         labelQuantity.setLayoutX(513);
         labelQuantity.setLayoutY(64);
+        if(!enoughStock){
+            Label noStockLabel = new Label("SIN STOCK!");
+            noStockLabel.setFont(Font.font("Cambria", FontWeight.BOLD, 20));
+            noStockLabel.setLayoutX(513);
+            noStockLabel.setLayoutY(45);
+            paneProduct.getChildren().add(noStockLabel);
+        }
+
+
+
         paneProduct.getChildren().add(labelQuantity);
+
 
 
         return paneProduct;

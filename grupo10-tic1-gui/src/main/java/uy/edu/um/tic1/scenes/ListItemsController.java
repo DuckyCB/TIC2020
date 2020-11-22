@@ -16,6 +16,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
+import uy.edu.um.tic1.entities.ProductFilters;
 import uy.edu.um.tic1.entities.elements.PaneProduct;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.cart.CartItemDTO;
@@ -26,15 +27,13 @@ import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
 import uy.edu.um.tic1.entitites.users.StoreUserDTO;
 import uy.edu.um.tic1.requests.CartRestController;
+import uy.edu.um.tic1.requests.ProductRestController;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 @Component
 @FxmlView("/uy/edu/um/tic1/scenes/sceneListItems.fxml")
@@ -45,6 +44,8 @@ public class ListItemsController implements Initializable {
 
     @Autowired
     private CartRestController cartRestController;
+    @Autowired
+    private ProductRestController productRestController;
     AppUserDTO user;
 
     public static Boolean isCart;
@@ -192,7 +193,8 @@ public class ListItemsController implements Initializable {
     private Set<CartItemDTO> requestCartList() {
 
         CartDTO cart = storeApplication.getCart();
-        if (cart != null) return cart.getItems();
+        if (cart != null)
+            return cart.getItems();
         else return null;
 
     }
@@ -320,6 +322,7 @@ public class ListItemsController implements Initializable {
                 String size;
                 Integer quantity;
                 float price;
+                Boolean enoughStock = false;
                 if (newItem instanceof PurchaseItemDTO) {
                     PurchaseItemDTO item = (PurchaseItemDTO) newItem;
                     product = item.getProduct();
@@ -327,6 +330,7 @@ public class ListItemsController implements Initializable {
                     size = item.getSizeAndColor().getSize();
                     quantity = item.getQuantity();
                     price = item.getPrice().floatValue();
+                    enoughStock = true;
                 }
                 else {
                     CartItemDTO item = (CartItemDTO) newItem;
@@ -335,6 +339,7 @@ public class ListItemsController implements Initializable {
                     size = item.getSizeAndColor().getSize();
                     quantity = item.getQuantity();
                     price = item.getPrice().floatValue();
+                    enoughStock = checkStock(item);
                 }
 
                 if (quantity > 0) {
@@ -348,7 +353,7 @@ public class ListItemsController implements Initializable {
                     }
 
                     Pane pane = PaneProduct.createCartItem(productImg, product.getName(), product.getBrand().getName(), product.getPrice().floatValue(),
-                            color, size);
+                            color, size, enoughStock);
 
                     Label numberQuantity = getQuantityLabel(quantity.toString());
                     pane.getChildren().add(numberQuantity);
@@ -372,7 +377,9 @@ public class ListItemsController implements Initializable {
                             if(deleted) {
                                 flowPaneProducts.getChildren().remove(pane);
                             }
-                        });
+                        setProducts(storeApplication.getCart().getItems().toArray());
+                        }
+                        );
 
                         pane.getChildren().add(close);
 
@@ -416,6 +423,12 @@ public class ListItemsController implements Initializable {
             buy.setOnMouseClicked(event -> {
                 if (!cartItemSet.isEmpty()) {
                     // TODO : Realizar compra
+                    buyCart();
+                    storeApplication.setCart(CartDTO.builder().items(new LinkedHashSet<>()).build());
+                    ((ClientDTO) storeApplication.getAppUser()).setCurrentCart(storeApplication.getCart());
+                    cartRestController.saveCurrentCart(storeApplication.getCart());
+                    System.out.println("Carro comprado");
+                    storeApplication.sceneMain();
                 }
             });
             paneProduct.getChildren().add(buy);
@@ -440,5 +453,48 @@ public class ListItemsController implements Initializable {
 
     }
 
+
+    public Boolean checkStock(CartItemDTO cartItem){
+
+        ProductFilters productFilters = new ProductFilters();
+        productFilters.setId(cartItem.getProduct().getId());
+        productFilters.setStock(cartItem.getQuantity());
+        productFilters.setSize(cartItem.getSizeAndColor().getSize());
+        productFilters.setColor(cartItem.getSizeAndColor().getColor());
+
+        List<ProductDTO> products = productRestController.getProducts(productFilters);
+
+        if(products.isEmpty())
+            return false;
+        else
+            return true;
+    }
+
+    public void buyCart(){
+        ClientDTO client = null;
+        AppUserDTO appUserDTO = storeApplication.getAppUser();
+        if(appUserDTO != null && appUserDTO instanceof ClientDTO){
+            client = (ClientDTO) appUserDTO;
+            CartDTO cart = storeApplication.getCart();
+
+            Boolean stock = true;
+
+            for (CartItemDTO item : cart.getItems()){
+                if(!checkStock(item)){
+                    stock = false;
+                }
+                if (!stock){
+                    break;
+                }
+            }
+
+            if (stock){
+                cartRestController.buyCurrentCart(true);
+            }
+
+
+        }
+
+    }
 
 }

@@ -14,6 +14,7 @@ import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entities.BrandFilters;
 import uy.edu.um.tic1.entitites.BrandDTO;
 import uy.edu.um.tic1.entitites.StoreDTO;
+import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
 import uy.edu.um.tic1.entitites.users.StoreUserDTO;
@@ -101,4 +102,28 @@ public class StoreRestController {
         return response.getBody();
 
     }
+
+
+    public List<PurchaseDTO> getPurchases(Boolean delivered) {
+        RestTemplate restTemplate = new RestTemplate();
+
+
+        if (storeApplication.getAppUser() != null && storeApplication.getAppUser() instanceof StoreUserDTO)
+            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(storeApplication.getAppUser().getUsername(),
+                    storeApplication.getPassword()));
+//        else {
+//            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor("admin1", "admin1"));
+//        }
+
+        ResponseEntity<List<PurchaseDTO>> response
+                = restTemplate.exchange("http://localhost:8080/stores/purchases/?delivered=" + delivered.toString(),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<PurchaseDTO>>(){});
+
+
+        return response.getBody();
+
+    }
+
 }

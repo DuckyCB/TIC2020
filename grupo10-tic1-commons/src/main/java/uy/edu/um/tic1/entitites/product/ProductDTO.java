@@ -91,7 +91,7 @@ public abstract class ProductDTO {
 
     }
 
-    public List<SizeAndColorDTO> getSizeList(){
+    public List<SizeAndColorDTO> sizeList(){
         HashMap<String, SizeAndColorDTO> uniqueSize = new HashMap<>();
         this.getSizeAndColor().stream().forEach(sc ->{
             uniqueSize.put(sc.getSize(), sc);
@@ -101,10 +101,10 @@ public abstract class ProductDTO {
     }
 
 
-    public List<SizeAndColorDTO> getColorsList(){
+    public List<SizeAndColorDTO> colorsList(){
         HashMap<String, SizeAndColorDTO> uniqueSize = new HashMap<>();
         this.getSizeAndColor().stream().forEach(sc ->{
-            uniqueSize.put(sc.getSize(), sc);
+            uniqueSize.put(sc.getColor(), sc);
         });
         return uniqueSize.values().stream().collect(Collectors.toList());
 

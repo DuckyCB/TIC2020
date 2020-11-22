@@ -78,6 +78,44 @@ public class CartRestController {
                 httpEntity,
                 new ParameterizedTypeReference<>(){});
 
+
     }
+
+    public void buyCurrentCart(Boolean toDeliver) {
+        RestTemplate restTemplate = new RestTemplate();
+        if (storeApplication.getAppUser() != null)
+            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(storeApplication.getAppUser().getUsername(),
+                    storeApplication.getPassword()));
+
+        ResponseEntity<Void> response
+                = restTemplate.exchange("http://localhost:8080/client/carts/buy/?toDeliver=" + toDeliver.toString(),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Void>(){});
+
+    }
+
+
+    public List<CartDTO> getAllCarts() {
+        RestTemplate restTemplate = new RestTemplate();
+        if (storeApplication.getAppUser() != null)
+            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(storeApplication.getAppUser().getUsername(),
+                    storeApplication.getPassword()));
+
+        ResponseEntity<List<CartDTO>> response
+                = restTemplate.exchange("http://localhost:8080/client/carts/",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<CartDTO>>(){});
+
+        if (response != null){
+            return response.getBody();
+        }
+
+        return null;
+    }
+
+
+
 
 }

@@ -16,6 +16,7 @@ import uy.edu.um.tic1.security.user.ApplicationUserService;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,22 +83,33 @@ public class ClientController {
 
     public void buyCurrentCart(String auth, Boolean toDeliver) {
         Client client = getClientFromHeader(auth);
-
+        Cart cart = null;
+        Store store = null;
         if (client != null){
 
+            cart = client.getCurrentCart();
             List<Store> stores = null;
-            for (CartItem cartItem : client.getCurrentCart().getItems()){
+            List<CartItem> items = cart.getItems().stream().collect(Collectors.toList());
+            client.setCurrentCart(Cart.builder().items(new LinkedHashSet<>()).build());
+            applicationUserService.update(client);
+            for (CartItem cartItem : items){
                 if (cartItem.getStore() == null){
                     stores = storeController.getStoreByProduct(cartItem.getProduct(), cartItem.getQuantity());
                     if(!stores.isEmpty()){
-                        cartItem.setStore(stores.get(0));
+                        store = stores.get(0);
+                        cartItem.setStore(store);
                     }else{
+
                         throw new RuntimeException("Not enough Stock");
                     }
                 }
             }
 
-            client.buyCurrentCart(toDeliver);
+            client.buyCart(cart, toDeliver);
+            applicationUserService.update(client);
+            cart.getItems().stream().forEach(i ->{
+                storeController.save(i.getStore());
+            });
 
         }
     }

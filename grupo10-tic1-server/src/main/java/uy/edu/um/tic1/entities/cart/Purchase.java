@@ -12,6 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -51,7 +52,7 @@ public class Purchase {
 
         return PurchaseDTO.builder()
                 .id(this.id)
-                //.cartItem(this.cartItem.toDTO())
+                .purchaseItems(this.purchaseItems.stream().map(PurchaseItem::toDTO).collect(Collectors.toSet()))
                 .client(this.client.toDTO())
                 .delivered(this.delivered)
                 .deliveryDate(this.deliveryDate)

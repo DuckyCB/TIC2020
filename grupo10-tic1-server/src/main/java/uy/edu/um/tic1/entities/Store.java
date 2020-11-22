@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 @Builder
 public class Store {
 
-    @Autowired
-    private static StoreController storeController;
+//    @Autowired
+//    private static StoreController storeController;
 
 
     @Id
@@ -113,7 +113,7 @@ public class Store {
             updateStock(purchaseItem.getProduct(), - purchaseItem.getQuantity());
         });
         this.purchaseSet.add(purchase);
-        autoSave();
+        //autoSave();
     }
 
     public List<Purchase> getUndeliveredPurchases(){
@@ -125,7 +125,7 @@ public class Store {
         stockSet.add(stock);
     }
 
-    public void autoSave(){
-        this.storeController.save(this);
-    }
+//    public void autoSave(){
+//        this.storeController.save(this);
+//    }
 }

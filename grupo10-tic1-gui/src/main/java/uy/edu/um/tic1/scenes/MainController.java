@@ -685,7 +685,7 @@ public class MainController implements Initializable {
         List<ProductDTO> productList = null;
 
         AppUserDTO user = storeApplication.getAppUser();
-        if (user instanceof ClientDTO)
+        if (user == null || user instanceof ClientDTO)
             productList =productRestController.getProducts(productFilters);
         else if (user instanceof BrandUserDTO) {
             productFilters.setBrand_id(((BrandUserDTO) user).getBrand().getId());
@@ -698,8 +698,8 @@ public class MainController implements Initializable {
         }
 
 //        if (user instanceof AdminUserDTO) setButtonsStore();
-        else setButtonsDefault();
-        productList = productRestController.getProducts(productFilters);
+//        else setButtonsDefault();
+//        productList = productRestController.getProducts(productFilters);
 
 
         return productList;

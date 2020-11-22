@@ -195,7 +195,6 @@ public class ProductDisplayController implements Initializable {
 
             menuQuantity.getItems().add(newItem);
 
-
         }
 
     }
@@ -211,6 +210,7 @@ public class ProductDisplayController implements Initializable {
         SizeAndColorDTO sizeAndColorDTO = product.getSizeAndColorBySizeAndColor(selectedSize, selectedColor);
         CartItemDTO cartItem = CartItemDTO.builder().price(product.getPrice()).product(product).sizeAndColor(sizeAndColorDTO).quantity(selectedQuantity).build();
         storeApplication.getCart().addItem(cartItem);
+        cartRestController.saveCurrentCart(storeApplication.getCart());
         storeApplication.sceneCart();
 
     }
