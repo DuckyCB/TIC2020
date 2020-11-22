@@ -116,12 +116,7 @@ public class StoreApplication extends Application {
     public void start(Stage primaryStage) {
 
         StoreApplication.primaryStage = primaryStage;
-        FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
-        Parent root = fxWeaver.loadView(MainController.class);
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Página principal");
-        primaryStage.show();
+        sceneMain();
 
     }
 
@@ -151,6 +146,7 @@ public class StoreApplication extends Application {
     // ****************************************************************************************************************
 
     public void sceneLogIn() {
+
         FxWeaver fxWeaver = applicationContext.getBean(FxWeaver.class);
         Parent root = fxWeaver.loadView(LogInController.class);
         Scene scene = new Scene(root);
@@ -190,16 +186,14 @@ public class StoreApplication extends Application {
 
     public void sceneCart() {
 
-        //ListItemsController.isCart = true;
-
         if (getAppUser() != null && getAppUser() instanceof ClientDTO) {
+
             ClientDTO client = (ClientDTO) getAppUser();
-            if (client.getCurrentCart() != null)
-                this.setCart(client.getCurrentCart());
+            if (client.getCurrentCart() != null) this.setCart(client.getCurrentCart());
+
         }
 
         setCart(this.getCart());
-
         sceneListItems("Carrito");
 
     }

@@ -29,7 +29,6 @@ import uy.edu.um.tic1.requests.SizeAndColorRestController;
 import uy.edu.um.tic1.requests.StoreRestController;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -78,16 +77,7 @@ public class ProductDisplayStoreController implements Initializable {
         labelPrice.setText(product.getPrice().toString() + "$");
         labelGenre.setText(product.getGender().toString());
         labelCategory.setText(Categories.getCategoryFromInt(product.getSubcategory()));
-        byte[] image = product.getImage();
-        Image productImg;
-        if (image != null) {
-            productImg = new Image(new ByteArrayInputStream(image));
-        } else {
-            productImg = new Image("/uy/edu/um/tic1/images/no_image.jpg");
-        }
-        productImage.setImage(productImg);
-
-
+        productImage.setImage(getImage(product.getImage()));
         initSizeAndColors();
 
     }
@@ -105,18 +95,10 @@ public class ProductDisplayStoreController implements Initializable {
     //                  SET PAGE
     // ****************************************************************************************************************
 
-    private void setPage() {
+    private Image getImage(byte[] bytes) {
 
-        byte[] image = product.getImage();
-        Image productImg;
-        if (image != null) {
-            productImg = new Image(new ByteArrayInputStream(image));
-        } else {
-            productImg = new Image("/uy/edu/um/tic1/images/no_image.jpg");
-        }
-        productImage.setImage(productImg);
-
-        initSizeAndColors();
+        if (bytes != null) return new Image(new ByteArrayInputStream(bytes));
+        else return new Image("/uy/edu/um/tic1/images/no_image.jpg");
 
     }
 
@@ -200,8 +182,6 @@ public class ProductDisplayStoreController implements Initializable {
                         if (newQuantity < 0) newQuantity = 0;
                         fieldQuantity.clear();
                         fieldQuantity.setPromptText(Integer.toString(newQuantity));
-                        // TODO: Actualiza el valor de cantidad del producto
-
                         updateStock(size, color, newQuantity);
 
                     } catch (NumberFormatException e) {
@@ -211,9 +191,7 @@ public class ProductDisplayStoreController implements Initializable {
 
                 });
 
-
                 paneSize.getChildren().add(fieldQuantity);
-
                 flowPaneSizes.getChildren().add(paneSize);
 
             }
@@ -224,7 +202,8 @@ public class ProductDisplayStoreController implements Initializable {
 
     }
 
-    public void updateStock(String size, String color, Integer quantity){
+    public void updateStock(String size, String color, Integer quantity) {
+
         StoreDTO store = storeRestController.getStore();
         StockDTO stock = store.getStockBySizeAndColor(size, color);
 
@@ -238,7 +217,6 @@ public class ProductDisplayStoreController implements Initializable {
             store.addStock(stock);
 
         } else store.updateStock(size, color, quantity);
-
 
         storeRestController.save(store);
 

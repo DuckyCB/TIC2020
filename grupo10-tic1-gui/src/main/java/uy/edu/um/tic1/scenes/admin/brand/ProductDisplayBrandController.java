@@ -19,8 +19,13 @@ import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entities.attributes.Categories;
 import uy.edu.um.tic1.entities.attributes.Colors;
 import uy.edu.um.tic1.entities.attributes.Sizes;
+import uy.edu.um.tic1.entitites.BrandDTO;
 import uy.edu.um.tic1.entitites.SizeAndColorDTO;
+import uy.edu.um.tic1.entitites.product.HoodieDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
+import uy.edu.um.tic1.entitites.product.ShirtDTO;
+import uy.edu.um.tic1.entitites.product.TrousersDTO;
+import uy.edu.um.tic1.entitites.users.BrandUserDTO;
 import uy.edu.um.tic1.requests.SizeAndColorRestController;
 
 import java.io.ByteArrayInputStream;
@@ -38,19 +43,14 @@ public class ProductDisplayBrandController implements Initializable {
 
     @Autowired
     StoreApplication storeApplication;
-
-    private Set<SizeAndColorDTO> sizeAndColorSet;
-    public static ProductDTO tempProduct;
-    private Character genre;
-    private int category = -1;
-
     @Autowired
     SizeAndColorRestController sizeAndColorRestController;
 
+    public static ProductDTO tempProduct;
+    private Character genre;
 
     @FXML
     private Button inicio;
-
     @FXML
     private TextField productTitle;
     @FXML
@@ -74,6 +74,24 @@ public class ProductDisplayBrandController implements Initializable {
     @FXML
     private Label labelCategory;
 
+    // ****************************************************************************************************************
+    //                  INITIALIZE
+    // ****************************************************************************************************************
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        labelGenre.setText("");
+        labelCategory.setText("");
+
+        if (tempProduct == null) setGenre();
+        else setPage();
+
+    }
+
+    // ****************************************************************************************************************
+    //                  BOTONES FXML
+    // ****************************************************************************************************************
 
     @FXML
     void inicioPressed(ActionEvent event) {
@@ -102,34 +120,14 @@ public class ProductDisplayBrandController implements Initializable {
     @FXML
     void pressedSave(ActionEvent event) {
 
-        // TODO: guardar el nuevo producto remplazando el anterior
-
-        tempProduct.setName(productTitle.getText());
-        try {
-            Double price = Double.parseDouble(productPrice.getText());
-            tempProduct.setPrice(price);
-        } catch (NumberFormatException e) {
-            System.out.println("El precio agregado no es un número");
-        }
+        // TODO: guardar el nuevo producto remplazando el anterior, es tempProduct el producto a remplazar,
+        //  tiene el mismo id que el anterior
 
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        labelGenre.setText("");
-        labelCategory.setText("");
-
-
-        if (tempProduct == null) setGenre();
-        else {
-
-            setPage();
-            sizeAndColorSet = tempProduct.getSizeAndColor();
-
-        }
-
-    }
+    // ****************************************************************************************************************
+    //                  PAGE
+    // ****************************************************************************************************************
 
     private void setPage() {
 
@@ -170,7 +168,7 @@ public class ProductDisplayBrandController implements Initializable {
      */
     private Boolean isColor(String color){
 
-        for (SizeAndColorDTO sizeAndColor: sizeAndColorSet) {
+        for (SizeAndColorDTO sizeAndColor: tempProduct.getSizeAndColor()) {
 
             if (sizeAndColor.getColor().equals(color)) return true;
 
@@ -188,7 +186,7 @@ public class ProductDisplayBrandController implements Initializable {
      */
     private Boolean isSize(String color, String size){
 
-        for (SizeAndColorDTO sizeAndColor: sizeAndColorSet) {
+        for (SizeAndColorDTO sizeAndColor: tempProduct.getSizeAndColor()) {
 
             if (sizeAndColor.getColor().equals(color) && sizeAndColor.getSize().equals(size)) return true;
 
@@ -328,6 +326,10 @@ public class ProductDisplayBrandController implements Initializable {
                 menuButtonCategory.setStyle("-fx-background-color: #E2E2E2");
                 labelCategory.setText(string);
                 tempProduct.setSubcategory(Categories.getIntCategory(string));
+                ProductDTO newProduct = getNewProduct(string);
+                if (newProduct.getClass() != tempProduct.getClass() ) {
+                    cloneToNewProduct(newProduct);
+                }
                 initSizeAndColors();
             });
             menuButtonGenre.getItems().add(item);
@@ -340,9 +342,40 @@ public class ProductDisplayBrandController implements Initializable {
     //                  Producto
     // ****************************************************************************************************************
 
-    private void cloneProduct() {
+    private ProductDTO getNewProduct(String category) {
 
-        // TODO: Clonar producto
+        int categoryInt = Categories.getIntCategory(category);
+
+        BrandUserDTO brandUserDTO = (BrandUserDTO) storeApplication.getAppUser();
+        BrandDTO brand = brandUserDTO.getBrand();
+
+        switch (categoryInt) {
+            case 1:
+                return HoodieDTO.builder().brand(brand).build();
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                return TrousersDTO.builder().brand(brand).build();
+            default:
+                return ShirtDTO.builder().brand(brand).build();
+        }
+
+    }
+
+    private void cloneToNewProduct(ProductDTO newProduct) {
+
+        newProduct.setImage(tempProduct.getImage());
+        newProduct.setSubcategory(tempProduct.getSubcategory());
+        newProduct.setGender(tempProduct.getGender());
+        newProduct.setPrice(tempProduct.getPrice());
+        newProduct.setName(tempProduct.getName());
+        newProduct.setBrand(tempProduct.getBrand());
+        newProduct.setId(tempProduct.getId());
+        newProduct.setSizeAndColor(tempProduct.getSizeAndColor());
+
+        tempProduct = newProduct;
 
     }
 

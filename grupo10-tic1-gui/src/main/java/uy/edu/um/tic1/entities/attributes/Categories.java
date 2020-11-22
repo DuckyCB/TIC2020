@@ -106,8 +106,24 @@ public class Categories {
      */
     public static int getIntCategory(String category) {
 
-        //TODO : hacer que esto funcione
-        return 1;
+        switch (category) {
+            case "Remeras":
+                return 0;
+            case "Buzos":
+                return 1;
+            case "Pantalones":
+                return 2;
+            case "Shorts":
+                return 3;
+            case "Vestidos":
+                return 4;
+            case "Polleras":
+                return 5;
+            case "Ropa interior":
+                return 6;
+            default:
+                return -1;
+        }
 
     }
 
