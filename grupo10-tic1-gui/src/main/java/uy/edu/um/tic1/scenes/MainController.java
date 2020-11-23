@@ -16,16 +16,14 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entities.elements.PaneFilter;
-import uy.edu.um.tic1.entitites.product.HoodieDTO;
+import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.users.*;
-import uy.edu.um.tic1.requests.BrandRestController;
-import uy.edu.um.tic1.requests.ProductRestController;
+import uy.edu.um.tic1.requests.*;
 import uy.edu.um.tic1.entities.BrandFilters;
 import uy.edu.um.tic1.entities.ProductFilters;
 import uy.edu.um.tic1.entities.attributes.Categories;
 import uy.edu.um.tic1.entities.attributes.Colors;
 import uy.edu.um.tic1.entities.attributes.Sizes;
-import uy.edu.um.tic1.entities.elements.PaneBrands;
 import uy.edu.um.tic1.entities.elements.PaneProduct;
 import uy.edu.um.tic1.entitites.BrandDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
@@ -48,6 +46,11 @@ public class MainController implements Initializable {
     private BrandRestController brandRestController;
     @Autowired
     private StoreRestController storeRestController;
+    //TODO: Borrar esto despues para la entrega
+    @Autowired
+    private UserRestController userRestController;
+    @Autowired
+    private CartRestController cartRestController;
 
     private Boolean filters = Boolean.FALSE;
 
@@ -103,7 +106,69 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        showUsers();
         setMainPage();
+
+    }
+
+    //TODO: Borrar esto cuando se entrega
+    private void showUsers() {
+
+        MenuButton menuButton = new MenuButton("Usuario");
+        menuButton.setLayoutX(373);
+        menuButton.setLayoutY(8);
+
+        MenuItem client = new MenuItem("Client");
+        client.setOnAction(event -> {
+            logOut();
+            String user = "user";
+            String password = "user";
+            AppUserDTO userEntity = userRestController.getUser(user, password);
+            storeApplication.setAppUser(userEntity);
+            storeApplication.setPassword(password);
+            CartDTO userCart = cartRestController.getCurrentCart();
+            CartDTO savedCart = storeApplication.getCart();
+            if(userCart == null || userCart.getItems().isEmpty()){
+                if(userCart == null){
+                    ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
+                    cartRestController.saveCurrentCart(storeApplication.getCart());
+                } else if (!savedCart.getItems().isEmpty()){
+                    ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
+                    cartRestController.saveCurrentCart(storeApplication.getCart());
+                }
+            }
+            storeApplication.setCart(cartRestController.getCurrentCart());
+            storeApplication.sceneMain();
+
+        });
+        menuButton.getItems().add(client);
+
+        MenuItem store = new MenuItem("Store");
+        store.setOnAction(event -> {
+            logOut();
+            String user = "store";
+            String password = "store";
+            AppUserDTO userEntity = userRestController.getUser(user, password);
+            storeApplication.setAppUser(userEntity);
+            storeApplication.setPassword(password);
+            storeApplication.setPurchases(storeRestController.getStore().getPurchaseSet());
+            storeApplication.sceneMain();
+        });
+        menuButton.getItems().add(store);
+
+        MenuItem brand = new MenuItem("Brand");
+        brand.setOnAction(event -> {
+            logOut();
+            String user = "levis";
+            String password = "levis";
+            AppUserDTO userEntity = userRestController.getUser(user, password);
+            storeApplication.setAppUser(userEntity);
+            storeApplication.setPassword(password);
+            storeApplication.sceneMain();
+        });
+        menuButton.getItems().add(brand);
+
+        paneMenuBar.getChildren().add(menuButton);
 
     }
 
@@ -134,26 +199,32 @@ public class MainController implements Initializable {
 
         // Agrega los botones acordes al usuario
         AppUserDTO user = storeApplication.getAppUser();
+
         if (user instanceof ClientDTO) {
+
             setButtonsClient();
             setFiltersPanel();
             setBannerPage();
-        }
-        else if (user instanceof BrandUserDTO) {
+
+        } else if (user instanceof BrandUserDTO) {
+
             labelBrands.setVisible(false);
             flowPaneBrands.setVisible(false);
             setFiltersPanel();
             setButtonsBrand();
-        }
-        else if (user instanceof StoreUserDTO) {
+
+        } else if (user instanceof StoreUserDTO) {
+
             buttonFilters.setVisible(false);
             setButtonsStore();
             setProducts(storeRestController.getStoreProducts(true));
-        }
-        else {
+
+        } else {
+
             setButtonsDefault();
             setFiltersPanel();
             setBannerPage();
+
         }
 
     }
@@ -246,7 +317,6 @@ public class MainController implements Initializable {
         newProduct.setStyle("-fx-background-color: #ffffff");
         newProduct.setOnAction(event -> {
 
-
             List<ProductDTO> list = storeRestController.getStoreProducts(false);
             setProducts(list);
 
@@ -310,8 +380,7 @@ public class MainController implements Initializable {
      * Cambia la lista de categorias mostradas
      * @see #flowPaneCategory
      * Tomando la lsita de
-     * @see Categories#getSubCategory(String) 
-     * @see Categories#getSubCategory(String, String) 
+     * @see Categories#getSubCategory(String)
      * @param type Nombre de la categoria presionada
      */
     private void pressedCategory(String type) {

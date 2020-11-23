@@ -119,7 +119,7 @@ public class ProductDisplayController implements Initializable {
                 menuSize.setStyle("-fx-background-color: #e2e2e2");
                 menuColor.setStyle("-fx-background-color: #cdcdcd");
                 selectedSize = size;
-                initColors();
+                showColors();
             });
             menuSize.getItems().add(newItem);
 
@@ -197,7 +197,7 @@ public class ProductDisplayController implements Initializable {
 
     }
 
-    private void initColors() {
+    private void showColors() {
 
         // Toma lista de colores disponibles del producto
         menuColor.getItems().clear();
