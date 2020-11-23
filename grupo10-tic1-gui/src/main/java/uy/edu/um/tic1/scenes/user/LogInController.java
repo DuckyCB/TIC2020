@@ -9,6 +9,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
+import uy.edu.um.tic1.entitites.cart.CartItemDTO;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
 import uy.edu.um.tic1.entitites.users.StoreUserDTO;
@@ -18,7 +19,9 @@ import uy.edu.um.tic1.requests.UserRestController;
 import uy.edu.um.tic1.StoreApplication;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 @Component
 @FxmlView("/uy/edu/um/tic1/scenes/user/sceneLogIn.fxml")
@@ -117,23 +120,19 @@ public class LogInController implements Initializable {
                     CartDTO userCart = cartRestController.getCurrentCart();
                     CartDTO savedCart = storeApplication.getCart();
 
-                    if(userCart == null || userCart.getItems().isEmpty()){
 
-                        if(userCart == null){
-
-                            ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
-                            cartRestController.saveCurrentCart(storeApplication.getCart());
-
-                        } else if (!savedCart.getItems().isEmpty()){
-
-                            ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
-                            cartRestController.saveCurrentCart(storeApplication.getCart());
-
+                    if(userCart == null){
+                        userCart = savedCart;
+                        ((ClientDTO) storeApplication.getAppUser()).setCurrentCart(savedCart);
+                    } else{
+                        List<CartItemDTO> items = savedCart.getItems().stream().collect(Collectors.toList());
+                        for (CartItemDTO item : items){
+                            userCart.addItem(item);
                         }
-
                     }
+                    storeApplication.setCart(userCart);
 
-                    storeApplication.setCart(cartRestController.getCurrentCart());
+
 
                 } else if (userEntity instanceof StoreUserDTO)
                     storeApplication.setPurchases(storeRestController.getStore().getPurchaseSet());

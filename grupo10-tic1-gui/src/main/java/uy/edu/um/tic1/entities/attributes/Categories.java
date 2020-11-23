@@ -150,4 +150,22 @@ public class Categories {
 
     }
 
+    public static String castCategory(String category) {
+
+        switch (category) {
+            case "Remeras":
+                return "shirt";
+            case "Buzos":
+                return "hoodie";
+            case "Pantalones":
+                return "trousers";
+
+            default:
+                return "";
+        }
+
+    }
+
+
+
 }

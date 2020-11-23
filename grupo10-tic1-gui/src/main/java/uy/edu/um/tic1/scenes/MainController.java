@@ -14,7 +14,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.FileChooser;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,10 +32,7 @@ import uy.edu.um.tic1.entitites.BrandDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.requests.StoreRestController;
-import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
-import uy.edu.um.tic1.scenes.user.ProductDisplayController;
 
-import java.io.File;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -296,6 +292,12 @@ public class MainController implements Initializable {
      */
     private void pressedCategory(String type) {
 
+
+        // trousers, shirt, hoodie
+
+        // int manga larga, manga corta, etc...
+
+
         if (productFilters.getGender() == null) {
 
             productFilters.setGender(type.charAt(0));
@@ -303,13 +305,13 @@ public class MainController implements Initializable {
 
         } else if (productFilters.getType() == null) {
 
-            productFilters.setType(type);
+            productFilters.setType(Categories.castCategory(type));
             Label arrow = new Label(" > ");
             flowPaneCategoryLabels.getChildren().add(arrow);
             setCategory(Categories.getSubCategory(productFilters.getGender().toString(), type));
 
         } else {
-
+            //productFilters.setSubtype(type.);
             Label arrow = new Label(" > ");
             flowPaneCategoryLabels.getChildren().add(arrow);
             flowPaneCategory.getChildren().clear();
@@ -649,6 +651,7 @@ public class MainController implements Initializable {
         if (user == null || user instanceof ClientDTO) productList =productRestController.getProducts(productFilters);
         else if (user instanceof BrandUserDTO) {
             productFilters.setBrand_id(((BrandUserDTO) user).getBrand().getId());
+            productFilters.setHasStock(false);
             productList = productRestController.getProducts(productFilters);
 
         }

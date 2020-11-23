@@ -83,7 +83,7 @@ public class StockQuerySpecification implements Specification<Stock> {
         }
 
         if (clothSubtype != null)
-            predicates.add(criteriaBuilder.equal(stockSizeAndColorJoin.get("subtype"), clothSubtype));
+            predicates.add(criteriaBuilder.equal(stockSizeAndColorJoin.get("subcategory"), clothSubtype));
 
 
         if (desiredStock != null)
@@ -98,13 +98,6 @@ public class StockQuerySpecification implements Specification<Stock> {
                 query.orderBy(criteriaBuilder.desc(stockProductJoin.get("price")));
             }
         }
-
-
-
-
-
-
-
 
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }

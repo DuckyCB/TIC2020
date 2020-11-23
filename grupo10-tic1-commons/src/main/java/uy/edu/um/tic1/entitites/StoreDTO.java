@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
 import uy.edu.um.tic1.entitites.contact.AddressDTO;
 import uy.edu.um.tic1.entitites.contact.TelephoneNumberDTO;
+import uy.edu.um.tic1.entitites.product.ProductDTO;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,11 +36,11 @@ public class StoreDTO {
 
     private Set<PurchaseDTO> purchaseSet;
 
-    public void updateStock(String size, String color, Integer stock) {
+    public void updateStock(ProductDTO product, String size, String color, Integer stock) {
         Boolean updated = false;
         this.stockSet.stream().forEach(st -> {
             SizeAndColorDTO sc = st.getSizeAndColor();
-            if (sc.getSize().equals(size) && sc.getColor().equals(color))
+            if (st.getProduct().equals(product) && sc.getSize().equals(size) && sc.getColor().equals(color))
                 st.setStock(stock);
 
         });
@@ -61,10 +64,11 @@ public class StoreDTO {
 
 
 
-    public StockDTO getStockBySizeAndColor(String size, String color){
+    public StockDTO getStockBySizeAndColor(ProductDTO product, String size, String color){
         List<StockDTO> stocks = this.stockSet.stream().filter(st -> {
             SizeAndColorDTO sc = st.getSizeAndColor();
-            if (sc.getSize().equals(size) && sc.getColor().equals(color))
+            if (st.getProduct().equals(product) &&
+                    sc.getSize().equals(size) && sc.getColor().equals(color))
                 return true;
             return false;
         }).collect(Collectors.toList());
@@ -75,5 +79,16 @@ public class StoreDTO {
         return null;
 
 
+    }
+
+
+    public void deliverPurchase(Integer id){
+        this.purchaseSet.stream().forEach(p -> {
+            if(p.getId().equals(id)){
+                p.setDelivered(true);
+                p.setDeliveryDate(LocalDate.now());
+                p.setDeliveryTime(LocalTime.now());
+            }
+        });
     }
 }

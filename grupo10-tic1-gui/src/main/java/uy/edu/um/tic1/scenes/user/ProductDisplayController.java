@@ -14,10 +14,13 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
+import uy.edu.um.tic1.entities.ProductFilters;
 import uy.edu.um.tic1.entitites.SizeAndColorDTO;
 import uy.edu.um.tic1.entitites.cart.CartItemDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
+import uy.edu.um.tic1.entitites.product.TrousersDTO;
 import uy.edu.um.tic1.requests.CartRestController;
+import uy.edu.um.tic1.requests.ProductRestController;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
@@ -35,6 +38,8 @@ public class ProductDisplayController implements Initializable {
     StoreApplication storeApplication;
     @Autowired
     private CartRestController cartRestController;
+    @Autowired
+    private ProductRestController productRestController;
 
     private String selectedColor;
     private String selectedSize;
@@ -142,7 +147,8 @@ public class ProductDisplayController implements Initializable {
         SizeAndColorDTO sizeAndColorDTO = product.getSizeAndColorBySizeAndColor(selectedSize, selectedColor);
         CartItemDTO cartItem = CartItemDTO.builder().price(product.getPrice()).product(product).sizeAndColor(sizeAndColorDTO).quantity(selectedQuantity).build();
         storeApplication.getCart().addItem(cartItem);
-        cartRestController.saveCurrentCart(storeApplication.getCart());
+        if(storeApplication.getAppUser() != null)
+            cartRestController.saveCurrentCart(storeApplication.getCart());
         storeApplication.sceneCart();
 
     }
@@ -202,32 +208,28 @@ public class ProductDisplayController implements Initializable {
                 uniqueColors.put(sc.getColor(), sc.getColor());
         });
         for (String color: uniqueColors.keySet()) {
-
-            MenuItem newItem = new MenuItem("       ");
-            newItem.setStyle("-fx-background-color: #"+color);
-            newItem.setOnAction(event -> {
-                resetColor();
-                circleColor.setStyle("-fx-fill: #" + color);
-                circleColor.setVisible(true);
-                menuColor.setStyle("-fx-background-color: #e2e2e2");
-                menuQuantity.setStyle("-fx-background-color: #cdcdcd");
-                selectedColor = color;
-                initQuantity();
-            });
-            menuColor.getItems().add(newItem);
+            Integer max_stock = checkStock(product, selectedSize, color);
+            if(max_stock > 0) {
+                MenuItem newItem = new MenuItem("       ");
+                newItem.setStyle("-fx-background-color: #" + color);
+                newItem.setOnAction(event -> {
+                    resetColor();
+                    circleColor.setStyle("-fx-fill: #" + color);
+                    circleColor.setVisible(true);
+                    menuColor.setStyle("-fx-background-color: #e2e2e2");
+                    menuQuantity.setStyle("-fx-background-color: #cdcdcd");
+                    selectedColor = color;
+                    initQuantity(max_stock);
+                });
+                menuColor.getItems().add(newItem);
+            }
 
         }
 
     }
 
-    private void initQuantity() {
+    private void initQuantity(Integer number) {
 
-        // Cantidad de productos disponibles
-        int quantity = 4;
-
-        int number;
-        if (quantity > 5) number = 5;
-        else number = quantity;
 
         menuQuantity.getItems().clear();
         for (int i=1; i < number+1; i++) {
@@ -243,12 +245,33 @@ public class ProductDisplayController implements Initializable {
                 selectedQuantity = finalI;
             });
 
-            //TODO: Chequear que hay stock. Se hace haciendo una consulta que filtre este producto con
-            //      la variable stock=selectQuantity
-
             menuQuantity.getItems().add(newItem);
 
         }
+
+    }
+
+    public Integer checkStock(ProductDTO product, String size, String color){
+
+        Integer max_stock = 0;
+
+        ProductFilters productFilters = new ProductFilters();
+        productFilters.setId(product.getId());
+
+
+        productFilters.setSize(size);
+        productFilters.setColor(color);
+        List<ProductDTO> products = null;
+        for (int i=1; i<=3; i++){
+            productFilters.setStock(i);
+            products = productRestController.getProducts(productFilters);
+            if(!products.isEmpty()){
+                max_stock = i;
+            }
+        }
+
+
+        return max_stock;
 
     }
 

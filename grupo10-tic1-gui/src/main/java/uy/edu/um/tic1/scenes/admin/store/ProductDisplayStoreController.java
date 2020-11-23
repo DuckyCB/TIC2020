@@ -72,6 +72,7 @@ public class ProductDisplayStoreController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+
         labelTitle.setText(product.getName());
         productBrand.setText(product.getBrand().getName());
         labelPrice.setText(product.getPrice().toString() + "$");
@@ -150,7 +151,7 @@ public class ProductDisplayStoreController implements Initializable {
             for (String size: sizes) {
 
                 Integer quantity = 0;
-                StockDTO stock = store.getStockBySizeAndColor(size, color);
+                StockDTO stock = store.getStockBySizeAndColor(product, size, color);
                 if(stock != null){
                     quantity = stock.getStock();
                 }
@@ -205,7 +206,7 @@ public class ProductDisplayStoreController implements Initializable {
     public void updateStock(String size, String color, Integer quantity) {
 
         StoreDTO store = storeRestController.getStore();
-        StockDTO stock = store.getStockBySizeAndColor(size, color);
+        StockDTO stock = store.getStockBySizeAndColor(product, size, color);
 
         if (stock == null) {
 
@@ -216,7 +217,8 @@ public class ProductDisplayStoreController implements Initializable {
                     .build();
             store.addStock(stock);
 
-        } else store.updateStock(size, color, quantity);
+        } else
+            store.updateStock(product, size, color, quantity);
 
         storeRestController.save(store);
 

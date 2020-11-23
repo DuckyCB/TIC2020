@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entities.ProductFilters;
 import uy.edu.um.tic1.entities.elements.PaneProduct;
+import uy.edu.um.tic1.entitites.StoreDTO;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.cart.CartItemDTO;
 import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
@@ -28,12 +29,14 @@ import uy.edu.um.tic1.entitites.users.ClientDTO;
 import uy.edu.um.tic1.entitites.users.StoreUserDTO;
 import uy.edu.um.tic1.requests.CartRestController;
 import uy.edu.um.tic1.requests.ProductRestController;
+import uy.edu.um.tic1.requests.StoreRestController;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @FxmlView("/uy/edu/um/tic1/scenes/sceneListItems.fxml")
@@ -45,8 +48,11 @@ public class ListItemsController implements Initializable {
     private CartRestController cartRestController;
     @Autowired
     private ProductRestController productRestController;
+    @Autowired
+    private StoreRestController storeRestController;
 
     private AppUserDTO user;
+    private StoreDTO store;
 
     private Set<PurchaseDTO> purchaseSet;
     private Set<CartItemDTO> cartItemSet;
@@ -71,10 +77,14 @@ public class ListItemsController implements Initializable {
             setProducts(cartItemSet.toArray());
 
         }
-        else if (user instanceof StoreUserDTO) setStoreSales();
+        else if (user instanceof StoreUserDTO) {
+            store = storeRestController.getStore();
+            purchaseSet = storeRestController.getPurchases(false).stream().collect(Collectors.toSet());
+            setStoreSales();
+        }
+
         else {
 
-            purchaseSet = storeApplication.getPurchases();
             setProducts(Objects.requireNonNull(requestCartList()).toArray());
 
         }
@@ -175,15 +185,15 @@ public class ListItemsController implements Initializable {
                 // ACCEPT PURCHASE
                 if (!sale.getDelivered()) {
 
-                    Button acceptPurchase = new Button("Aceptar Compra");
+                    Button acceptPurchase = new Button("Producto Entregado");
                     acceptPurchase.setFont(Font.font("Cambria", FontWeight.BOLD, 12));
                     acceptPurchase.setLayoutX(519);
                     acceptPurchase.setLayoutY(60);
                     acceptPurchase.setOnAction(event -> {
-                        sale.setDelivered(true);
-                        sale.setDeliveryDate(LocalDate.now());
-                        sale.setDeliveryTime(LocalTime.now());
+                        store.deliverPurchase(sale.getId());
                         acceptPurchase.setVisible(false);
+                        storeRestController.save(store);
+
                     });
                     paneProduct.getChildren().add(acceptPurchase);
 
@@ -347,7 +357,6 @@ public class ListItemsController implements Initializable {
 
                 if (!cartItemSet.isEmpty()) {
 
-                    // TODO : Realizar compra
                     buyCart();
                     storeApplication.setCart(CartDTO.builder().items(new LinkedHashSet<>()).build());
                     ((ClientDTO) storeApplication.getAppUser()).setCurrentCart(storeApplication.getCart());

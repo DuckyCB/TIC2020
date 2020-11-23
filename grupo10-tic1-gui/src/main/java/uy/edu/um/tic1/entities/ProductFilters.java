@@ -19,6 +19,7 @@ public class ProductFilters {
     private Double from;
     private Double to;
     private String type;
+    private Integer subtype;
     private Boolean hasStock;
     private Integer order;
 
@@ -58,6 +59,10 @@ public class ProductFilters {
         if (type != null)
             query += "type=" + type + "&";
 
+        if (subtype != null)
+            query += "subcategory=" + subtype + "&";
+
+
         if (hasStock != null)
             query += "hasStock=" + hasStock.toString() + "&";
 
@@ -70,7 +75,7 @@ public class ProductFilters {
     public Boolean filtering(){
 
         if (id!=null || name!=null || gender!=null || brand_id!=null || size!=null || color!=null ||
-                stock!=null || from!=null || to!=null || type!=null || hasStock!= null || order != null){
+                stock!=null || from!=null || to!=null || type!=null || hasStock!= null || order != null || subtype != null){
             return true;
         }
         else {
@@ -82,7 +87,7 @@ public class ProductFilters {
     public ProductFilters() {
     }
 
-    public ProductFilters(Integer id, String name, Character gender, Integer brand_id, String size, String color, Integer stock, Double from, Double to, String type, Boolean hasStock, Integer order) {
+    public ProductFilters(Integer id, String name, Character gender, Integer brand_id, String size, String color, Integer stock, Double from, Double to, String type, Integer subtype, Boolean hasStock, Integer order) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -93,6 +98,7 @@ public class ProductFilters {
         this.from = from;
         this.to = to;
         this.type = type;
+        this.subtype = subtype;
         this.hasStock = hasStock;
         this.order = order;
     }
@@ -191,5 +197,13 @@ public class ProductFilters {
 
     public void setOrder(Integer order) {
         this.order = order;
+    }
+
+    public Integer getSubtype() {
+        return subtype;
+    }
+
+    public void setSubtype(Integer subtype) {
+        this.subtype = subtype;
     }
 }

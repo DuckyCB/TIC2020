@@ -26,6 +26,7 @@ import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.entitites.product.ShirtDTO;
 import uy.edu.um.tic1.entitites.product.TrousersDTO;
 import uy.edu.um.tic1.entitites.users.BrandUserDTO;
+import uy.edu.um.tic1.requests.ProductRestController;
 import uy.edu.um.tic1.requests.SizeAndColorRestController;
 
 import java.io.ByteArrayInputStream;
@@ -45,6 +46,8 @@ public class ProductDisplayBrandController implements Initializable {
     StoreApplication storeApplication;
     @Autowired
     SizeAndColorRestController sizeAndColorRestController;
+    @Autowired
+    private ProductRestController productRestController;
 
     public static ProductDTO tempProduct;
     private Character genre;
@@ -120,8 +123,7 @@ public class ProductDisplayBrandController implements Initializable {
     @FXML
     void pressedSave(ActionEvent event) {
 
-        // TODO: guardar el nuevo producto remplazando el anterior, es tempProduct el producto a remplazar,
-        //  tiene el mismo id que el anterior
+        productRestController.saveProduct(tempProduct);
 
     }
 
@@ -279,7 +281,14 @@ public class ProductDisplayBrandController implements Initializable {
 
     private void addSize(String color, String size) {
 
-        SizeAndColorDTO newSizeAndColor = sizeAndColorRestController.getSizeAndColor(size, color).get(0);
+        SizeAndColorDTO newSizeAndColor = null;
+        List<SizeAndColorDTO> sizeColorList = sizeAndColorRestController.getSizeAndColor(size, color);
+
+        if(sizeColorList.isEmpty()){
+            newSizeAndColor = SizeAndColorDTO.builder().color(color).size(size).build();
+        }else{
+            newSizeAndColor = sizeColorList.get(0);
+        }
         tempProduct.addSizeAndColor(newSizeAndColor);
 
     }

@@ -2,13 +2,17 @@ package uy.edu.um.tic1.requests;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.entities.ProductFilters;
+import uy.edu.um.tic1.entitites.StoreDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
 
 import java.util.List;
@@ -38,6 +42,28 @@ public class ProductRestController {
 
 
         return response.getBody();
+    }
+
+    public void saveProduct(ProductDTO product) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        if (storeApplication.getAppUser() != null)
+            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(storeApplication.getAppUser().getUsername(),
+                    storeApplication.getPassword()));
+
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+
+        body.add("field", "value");
+        HttpEntity<ProductDTO> httpEntity = new HttpEntity<ProductDTO>(product, body);
+
+        ResponseEntity<Void> response
+                = restTemplate.exchange("http://localhost:8080/products/insert/" ,
+                HttpMethod.PUT,
+                httpEntity,
+                new ParameterizedTypeReference<Void>(){});
+
+
+
     }
 
 }
