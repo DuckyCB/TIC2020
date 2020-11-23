@@ -121,8 +121,8 @@ public class MainController implements Initializable {
         MenuItem client = new MenuItem("Client");
         client.setOnAction(event -> {
             logOut();
-            String user = "user";
-            String password = "user";
+            String user = "cliente";
+            String password = "cliente";
             AppUserDTO userEntity = userRestController.getUser(user, password);
             storeApplication.setAppUser(userEntity);
             storeApplication.setPassword(password);
@@ -146,8 +146,8 @@ public class MainController implements Initializable {
         MenuItem store = new MenuItem("Store");
         store.setOnAction(event -> {
             logOut();
-            String user = "store";
-            String password = "store";
+            String user = "levis8deOctubre";
+            String password = "levis8deOctubre";
             AppUserDTO userEntity = userRestController.getUser(user, password);
             storeApplication.setAppUser(userEntity);
             storeApplication.setPassword(password);

@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -87,7 +88,9 @@ public class ProductDisplayBrandController implements Initializable {
         labelGenre.setText("");
         labelCategory.setText("");
 
-        if (tempProduct == null) setGenre();
+        if (tempProduct == null){
+            setGenre();
+        }
         else setPage();
 
     }
@@ -315,7 +318,8 @@ public class ProductDisplayBrandController implements Initializable {
                 menuButtonCategory.setStyle("-fx-background-color: #CDCDCD");
                 labelGenre.setText(Character.toString(string.charAt(0)));
                 labelCategory.setText("");
-                tempProduct.setGender(string.charAt(0));
+                //tempProduct.setGender(string.charAt(0));
+                genre = string.charAt(0);
                 setCategory();
             });
             menuButtonGenre.getItems().add(item);
@@ -328,20 +332,25 @@ public class ProductDisplayBrandController implements Initializable {
 
         menuButtonCategory.getItems().clear();
 
-        for (String string : Categories.getSubCategory(tempProduct.getGender().toString())) {
+        for (String string : Categories.getSubCategory(genre.toString())) {
 
             MenuItem item = new MenuItem(string);
             item.setOnAction(event -> {
                 menuButtonCategory.setStyle("-fx-background-color: #E2E2E2");
                 labelCategory.setText(string);
+                String category = Categories.castCategory(string);
+
+                initNewProduct(category);
+
+
                 tempProduct.setSubcategory(Categories.getIntCategory(string));
-                ProductDTO newProduct = getNewProduct(string);
-                if (newProduct.getClass() != tempProduct.getClass() ) {
-                    cloneToNewProduct(newProduct);
-                }
+                //ProductDTO newProduct = getNewProduct(string);
+//                if (newProduct.getClass() != tempProduct.getClass() ) {
+//                    cloneToNewProduct(newProduct);
+//                }
                 initSizeAndColors();
             });
-            menuButtonGenre.getItems().add(item);
+            menuButtonCategory.getItems().add(item);
 
         }
 
@@ -351,25 +360,37 @@ public class ProductDisplayBrandController implements Initializable {
     //                  Producto
     // ****************************************************************************************************************
 
-    private ProductDTO getNewProduct(String category) {
+    private void initNewProduct(String category) {
 
-        int categoryInt = Categories.getIntCategory(category);
+
 
         BrandUserDTO brandUserDTO = (BrandUserDTO) storeApplication.getAppUser();
         BrandDTO brand = brandUserDTO.getBrand();
 
-        switch (categoryInt) {
-            case 1:
-                return HoodieDTO.builder().brand(brand).build();
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-                return TrousersDTO.builder().brand(brand).build();
-            default:
-                return ShirtDTO.builder().brand(brand).build();
+        switch (category) {
+            case "hoodie":
+                tempProduct = HoodieDTO.builder().build();
+                break;
+            case "trousers":
+                tempProduct = TrousersDTO.builder().build();
+                break;
+            case "shirt":
+                tempProduct = ShirtDTO.builder().build();
+                break;
         }
+
+        if(productTitle != null){
+            tempProduct.setName(productTitle.getText());
+        }
+
+        if(productPrice != null){
+            tempProduct.setPrice(Double.valueOf(productPrice.getText()));
+        }
+
+        tempProduct.setGender(genre);
+        tempProduct.setSizeAndColor(new LinkedHashSet<>());
+        tempProduct.setBrand(brand);
+
 
     }
 

@@ -27,14 +27,14 @@ public class PurchaseItem {
 
     @ManyToOne
     @JoinColumn(name = "product",
-            foreignKey = @ForeignKey(name = "fk_cart_item_product")
+            foreignKey = @ForeignKey(name = "fk_purchase_item_product")
     )
     @NotNull(message = "Product may not be null")
     private Product product;
 
     @ManyToOne
     @JoinColumn(name = "sizeAndColor",
-            foreignKey = @ForeignKey(name = "fk_cart_item_size_color")
+            foreignKey = @ForeignKey(name = "fk_purchase_item_size_color")
     )
     @NotNull(message = "Size and color may not be null")
     private SizeAndColor sizeAndColor;
