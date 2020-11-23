@@ -57,6 +57,8 @@ public class ListItemsController implements Initializable {
     private Set<PurchaseDTO> purchaseSet;
     private Set<CartItemDTO> cartItemSet;
 
+    public static Boolean isCart;
+
 
     @FXML
     private FlowPane flowPaneProducts;
@@ -73,8 +75,16 @@ public class ListItemsController implements Initializable {
         user = storeApplication.getAppUser();
         if (user instanceof ClientDTO) {
 
-            cartItemSet = requestCartList();
-            setProducts(cartItemSet.toArray());
+            if (isCart) {
+
+                cartItemSet = requestCartList();
+                setProducts(cartItemSet.toArray());
+
+            } else {
+
+                setUserPurchases();
+
+            }
 
         }
         else if (user instanceof StoreUserDTO) {
@@ -113,6 +123,64 @@ public class ListItemsController implements Initializable {
     // ****************************************************************************************************************
     //                  USER
     // ****************************************************************************************************************
+
+    private void setUserPurchases() {
+
+        ClientDTO client = (ClientDTO) storeApplication.getAppUser();
+
+        // TODO: Recuperar compras de usuario
+        List<CartItemDTO> items = null;
+
+        /*if (items != null) {
+
+            for (CartItemDTO item : items) {
+
+                Pane paneProduct = new Pane();
+                paneProduct.setPrefSize(685, 150);
+                paneProduct.setStyle("-fx-background-color: #E2E2E2");
+                // ID:
+                Label labelId = new Label("Id: " + item.getId());
+                labelId.setFont(Font.font("Cambria", FontWeight.BOLD, 18));
+                labelId.setLayoutX(20);
+                labelId.setLayoutY(14);
+                paneProduct.getChildren().add(labelId);
+
+                // PRICE
+                int price = 0;
+                for (PurchaseItemDTO item: sale.getPurchaseItems()) price += item.getPrice();
+                Label labelPrice = new Label("Precio total: " + price + "$");
+                labelPrice.setFont(Font.font("Cambria", FontWeight.BOLD, 26));
+                labelPrice.setLayoutX(241);
+                labelPrice.setLayoutY(16);
+                paneProduct.getChildren().add(labelPrice);
+                // SEE PRODUCTS
+                Button viewProducts = new Button("Ver productos");
+                viewProducts.setFont(Font.font("Cambria", FontWeight.BOLD, 12));
+                viewProducts.setLayoutX(295);
+                viewProducts.setLayoutY(52);
+                viewProducts.setOnAction( event -> {
+                    setProducts(Objects.requireNonNull(sale.getPurchaseItems()).toArray());
+                });
+                paneProduct.getChildren().add(viewProducts);
+                // ACCEPT PURCHASE
+                if (!sale.getDelivered()) {
+                    Button acceptPurchase = new Button("Aceptar Compra");
+                    acceptPurchase.setFont(Font.font("Cambria", FontWeight.BOLD, 12));
+                    acceptPurchase.setLayoutX(519);
+                    acceptPurchase.setLayoutY(60);
+                    acceptPurchase.setOnAction(event -> {
+                        sale.setDelivered(true);
+                        sale.setDeliveryDate(LocalDate.now());
+                        sale.setDeliveryTime(LocalTime.now());
+                        acceptPurchase.setVisible(false);
+                    });
+                    paneProduct.getChildren().add(acceptPurchase);
+                } else setPurchaseDelivered(paneProduct, sale);
+                flowPaneProducts.getChildren().add(paneProduct);
+            }
+        } else flowPaneProducts.getChildren().add(getNoMesaggesPane("No hay compras"));*/
+
+    }
 
     /**
      * En el caso que haya un usuario ingresado, hace un request al server para tener los productos del carrito.
@@ -159,8 +227,10 @@ public class ListItemsController implements Initializable {
                 // ADDRESS
                 Label labelAdress = new Label("Dirección: " + sale.getClient().getAddress());
                 labelAdress.setFont(Font.font("Cambria", FontWeight.BOLD, 18));
+                labelAdress.setPrefSize(460, 54);
+                labelAdress.setWrapText(true);
                 labelAdress.setLayoutX(28);
-                labelAdress.setLayoutY(105);
+                labelAdress.setLayoutY(96);
                 paneProduct.getChildren().add(labelAdress);
 
                 // PRICE
@@ -193,7 +263,7 @@ public class ListItemsController implements Initializable {
                         store.deliverPurchase(sale.getId());
                         acceptPurchase.setVisible(false);
                         storeRestController.save(store);
-
+                        setPurchaseDelivered(paneProduct, sale);
                     });
                     paneProduct.getChildren().add(acceptPurchase);
 
@@ -212,8 +282,8 @@ public class ListItemsController implements Initializable {
         // DELIVERED
         Label labelDelivered = new Label("ENTREGADO");
         labelDelivered.setFont(Font.font("Cambria", FontWeight.BOLD, 20));
-        labelDelivered.setLayoutX(28);
-        labelDelivered.setLayoutY(105);
+        labelDelivered.setLayoutX(500);
+        labelDelivered.setLayoutY(17);
         paneProduct.getChildren().add(labelDelivered);
 
         // DATE
