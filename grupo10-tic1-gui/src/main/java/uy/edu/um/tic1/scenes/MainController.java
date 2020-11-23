@@ -4,13 +4,11 @@ package uy.edu.um.tic1.scenes;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Orientation;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -18,6 +16,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entities.elements.PaneFilter;
+import uy.edu.um.tic1.entitites.product.HoodieDTO;
 import uy.edu.um.tic1.entitites.users.*;
 import uy.edu.um.tic1.requests.BrandRestController;
 import uy.edu.um.tic1.requests.ProductRestController;
@@ -104,29 +103,6 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        MainController.productFilters = new ProductFilters();
-
-        // Agrega los botones acordes al usuario
-        AppUserDTO user = storeApplication.getAppUser();
-        if (user instanceof ClientDTO) setButtonsClient();
-        else if (user instanceof BrandUserDTO) {
-            labelBrands.setVisible(false);
-            flowPaneBrands.setVisible(false);
-            setButtonsBrand();
-        }
-        else if (user instanceof StoreUserDTO) setButtonsStore();
-        else setButtonsDefault();
-
-        // Setea el panel de filtros
-        setCategory(Categories.getGenre());
-        setColors();
-        setSizes();
-        setBrands();
-
-        paneFiltersLeft.setVisible(false);
-        menuButtonSort.setVisible(false);
-
-        // Muestra la pagina de inicio, el banner y marcas
         setMainPage();
 
     }
@@ -135,7 +111,7 @@ public class MainController implements Initializable {
     //                  PÁGINA DE INICIO
     // ****************************************************************************************************************
 
-    public void setMainPage() {
+    private void setBannerPage() {
 
         flowPaneBackground.getChildren().clear();
 
@@ -144,9 +120,40 @@ public class MainController implements Initializable {
         banner.setPreserveRatio(true);
         flowPaneBackground.getChildren().add(banner);
 
-        ScrollPane brandsPane = PaneBrands.getScroll(brandRestController.getAllBrands(brandFilters));
+        ScrollPane brandsPane = getScroll(brandRestController.getAllBrands(brandFilters));
         brandsPane.setPrefWidth(1000);
         flowPaneBackground.getChildren().add(brandsPane);
+
+    }
+
+    private void setMainPage() {
+
+        paneFiltersLeft.setVisible(false);
+        closeFiltersPanel();
+        menuButtonSort.setVisible(false);
+
+        // Agrega los botones acordes al usuario
+        AppUserDTO user = storeApplication.getAppUser();
+        if (user instanceof ClientDTO) {
+            setButtonsClient();
+            setFiltersPanel();
+            setBannerPage();
+        }
+        else if (user instanceof BrandUserDTO) {
+            labelBrands.setVisible(false);
+            flowPaneBrands.setVisible(false);
+            setFiltersPanel();
+            setButtonsBrand();
+        }
+        else if (user instanceof StoreUserDTO) {
+            buttonFilters.setVisible(false);
+            setButtonsStore();
+        }
+        else {
+            setButtonsDefault();
+            setFiltersPanel();
+            setBannerPage();
+        }
 
     }
 
@@ -157,7 +164,7 @@ public class MainController implements Initializable {
     public void selectedBrand(BrandDTO brand) {
 
         productFilters.setBrand_id(brand.getId());
-        setProducts();
+        setProducts(productsQuery());
 
     }
 
@@ -236,7 +243,13 @@ public class MainController implements Initializable {
 
         Button newProduct = new Button("Agregar producto");
         newProduct.setStyle("-fx-background-color: #ffffff");
-        newProduct.setOnAction(event -> storeApplication.sceneStoreDisplayProduct(null));
+        newProduct.setOnAction(event -> {
+
+            // TODO: De alguna forma hacer que guarde en todos los productos que puede agregar el store
+            List<ProductDTO> list = null;
+            setProducts(list);
+
+        });
         flowPaneButtons.getChildren().add(newProduct);
 
         Button logOut = new Button("Cerrar sesión");
@@ -257,6 +270,16 @@ public class MainController implements Initializable {
     // ****************************************************************************************************************
     //                  PANEL DE FILTROS
     // ****************************************************************************************************************
+
+    private void setFiltersPanel() {
+
+        // Setea el panel de filtros
+        setCategory(Categories.getGenre());
+        setColors();
+        setSizes();
+        setBrands();
+
+    }
 
     /**
      * Agrega las categorias al panel de filtro.
@@ -321,7 +344,7 @@ public class MainController implements Initializable {
         Label label = new Label(type);
         flowPaneCategoryLabels.getChildren().add(label);
 
-        setProducts();
+        setProducts(productsQuery());
 
     }
 
@@ -365,7 +388,7 @@ public class MainController implements Initializable {
     private void colorRequest(String color) {
 
         productFilters.setColor(color);
-        setProducts();
+        setProducts(productsQuery());
         setColors();
 
     }
@@ -410,7 +433,7 @@ public class MainController implements Initializable {
 
         menuButtonSort.setVisible(true);
         productFilters.setSize(size);
-        setProducts();
+        setProducts(productsQuery());
         setSizes();
 
     }
@@ -459,7 +482,7 @@ public class MainController implements Initializable {
     private void brandRequest(Integer brand) {
 
         productFilters.setBrand_id(brand);
-        setProducts();
+        setProducts(productsQuery());
         setBrands();
 
     }
@@ -471,9 +494,7 @@ public class MainController implements Initializable {
     /**
      *
      */
-    private void setProducts() {
-
-        List<ProductDTO> productsList = productsQuery();
+    private void setProducts(List<ProductDTO> productsList) {
 
         flowPaneBackground.getChildren().clear();
         menuButtonSort.setVisible(true);
@@ -518,7 +539,7 @@ public class MainController implements Initializable {
     }
 
     // ****************************************************************************************************************
-    //                  BOTONES FXML
+    //                  BOTONES FXML - FILTERS
     // ****************************************************************************************************************
 
 
@@ -537,7 +558,7 @@ public class MainController implements Initializable {
     void pressedHighFirst(ActionEvent event) {
 
         productFilters.setOrder(-1);
-        setProducts();
+        setProducts(productsQuery());
 
     }
 
@@ -545,7 +566,7 @@ public class MainController implements Initializable {
     void pressedLowFirst(ActionEvent event) {
 
         productFilters.setOrder(1);
-        setProducts();
+        setProducts(productsQuery());
 
     }
 
@@ -559,13 +580,15 @@ public class MainController implements Initializable {
             paneFiltersLeft.setVisible(true);
             filters = true;
 
-        } else {
+        } else closeFiltersPanel();
 
-            paneFiltersLeft.setVisible(false);
-            AnchorPane.setLeftAnchor(paneBackground, 0d);
-            filters = false;
+    }
 
-        }
+    private void closeFiltersPanel() {
+
+        paneFiltersLeft.setVisible(false);
+        AnchorPane.setLeftAnchor(paneBackground, 0d);
+        filters = false;
 
     }
 
@@ -581,7 +604,7 @@ public class MainController implements Initializable {
         productFilters = new ProductFilters();
 
         setCategory(Categories.getGenre());
-        setProducts();
+        setProducts(productsQuery());
         setColors();
 
     }
@@ -596,7 +619,7 @@ public class MainController implements Initializable {
             try {
                 Double max = Double.parseDouble(maxStr);
                 productFilters.setTo(max);
-                setProducts();
+                setProducts(productsQuery());
             } catch (NumberFormatException e) {
                 System.out.println("El valor debe ser un numero");
             }
@@ -615,7 +638,7 @@ public class MainController implements Initializable {
             try {
                 Double min = Double.parseDouble(minStr);
                 productFilters.setFrom(min);
-                setProducts();
+                setProducts(productsQuery());
             } catch (NumberFormatException e) {
                 System.out.println("El valor debe ser un numero");
             }
@@ -633,22 +656,22 @@ public class MainController implements Initializable {
 
             clearFilters();
             productFilters.setName(text);
-            setProducts();
+            setProducts(productsQuery());
 
         }
 
     }
 
-    public MainController() {
-    }
-
+    // ****************************************************************************************************************
+    //                  REQUEST
+    // ****************************************************************************************************************
 
     public List<ProductDTO> productsQuery(){
 
         List<ProductDTO> productList = null;
 
         AppUserDTO user = storeApplication.getAppUser();
-        if (user == null || user instanceof ClientDTO) productList =productRestController.getProducts(productFilters);
+        if (user == null || user instanceof ClientDTO) productList = productRestController.getProducts(productFilters);
         else if (user instanceof BrandUserDTO) {
             productFilters.setBrand_id(((BrandUserDTO) user).getBrand().getId());
             productFilters.setHasStock(false);
@@ -658,6 +681,48 @@ public class MainController implements Initializable {
         else if (user instanceof StoreUserDTO) productList = storeRestController.getStoreProducts(false);
 
         return productList;
+
+    }
+
+    // ****************************************************************************************************************
+    //                  PANE
+    // ****************************************************************************************************************
+
+    private ScrollPane getScroll(List<BrandDTO> brands) {
+
+        ScrollPane scroll = new ScrollPane();
+        scroll.setPrefHeight(150);
+        scroll.setMinSize(500, 150);
+        scroll.setMaxHeight(150);
+
+        FlowPane flow = new FlowPane();
+        flow.setPrefHeight(135);
+        flow.setMaxHeight(135);
+        flow.setMaxWidth(Region.USE_COMPUTED_SIZE);
+        flow.setVgap(10);
+        flow.setHgap(10);
+        flow.setOrientation(Orientation.VERTICAL);
+        flow.setPrefWrapLength(140);
+
+        for (BrandDTO brand: brands) {
+
+            StackPane paneBackground = new StackPane();
+            paneBackground.setStyle("-fx-background-color: #e2e2e2");
+            paneBackground.setMinSize(135, 135);
+            paneBackground.setPrefSize(135, 135);
+            paneBackground.setMaxSize(135, 135);
+            Label labelBrand = new Label(brand.getName());
+            labelBrand.setFont(Font.font("Cambria", FontWeight.BOLD, 28));
+            labelBrand.setWrapText(true);
+            paneBackground.getChildren().add(labelBrand);
+            paneBackground.setOnMouseClicked(event -> selectedBrand(brand));
+            flow.getChildren().add(paneBackground);
+
+        }
+
+        scroll.setContent(flow);
+
+        return scroll;
 
     }
 
