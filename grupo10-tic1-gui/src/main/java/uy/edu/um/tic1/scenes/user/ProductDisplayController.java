@@ -203,7 +203,7 @@ public class ProductDisplayController implements Initializable {
         });
         for (String color: uniqueColors.keySet()) {
 
-            MenuItem newItem = new MenuItem("       ");
+            MenuItem newItem = new MenuItem("           ");
             newItem.setStyle("-fx-background-color: #"+color);
             newItem.setOnAction(event -> {
                 resetColor();

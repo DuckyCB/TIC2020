@@ -72,13 +72,17 @@ public class ProductDisplayStoreController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        labelTitle.setText(product.getName());
-        productBrand.setText(product.getBrand().getName());
-        labelPrice.setText(product.getPrice().toString() + "$");
-        labelGenre.setText(product.getGender().toString());
-        labelCategory.setText(Categories.getCategoryFromInt(product.getSubcategory()));
-        productImage.setImage(getImage(product.getImage()));
-        initSizeAndColors();
+        if (product != null) {
+
+            labelTitle.setText(product.getName());
+            productBrand.setText(product.getBrand().getName());
+            labelPrice.setText(product.getPrice().toString() + "$");
+            labelGenre.setText(product.getGender().toString());
+            labelCategory.setText(Categories.getCategoryFromInt(product.getSubcategory()));
+            productImage.setImage(getImage(product.getImage()));
+            initSizeAndColors();
+
+        }
 
     }
 
