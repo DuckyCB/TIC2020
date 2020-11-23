@@ -8,6 +8,7 @@ import uy.edu.um.tic1.entities.cart.Cart;
 import uy.edu.um.tic1.entitites.StoreDTO;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.cart.CartItemDTO;
+import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,5 +54,13 @@ public class ClientRestController {
         return clientController.getStores(auth);
     }
 
+
+    @GetMapping("/purchases/")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    public List<PurchaseDTO> getPurchases(@RequestHeader("authorization") String auth,
+                                          @RequestParam(name="delivered",required = false) Boolean delivered){
+
+        return clientController.getPurchases(auth, delivered);
+    }
 
 }

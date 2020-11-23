@@ -42,6 +42,9 @@ public class PurchaseQuerySpecification implements Specification<Purchase> {
             predicates.add(criteriaBuilder.equal(root.get("client"), client));
 
 
+        query.orderBy(criteriaBuilder.desc(root.get("deliveryDate")));
+
+
 
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }

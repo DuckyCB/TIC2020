@@ -5,13 +5,17 @@ import org.springframework.stereotype.Service;
 import uy.edu.um.tic1.entities.Store;
 import uy.edu.um.tic1.entities.cart.Cart;
 import uy.edu.um.tic1.entities.cart.CartItem;
+import uy.edu.um.tic1.entities.cart.Purchase;
 import uy.edu.um.tic1.entities.users.AppUser;
 import uy.edu.um.tic1.entities.users.Client;
 import uy.edu.um.tic1.entitites.StoreDTO;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.cart.CartItemDTO;
+import uy.edu.um.tic1.entitites.cart.PurchaseDTO;
 import uy.edu.um.tic1.repositories.CartRepository;
+import uy.edu.um.tic1.repositories.PurchaseRepository;
 import uy.edu.um.tic1.repositories.specifications.CartQuerySpecification;
+import uy.edu.um.tic1.repositories.specifications.PurchaseQuerySpecification;
 import uy.edu.um.tic1.security.user.ApplicationUserService;
 
 import java.util.HashMap;
@@ -30,6 +34,8 @@ public class ClientController {
     private CartRepository cartRepository;
     @Autowired
     private StoreController storeController;
+    @Autowired
+    private PurchaseRepository purchaseRepository;
 
 
     public Client getClientFromHeader(String auth) {
@@ -133,8 +139,25 @@ public class ClientController {
     }
 
 
+    public List<PurchaseDTO> getPurchases(String auth, Boolean delivered) {
+
+        Client client = getClientFromHeader(auth);
+
+        if(client != null) {
+            if (delivered == null) {
+
+                List<Purchase> purchases = purchaseRepository.findAll(PurchaseQuerySpecification.builder()
+                        .client(client)
+                        .build()
+                );
+
+                return purchases.stream().map(Purchase::toDTO).collect(Collectors.toList());
 
 
+            }
+        }
 
+        return null;
 
+    }
 }
