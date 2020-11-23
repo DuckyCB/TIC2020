@@ -187,6 +187,8 @@ public class StoreApplication extends Application {
 
     public void sceneCart() {
 
+        ListItemsController.isCart = true;
+
         if (getAppUser() != null && getAppUser() instanceof ClientDTO) {
 
             ClientDTO client = (ClientDTO) getAppUser();

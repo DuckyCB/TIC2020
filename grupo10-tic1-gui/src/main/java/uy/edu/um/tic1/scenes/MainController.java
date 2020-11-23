@@ -46,7 +46,7 @@ public class MainController implements Initializable {
     private BrandRestController brandRestController;
     @Autowired
     private StoreRestController storeRestController;
-    //TODO: Borrar esto despues para la entrega
+    //TODO: Borrar esto para la entrega
     @Autowired
     private UserRestController userRestController;
     @Autowired
@@ -107,7 +107,7 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         showUsers();
-        setMainPage();
+        showMainPage();
 
     }
 
@@ -143,11 +143,11 @@ public class MainController implements Initializable {
         });
         menuButton.getItems().add(client);
 
-        MenuItem store = new MenuItem("Store");
+        MenuItem store = new MenuItem("Store 1");
         store.setOnAction(event -> {
             logOut();
-            String user = "levis8deOctubre";
-            String password = "levis8deOctubre";
+            String user = "tienda1";
+            String password = "tienda1";
             AppUserDTO userEntity = userRestController.getUser(user, password);
             storeApplication.setAppUser(userEntity);
             storeApplication.setPassword(password);
@@ -156,8 +156,33 @@ public class MainController implements Initializable {
         });
         menuButton.getItems().add(store);
 
-        MenuItem brand = new MenuItem("Brand");
-        brand.setOnAction(event -> {
+        MenuItem store1 = new MenuItem("Store 1");
+        store1.setOnAction(event -> {
+            logOut();
+            String user = "tienda2";
+            String password = "tienda2";
+            AppUserDTO userEntity = userRestController.getUser(user, password);
+            storeApplication.setAppUser(userEntity);
+            storeApplication.setPassword(password);
+            storeApplication.setPurchases(storeRestController.getStore().getPurchaseSet());
+            storeApplication.sceneMain();
+        });
+        menuButton.getItems().add(store1);
+
+        MenuItem brandTommys = new MenuItem("Brand Tommy");
+        brandTommys.setOnAction(event -> {
+            logOut();
+            String user = "tommy";
+            String password = "tommy";
+            AppUserDTO userEntity = userRestController.getUser(user, password);
+            storeApplication.setAppUser(userEntity);
+            storeApplication.setPassword(password);
+            storeApplication.sceneMain();
+        });
+        menuButton.getItems().add(brandTommys);
+
+        MenuItem brandLevis = new MenuItem("Brand Levis");
+        brandLevis.setOnAction(event -> {
             logOut();
             String user = "levis";
             String password = "levis";
@@ -166,7 +191,19 @@ public class MainController implements Initializable {
             storeApplication.setPassword(password);
             storeApplication.sceneMain();
         });
-        menuButton.getItems().add(brand);
+        menuButton.getItems().add(brandLevis);
+
+        MenuItem brandPolo = new MenuItem("Brand Polo");
+        brandPolo.setOnAction(event -> {
+            logOut();
+            String user = "polo";
+            String password = "polo";
+            AppUserDTO userEntity = userRestController.getUser(user, password);
+            storeApplication.setAppUser(userEntity);
+            storeApplication.setPassword(password);
+            storeApplication.sceneMain();
+        });
+        menuButton.getItems().add(brandPolo);
 
         paneMenuBar.getChildren().add(menuButton);
 
@@ -176,7 +213,7 @@ public class MainController implements Initializable {
     //                  PÁGINA DE INICIO
     // ****************************************************************************************************************
 
-    private void setBannerPage() {
+    private void showBannerPage() {
 
         flowPaneBackground.getChildren().clear();
 
@@ -191,7 +228,7 @@ public class MainController implements Initializable {
 
     }
 
-    private void setMainPage() {
+    private void showMainPage() {
 
         paneFiltersLeft.setVisible(false);
         closeFiltersPanel();
@@ -202,28 +239,29 @@ public class MainController implements Initializable {
 
         if (user instanceof ClientDTO) {
 
-            setButtonsClient();
-            setFiltersPanel();
-            setBannerPage();
+            showButtonsClient();
+            loadFiltersPanel();
+            showBannerPage();
 
         } else if (user instanceof BrandUserDTO) {
 
             labelBrands.setVisible(false);
             flowPaneBrands.setVisible(false);
-            setFiltersPanel();
-            setButtonsBrand();
+            loadFiltersPanel();
+            showButtonsBrand();
+            setProducts(requestProducts());
 
         } else if (user instanceof StoreUserDTO) {
 
             buttonFilters.setVisible(false);
-            setButtonsStore();
+            showButtonsStore();
             setProducts(storeRestController.getStoreProducts(true));
 
         } else {
 
-            setButtonsDefault();
-            setFiltersPanel();
-            setBannerPage();
+            showButtonsDefault();
+            loadFiltersPanel();
+            showBannerPage();
 
         }
 
@@ -236,7 +274,7 @@ public class MainController implements Initializable {
     public void selectedBrand(BrandDTO brand) {
 
         productFilters.setBrand_id(brand.getId());
-        setProducts(productsQuery());
+        setProducts(requestProducts());
 
     }
 
@@ -247,7 +285,7 @@ public class MainController implements Initializable {
     /**
      * Agrega los botones de un usuario sin cuenta, Carrito e Ingresar
      */
-    private void setButtonsDefault() {
+    private void showButtonsDefault() {
 
         flowPaneButtons.getChildren().clear();
 
@@ -266,9 +304,17 @@ public class MainController implements Initializable {
     /**
      * Agrega los botones de un cliente, Carrito y Usuario
      */
-    private void setButtonsClient() {
+    private void showButtonsClient() {
 
         flowPaneButtons.getChildren().clear();
+
+        Button seePurchases = new Button("Ver compras");
+        seePurchases.setStyle("-fx-background-color: #ffffff");
+        seePurchases.setOnMouseClicked(event -> {
+            ListItemsController.isCart = false;
+            storeApplication.sceneListItems("Lista de compras");
+        });
+        flowPaneButtons.getChildren().add(seePurchases);
 
         Button cart = new Button("Carrito");
         cart.setStyle("-fx-background-color: #ffffff");
@@ -285,7 +331,7 @@ public class MainController implements Initializable {
     /**
      * Agrega los botones de una Marca, Nuevo Producto y Marca.
      */
-    private void setButtonsBrand() {
+    private void showButtonsBrand() {
 
         flowPaneButtons.getChildren().clear();
 
@@ -304,7 +350,7 @@ public class MainController implements Initializable {
     /**
      * Agrega los botones de una tienda, Nuevo Producto, y Tienda
      */
-    private void setButtonsStore() {
+    private void showButtonsStore() {
 
         flowPaneButtons.getChildren().clear();
 
@@ -342,10 +388,10 @@ public class MainController implements Initializable {
     //                  PANEL DE FILTROS
     // ****************************************************************************************************************
 
-    private void setFiltersPanel() {
+    private void loadFiltersPanel() {
 
         // Setea el panel de filtros
-        setCategory(Categories.getGenre());
+        setCategories(Categories.getGenre());
         setColors();
         setSizes();
         setBrands();
@@ -359,7 +405,7 @@ public class MainController implements Initializable {
      * Si level se encuentra en el valor 1, toma la nueva lista de String
      * @see #pressedCategory(String)
      */
-    private void setCategory(String[] categoryList) {
+    private void setCategories(String[] categoryList) {
 
         flowPaneCategory.getChildren().clear();
 
@@ -394,14 +440,14 @@ public class MainController implements Initializable {
         if (productFilters.getGender() == null) {
 
             productFilters.setGender(type.charAt(0));
-            setCategory(Categories.getSubCategory(type));
+            setCategories(Categories.getSubCategory(type));
 
         } else if (productFilters.getType() == null) {
 
             productFilters.setType(Categories.castCategory(type));
             Label arrow = new Label(" > ");
             flowPaneCategoryLabels.getChildren().add(arrow);
-            setCategory(Categories.getSubCategory(productFilters.getGender().toString(), type));
+            setCategories(Categories.getSubCategory(productFilters.getGender().toString(), type));
 
         } else {
             //productFilters.setSubtype(type.);
@@ -414,7 +460,7 @@ public class MainController implements Initializable {
         Label label = new Label(type);
         flowPaneCategoryLabels.getChildren().add(label);
 
-        setProducts(productsQuery());
+        setProducts(requestProducts());
 
     }
 
@@ -424,7 +470,7 @@ public class MainController implements Initializable {
      * Toma los colores de la clase estatica Colors.
      * @see Colors
      * Al apretar un color, llama la funcion
-     * @see #colorRequest(String)
+     * @see #requestByColor(String)
      */
     private void setColors() {
 
@@ -443,7 +489,7 @@ public class MainController implements Initializable {
             } else colorPane.setStyle("-fx-background-color: #E2E2E2");
 
             colorPane.setPrefSize(32, 32);
-            colorCircle.setOnMouseClicked(event -> colorRequest(color));
+            colorCircle.setOnMouseClicked(event -> requestByColor(color));
             flowPaneColors.getChildren().add(colorPane);
 
         }
@@ -455,10 +501,10 @@ public class MainController implements Initializable {
      * Hace un request de productos por color
      * @param color Color por el cual va a hacer filtro.
      */
-    private void colorRequest(String color) {
+    private void requestByColor(String color) {
 
         productFilters.setColor(color);
-        setProducts(productsQuery());
+        setProducts(requestProducts());
         setColors();
 
     }
@@ -470,7 +516,7 @@ public class MainController implements Initializable {
      * Toma los talles de la clase estatica Sizes.
      * @see Sizes
      * Al apretar un talle, llama la funcion
-     * @see #sizeRequest(String) para hacer el request
+     * @see #requestBySize(String) para hacer el request
      */
     private void setSizes(){
 
@@ -488,7 +534,7 @@ public class MainController implements Initializable {
 
             }
 
-            paneSize.setOnMouseClicked(event -> sizeRequest(size));
+            paneSize.setOnMouseClicked(event -> requestBySize(size));
             flowPaneSizes.getChildren().add(paneSize);
 
         }
@@ -499,11 +545,11 @@ public class MainController implements Initializable {
      * Hace un request de productos por talle
      * @param size Talle por el cual va a hacer filtro.
      */
-    private void sizeRequest(String size) {
+    private void requestBySize(String size) {
 
         menuButtonSort.setVisible(true);
         productFilters.setSize(size);
-        setProducts(productsQuery());
+        setProducts(requestProducts());
         setSizes();
 
     }
@@ -536,8 +582,8 @@ public class MainController implements Initializable {
 
                 } else paneBrand = PaneFilter.getPane(brandName, "E2E2E2");
 
-                paneBrand.setOnMouseClicked(event -> brandRequest(brandID));
-                flowPaneCategory.getChildren().add(paneBrand);
+                paneBrand.setOnMouseClicked(event -> requestByBrand(brandID));
+                flowPaneBrands.getChildren().add(paneBrand);
 
             }
 
@@ -549,10 +595,10 @@ public class MainController implements Initializable {
      * Hace un request de productos por marca
      * @param brand Marca por la cual va a hacer filtro.
      */
-    private void brandRequest(Integer brand) {
+    private void requestByBrand(Integer brand) {
 
         productFilters.setBrand_id(brand);
-        setProducts(productsQuery());
+        setProducts(requestProducts());
         setBrands();
 
     }
@@ -617,9 +663,9 @@ public class MainController implements Initializable {
      * Vuelve al home, mostrando nuevamente la pantalla con banner y marcas
      */
     @FXML
-    void homePressed(ActionEvent event) {
+    void pressedHome(ActionEvent event) {
 
-        setMainPage();
+        showMainPage();
         productFilters = new ProductFilters();
 
     }
@@ -628,7 +674,7 @@ public class MainController implements Initializable {
     void pressedHighFirst(ActionEvent event) {
 
         productFilters.setOrder(-1);
-        setProducts(productsQuery());
+        setProducts(requestProducts());
 
     }
 
@@ -636,7 +682,7 @@ public class MainController implements Initializable {
     void pressedLowFirst(ActionEvent event) {
 
         productFilters.setOrder(1);
-        setProducts(productsQuery());
+        setProducts(requestProducts());
 
     }
 
@@ -673,8 +719,8 @@ public class MainController implements Initializable {
 
         productFilters = new ProductFilters();
 
-        setCategory(Categories.getGenre());
-        setProducts(productsQuery());
+        setCategories(Categories.getGenre());
+        setProducts(requestProducts());
         setColors();
 
     }
@@ -689,7 +735,7 @@ public class MainController implements Initializable {
             try {
                 Double max = Double.parseDouble(maxStr);
                 productFilters.setTo(max);
-                setProducts(productsQuery());
+                setProducts(requestProducts());
             } catch (NumberFormatException e) {
                 System.out.println("El valor debe ser un numero");
             }
@@ -708,7 +754,7 @@ public class MainController implements Initializable {
             try {
                 Double min = Double.parseDouble(minStr);
                 productFilters.setFrom(min);
-                setProducts(productsQuery());
+                setProducts(requestProducts());
             } catch (NumberFormatException e) {
                 System.out.println("El valor debe ser un numero");
             }
@@ -726,7 +772,7 @@ public class MainController implements Initializable {
 
             clearFilters();
             productFilters.setName(text);
-            setProducts(productsQuery());
+            setProducts(requestProducts());
 
         }
 
@@ -736,7 +782,7 @@ public class MainController implements Initializable {
     //                  REQUEST
     // ****************************************************************************************************************
 
-    public List<ProductDTO> productsQuery(){
+    public List<ProductDTO> requestProducts(){
 
         List<ProductDTO> productList = null;
 

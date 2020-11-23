@@ -57,26 +57,32 @@
                   </ScrollPane>
                   <ImageView fx:id="productImage" fitHeight="400.0" fitWidth="300.0" layoutX="53.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../images/Men/Jean/black.jpg" />
+                        <Image url="@../../../images/no_image.jpg" />
                      </image></ImageView>
                   <Button fx:id="save" layoutX="459.0" layoutY="534.0" mnemonicParsing="false" onAction="#pressedSave" style="-fx-background-color: BBBBBB;" text="Guardar">
                      <font>
                         <Font name="Cambria Bold" size="20.0" />
                      </font>
                   </Button>
-                  <Button fx:id="uploadImage" layoutX="435.0" layoutY="327.0" mnemonicParsing="false" onAction="#pressedUploadImage" style="-fx-background-color: CDCDCD;" text="Cargar imagen">
+                  <Button fx:id="uploadImage" layoutX="431.0" layoutY="384.0" mnemonicParsing="false" onAction="#pressedUploadImage" style="-fx-background-color: CDCDCD;" text="Cargar imagen">
                      <font>
                         <Font name="Cambria" size="20.0" />
                      </font>
                   </Button>
                   <MenuButton fx:id="menuButtonGenre" layoutX="436.0" layoutY="172.0" mnemonicParsing="false" style="-fx-background-color: CDCDCD;" text="Género" />
-                  <MenuButton fx:id="menuButtonCategory" layoutX="423.0" layoutY="234.0" mnemonicParsing="false" style="-fx-background-color: E2E2E2;" text="Categoría" />
+                  <MenuButton fx:id="menuButtonCategory" layoutX="423.0" layoutY="212.0" mnemonicParsing="false" style="-fx-background-color: E2E2E2;" text="Categoría" />
                   <Label fx:id="labelGenre" layoutX="517.0" layoutY="175.0" text="X">
                      <font>
                         <Font name="Cambria" size="16.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelCategory" layoutX="517.0" layoutY="237.0" text="categoria">
+                  <Label fx:id="labelCategory" layoutX="517.0" layoutY="215.0" text="categoria">
+                     <font>
+                        <Font name="Cambria" size="16.0" />
+                     </font>
+                  </Label>
+                  <MenuButton fx:id="menuButtonSubcategory" layoutX="411.0" layoutY="256.0" mnemonicParsing="false" style="-fx-background-color: E2E2E2;" text="Subategoría" />
+                  <Label fx:id="labelSubcategory" layoutX="520.0" layoutY="249.0" prefHeight="40.0" prefWidth="88.0" text="subcategoria" wrapText="true">
                      <font>
                         <Font name="Cambria" size="16.0" />
                      </font>

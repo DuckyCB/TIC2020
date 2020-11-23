@@ -31,7 +31,7 @@ public class RegisterController implements Initializable {
 
     private String newUserName;
     private String newUserLastName;
-    private String newUserMail;
+    private String newUserUserName;
     private String newUserPassword;
 
 
@@ -79,7 +79,7 @@ public class RegisterController implements Initializable {
 
         a.setPromptText("Nombre");
         b.setPromptText("Apellido");
-        c.setPromptText("Dirección de correo");
+        c.setPromptText("Nombre de Usuario");
         d.setVisible(false);
         e.setVisible(false);
         pass.setPromptText("Contraseña");
@@ -112,12 +112,20 @@ public class RegisterController implements Initializable {
             errorB.getChildren().add(newLastNameError);
         } else errorB.setVisible(false);
 
-        String mail = String.valueOf(c.getCharacters());
-        if (mail.isEmpty()) {
+        String userName = String.valueOf(c.getCharacters());
+        boolean userNameUsed = false;
+        if (userName.isEmpty()) {
             errorC.setVisible(true);
-            Label newMailError = new Label("El campo no puede ser vacío");
-            errorC.getChildren().add(newMailError);
-        } else errorC.setVisible(false);
+            Label newUserError = new Label("El campo no puede ser vacío");
+            errorC.getChildren().add(newUserError);
+        } else {
+            // TODO: Chequea si el nombre de usuario ya se uso y lo guarda en userNameUsed
+            if (userNameUsed) {
+                errorC.setVisible(true);
+                Label newUserError = new Label("Nombre de usuario ya usado");
+                errorC.getChildren().add(newUserError);
+            } else errorC.setVisible(false);
+        }
 
         String password = String.valueOf(pass.getCharacters());
         if (password.isEmpty()) {
@@ -126,11 +134,11 @@ public class RegisterController implements Initializable {
             errorE.getChildren().add(newPasswordError);
         } else errorE.setVisible(false);
 
-        if (!name.isEmpty() && !lastName.isEmpty() && !mail.isEmpty() && !password.isEmpty()) {
+        if (!name.isEmpty() && !lastName.isEmpty() && !userName.isEmpty() && !userNameUsed && !password.isEmpty()) {
 
             newUserName = name;
             newUserLastName = lastName;
-            newUserMail = mail;
+            newUserUserName = userName;
             newUserPassword = password;
 
             setSecond();
@@ -138,8 +146,6 @@ public class RegisterController implements Initializable {
             buttonCreate.setVisible(true);
 
         }
-
-
 
     }
 
@@ -184,7 +190,7 @@ public class RegisterController implements Initializable {
         }
 
         ClientDTO newClient = ClientDTO.builder()
-                .username(newUserName)
+                .username(newUserUserName)
                 .firstName(newUserName)
                 .lastName(newUserLastName)
                 .password(newUserPassword)
@@ -215,7 +221,7 @@ public class RegisterController implements Initializable {
         a.setPromptText("Celular");
         b.setPromptText("Código ZIP");
         c.setPromptText("Calle");
-        d.setPromptText("Número de calle");
+        d.setPromptText("Número de domicilio");
         e.setPromptText("Datos Adicionales (opcional)");
 
     }

@@ -76,7 +76,11 @@ public class ProductDisplayBrandController implements Initializable {
     @FXML
     private MenuButton menuButtonCategory;
     @FXML
+    private MenuButton menuButtonSubcategory;
+    @FXML
     private Label labelCategory;
+    @FXML
+    private Label labelSubcategory;
 
     // ****************************************************************************************************************
     //                  INITIALIZE
