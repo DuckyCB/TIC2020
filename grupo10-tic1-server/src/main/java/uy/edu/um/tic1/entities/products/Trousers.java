@@ -29,7 +29,7 @@ public class Trousers extends Product {
 
     @Getter
     private final static List<String> sizes = Arrays.asList(
-            "s", "m", "l", "xl", "38", "42", "46", "50");
+            "30", "32", "34", "36", "38", "40", "42", "44", "46");
 
 
     @Override

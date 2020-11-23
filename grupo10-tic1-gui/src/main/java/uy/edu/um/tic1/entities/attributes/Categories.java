@@ -4,9 +4,9 @@ public class Categories {
 
     private static final String[] shirts = new String[]{"Manga corta", "Manga larga", "Musculosa"};
     private static final String[] coat = new String[]{"Canguro", "Campera", "Deportivo"};
-    private static final String[] pants = new String[]{"Jean", "Joggin"};
+    private static final String[] pants = new String[]{"Jean", "Jogging"};
     private static final String[] underwearMan = new String[]{"Boxer", "Medias"};
-    private static final String[] underwearWoman = new String[]{"Tanga", "Soutien", "Medias"};
+    private static final String[] underwearWoman = new String[]{"Tanga", "Medias", "Soutien"};
     private static final String[] dresses = new String[]{"Largos", "Cortos"};
     private static final String[] skirts = new String[]{"Larga", "Corta"};
 
@@ -104,25 +104,33 @@ public class Categories {
      * @param category Categoria que se desea tomar
      * @return Integer asociado a la categoría
      */
-    public static int getIntCategory(String category) {
+
+
+
+    public static int getIntSubcategory(String category) {
 
         switch (category) {
-            case "Remeras":
+            case "Manga corta":
+            case "Canguro":
+            case "Jean":
+            case "Boxer":
+            case "Tanga":
+            case "Largos":
+            case "Larga":
                 return 0;
-            case "Buzos":
+            case "Manga larga":
+            case "Campera":
+            case "Jogging":
+            case "Medias":
+            case "Cortos":
+            case "Cortas":
                 return 1;
-            case "Pantalones":
+            case "Musculosa":
+            case "Deportivo":
+            case "Soutien":
                 return 2;
-            case "Shorts":
-                return 3;
-            case "Vestidos":
-                return 4;
-            case "Polleras":
-                return 5;
-            case "Ropa interior":
-                return 6;
             default:
-                return -1;
+                return 1;
         }
 
     }
@@ -158,10 +166,13 @@ public class Categories {
             case "Buzos":
                 return "hoodie";
             case "Pantalones":
+            case "Ropa interior":
+            case "Vestido":
+            case "Pollera":
                 return "trousers";
 
             default:
-                return "";
+                return "shirt";
         }
 
     }

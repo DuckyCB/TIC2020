@@ -18,6 +18,13 @@ public class ShirtDTO extends ProductDTO {
 
     @Getter
     private final static List<String> sizes = Arrays.asList(
-            "s", "m", "l", "xl");
+            "XS", "S", "M", "L", "XL", "XXL");
+
+
+    public List<String> allSizes(){
+        return ShirtDTO.getSizes();
+    }
+
+
 
 }

@@ -62,7 +62,25 @@ public class ProductRestController {
                 httpEntity,
                 new ParameterizedTypeReference<Void>(){});
 
+    }
 
+    public void deleteProduct(ProductDTO product) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        if (storeApplication.getAppUser() != null)
+            restTemplate.getInterceptors().add(new BasicAuthenticationInterceptor(storeApplication.getAppUser().getUsername(),
+                    storeApplication.getPassword()));
+
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+
+        body.add("field", "value");
+        HttpEntity<ProductDTO> httpEntity = new HttpEntity<ProductDTO>(product, body);
+
+        ResponseEntity<Void> response
+                = restTemplate.exchange("http://localhost:8080/products/delete/" ,
+                HttpMethod.DELETE,
+                httpEntity,
+                new ParameterizedTypeReference<Void>(){});
 
     }
 

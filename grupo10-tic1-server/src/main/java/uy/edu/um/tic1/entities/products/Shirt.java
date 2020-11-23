@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class Shirt extends Product {
     @Getter
     private final static List<String> sizes = Arrays.asList(
-            "s", "m", "l", "xl");
+            "XS", "S", "M", "L", "XL", "XXL");
 
 
     @Override

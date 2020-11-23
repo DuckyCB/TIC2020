@@ -211,6 +211,8 @@ public class ProductDisplayBrandController implements Initializable {
 
     private void initSizeAndColors() {
 
+
+
         for (String color: ProductDTO.getColors()) {
 
             Pane paneColor = new Pane();
@@ -242,7 +244,7 @@ public class ProductDisplayBrandController implements Initializable {
             flowPaneSizes.setStyle("-fx-background-color: #e2e2e2");
             paneColor.getChildren().add(flowPaneSizes);
 
-            List<String> sizes = Sizes.getSizes(null);
+            List<String> sizes = tempProduct.allSizes();
 
             for (String size: sizes) {
 
@@ -346,8 +348,7 @@ public class ProductDisplayBrandController implements Initializable {
 
                 initNewProduct(category);
 
-
-                tempProduct.setSubcategory(Categories.getIntCategory(string));
+//                tempProduct.setSubcategory(Categories.getIntSubcategory(string));
                 //ProductDTO newProduct = getNewProduct(string);
 //                if (newProduct.getClass() != tempProduct.getClass() ) {
 //                    cloneToNewProduct(newProduct);

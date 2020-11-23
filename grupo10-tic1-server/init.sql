@@ -51,3 +51,7 @@ insert into app_user (is_account_non_expired, is_account_non_locked, is_credenti
     values (1, 1, 1, 1, "$2a$10$QigSTVpVsB2dLrRDSsKxD.qkf3rVmUOKR30re5sf/TpFNcd1zLC2K", "tienda2", "store", 6);
 insert into store_user (store, id)
     values (2, 6);
+
+
+update hibernate_sequence set next_val= 10 where next_val=2;
+

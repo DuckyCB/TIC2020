@@ -119,4 +119,6 @@ public abstract class ProductDTO {
     public List<SizeAndColorDTO> getSizeAndColorBySize(String size){
         return this.sizeAndColor.stream().filter(sc -> sc.getSize().equals(size)).collect(Collectors.toList());
     }
+
+    public abstract List<String> allSizes();
 }
