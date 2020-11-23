@@ -100,7 +100,7 @@ public class ClientController {
             applicationUserService.update(client);
             for (CartItem cartItem : items){
                 if (cartItem.getStore() == null){
-                    stores = storeController.getStoreByProduct(cartItem.getProduct(), cartItem.getQuantity());
+                    stores = storeController.getStoreToProccesCart(cartItem);
                     if(!stores.isEmpty()){
                         store = stores.get(0);
                         cartItem.setStore(store);
@@ -144,17 +144,18 @@ public class ClientController {
         Client client = getClientFromHeader(auth);
 
         if(client != null) {
-            if (delivered == null) {
-
-                List<Purchase> purchases = purchaseRepository.findAll(PurchaseQuerySpecification.builder()
-                        .client(client)
-                        .build()
-                );
-
-                return purchases.stream().map(Purchase::toDTO).collect(Collectors.toList());
 
 
-            }
+            List<Purchase> purchases = purchaseRepository.findAll(PurchaseQuerySpecification.builder()
+                    .client(client)
+                    .delivered(delivered)
+                    .build()
+            );
+
+            return purchases.stream().map(Purchase::toDTO).collect(Collectors.toList());
+
+
+
         }
 
         return null;

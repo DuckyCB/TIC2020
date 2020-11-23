@@ -69,7 +69,7 @@ public class UserRestController {
     }
 
 
-    public List<PurchaseDTO> clientPurchases(){
+    public List<PurchaseDTO> clientPurchases(Boolean delivered){
 
         RestTemplate restTemplate = new RestTemplate();
         if (storeApplication.getAppUser() != null)
@@ -78,7 +78,7 @@ public class UserRestController {
 
 
         ResponseEntity<List<PurchaseDTO>> response
-                = restTemplate.exchange("http://localhost:8080/client/purchases/",
+                = restTemplate.exchange("http://localhost:8080/client/purchases/?delivered=" + delivered.toString(),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<PurchaseDTO>>(){});

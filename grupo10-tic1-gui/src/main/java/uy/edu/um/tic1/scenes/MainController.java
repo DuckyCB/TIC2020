@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entities.elements.PaneFilter;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
+import uy.edu.um.tic1.entitites.product.HoodieDTO;
+import uy.edu.um.tic1.entitites.product.ShirtDTO;
+import uy.edu.um.tic1.entitites.product.TrousersDTO;
 import uy.edu.um.tic1.entitites.users.*;
 import uy.edu.um.tic1.requests.*;
 import uy.edu.um.tic1.entities.BrandFilters;
@@ -30,6 +33,7 @@ import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.requests.StoreRestController;
 
+import javax.swing.colorchooser.ColorChooserComponentFactory;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -450,7 +454,7 @@ public class MainController implements Initializable {
             setCategories(Categories.getSubCategory(productFilters.getGender().toString(), type));
 
         } else {
-            //productFilters.setSubtype(type.);
+            productFilters.setSubtype(Categories.getIntSubcategory(type));
             Label arrow = new Label(" > ");
             flowPaneCategoryLabels.getChildren().add(arrow);
             flowPaneCategory.getChildren().clear();
@@ -459,6 +463,7 @@ public class MainController implements Initializable {
 
         Label label = new Label(type);
         flowPaneCategoryLabels.getChildren().add(label);
+        setSizes();
 
         setProducts(requestProducts());
 
@@ -522,7 +527,29 @@ public class MainController implements Initializable {
 
         flowPaneSizes.getChildren().clear();
 
-        List<String> sizes = Sizes.getSizes(productFilters.getType());
+        List<String> sizes = null;
+
+
+
+        if (productFilters.getType() == "trousers"){
+            sizes = TrousersDTO.getSizes();
+        } else if (productFilters.getType() == "shirt"){
+            sizes = ShirtDTO.getSizes();
+        } else if (productFilters.getType() == "hoodie"){
+            sizes = HoodieDTO.getSizes();
+        } else {
+            HashMap<String, String> sizeHash = new LinkedHashMap<>();
+            for (String s : ShirtDTO.getSizes()){
+                sizeHash.put(s, s);
+            }
+            for (String s : HoodieDTO.getSizes()){
+                sizeHash.put(s, s);
+            }
+            for (String s : TrousersDTO.getSizes()){
+                sizeHash.put(s, s);
+            }
+            sizes = sizeHash.values().stream().collect(Collectors.toList());
+        }
 
         for (String size: sizes) {
 
@@ -722,6 +749,7 @@ public class MainController implements Initializable {
         setCategories(Categories.getGenre());
         setProducts(requestProducts());
         setColors();
+        setSizes();
 
     }
 

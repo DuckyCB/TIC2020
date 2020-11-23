@@ -12,9 +12,12 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.StoreApplication;
+import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.contact.AddressDTO;
 import uy.edu.um.tic1.entitites.contact.TelephoneNumberDTO;
+import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
+import uy.edu.um.tic1.requests.CartRestController;
 import uy.edu.um.tic1.requests.UserRestController;
 
 import java.net.URL;
@@ -28,6 +31,8 @@ public class RegisterController implements Initializable {
     StoreApplication storeApplication;
     @Autowired
     private UserRestController userRestController;
+    @Autowired
+    private CartRestController cartRestController;
 
     private String newUserName;
     private String newUserLastName;
@@ -184,21 +189,38 @@ public class RegisterController implements Initializable {
 
         if (!phone.isEmpty() && !zip.isEmpty() && !street.isEmpty() && !streetNumber.isEmpty()) {
 
-            // Crea un nuevo usuario con todos los datos
-            storeApplication.sceneMain();
 
+            ClientDTO newClient = ClientDTO.builder()
+                    .username(newUserUserName)
+                    .firstName(newUserName)
+                    .lastName(newUserLastName)
+                    .password(newUserPassword)
+                    .address(AddressDTO.builder().street(street).doorNumber(streetNumber).optional(aditional).zipCode(Integer.valueOf(zip)).build())
+                    .telephoneNumber(TelephoneNumberDTO.builder().number(Integer.valueOf(phone)).build())
+                    .build();
+
+            userRestController.registerClient(newClient);
+
+            AppUserDTO userEntity = userRestController.getUser(newUserUserName, newUserPassword);
+            storeApplication.setAppUser(userEntity);
+            storeApplication.setPassword(newUserPassword);
+            CartDTO userCart = cartRestController.getCurrentCart();
+            CartDTO savedCart = storeApplication.getCart();
+            if(userCart == null || userCart.getItems().isEmpty()){
+                if(userCart == null){
+                    ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
+                    cartRestController.saveCurrentCart(storeApplication.getCart());
+                } else if (!savedCart.getItems().isEmpty()){
+                    ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
+                    cartRestController.saveCurrentCart(storeApplication.getCart());
+                }
+            }
+            storeApplication.setCart(cartRestController.getCurrentCart());
+            storeApplication.sceneMain();
         }
 
-        ClientDTO newClient = ClientDTO.builder()
-                .username(newUserUserName)
-                .firstName(newUserName)
-                .lastName(newUserLastName)
-                .password(newUserPassword)
-                .address(AddressDTO.builder().street(street).doorNumber(streetNumber).optional(aditional).zipCode(Integer.valueOf(zip)).build())
-                .telephoneNumber(TelephoneNumberDTO.builder().number(Integer.valueOf(phone)).build())
-                .build();
 
-        userRestController.registerClient(newClient);
+
 
 
         storeApplication.sceneMain();

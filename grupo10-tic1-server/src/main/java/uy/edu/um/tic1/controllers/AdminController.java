@@ -73,9 +73,9 @@ public class AdminController {
 
         try {
             applicationUserService.loadUserByUsername(username);
-            return false;
-        } catch (UsernameNotFoundException error){
             return true;
+        } catch (UsernameNotFoundException error){
+            return false;
         }
 
 

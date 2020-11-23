@@ -20,6 +20,7 @@ public class StoreQuerySpecification implements Specification<Store> {
     private Brand brand;
     private Product product;
     private Integer stock;
+    private SizeAndColor sizeAndColor;
 
 
     @Override
@@ -49,6 +50,10 @@ public class StoreQuerySpecification implements Specification<Store> {
 
             if (stock != null){
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(storeStockJoin.get("stock"), stock));
+            }
+
+            if (sizeAndColor != null){
+                predicates.add(criteriaBuilder.equal(storeStockJoin.get("sizeAndColor"), sizeAndColor));
             }
         }
 

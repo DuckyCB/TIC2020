@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @AllArgsConstructor
@@ -23,5 +24,12 @@ public class TrousersDTO extends ProductDTO {
 
     public List<String> allSizes(){
         return TrousersDTO.getSizes();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductDTO that = (TrousersDTO) o;
+        return Objects.equals(this.getId(), that.getId());
     }
 }

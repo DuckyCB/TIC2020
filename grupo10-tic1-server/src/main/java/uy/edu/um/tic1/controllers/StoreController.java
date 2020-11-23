@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uy.edu.um.tic1.entities.Brand;
 import uy.edu.um.tic1.entities.Stock;
+import uy.edu.um.tic1.entities.cart.CartItem;
 import uy.edu.um.tic1.entities.cart.Purchase;
 import uy.edu.um.tic1.entities.products.Product;
 import uy.edu.um.tic1.entities.Store;
@@ -134,7 +135,8 @@ public class StoreController {
             StoreUser storeUser = (StoreUser) userFromHeader;
 
             if(delivered)
-                return storeUser.getStore().getPurchaseSet().stream().map(Purchase::toDTO).collect(Collectors.toList());
+                return storeUser.getStore().getPurchaseSet().stream().map(Purchase::toDTO).collect(Collectors.toList())
+                        .stream().filter(p -> p.getDelivered()).collect(Collectors.toList());
             else
                 return storeUser.getStore().getPurchaseSet().stream().map(Purchase::toDTO).collect(Collectors.toList())
                         .stream().filter(p -> !p.getDelivered()).collect(Collectors.toList());
@@ -185,6 +187,16 @@ public class StoreController {
                                                 .product(product)
                                                 .stock(stock)
                                                 .build());
+
+    }
+
+    public List<Store> getStoreToProccesCart(CartItem cartItem){
+
+        return storeRepository.findAll(StoreQuerySpecification.builder()
+                .product(cartItem.getProduct())
+                .stock(cartItem.getQuantity())
+                .sizeAndColor(cartItem.getSizeAndColor())
+                .build());
 
     }
 

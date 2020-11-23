@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
@@ -62,11 +63,24 @@ public class ListItemsController implements Initializable {
 
     public static Boolean isCart;
 
+    private Boolean showAll;
 
     @FXML
     private FlowPane flowPaneProducts;
     @FXML
     private Button inicio;
+
+    @FXML
+    private Button entregado;
+
+    @FXML
+    void entregadoPressed(ActionEvent event) {
+        showAll = !showAll;
+        setUp();
+    }
+
+
+
 
     // ****************************************************************************************************************
     //                  INITIALIZE
@@ -75,24 +89,36 @@ public class ListItemsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        setUp();
+
+    }
+
+    public void setUp(){
+        entregado = new Button("Entregado");
+        if (showAll == null){
+            showAll = false;
+        }
+
+
         user = storeApplication.getAppUser();
         if (user instanceof ClientDTO) {
 
             if (isCart) {
-
+                entregado.setVisible(false);
                 cartItemSet = requestCartList();
                 setProducts(cartItemSet.toArray());
 
             } else {
-
+                entregado.setVisible(true);
                 setUserPurchases();
 
             }
 
         }
         else if (user instanceof StoreUserDTO) {
+            entregado.setVisible(true);
             store = storeRestController.getStore();
-            purchaseSet = storeRestController.getPurchases(false).stream().collect(Collectors.toSet());
+            purchaseSet = storeRestController.getPurchases(showAll).stream().collect(Collectors.toSet());
             setStoreSales();
         }
 
@@ -101,7 +127,6 @@ public class ListItemsController implements Initializable {
             setProducts(Objects.requireNonNull(requestCartList()).toArray());
 
         }
-
     }
 
     private Label getQuantityLabel(String quantity) {
@@ -129,7 +154,8 @@ public class ListItemsController implements Initializable {
 
     private void setUserPurchases() {
 
-        List<PurchaseDTO> purchases = userRestController.clientPurchases();
+        flowPaneProducts.getChildren().clear();
+        List<PurchaseDTO> purchases = userRestController.clientPurchases(showAll);
 
         if (purchases != null) {
 
@@ -204,6 +230,7 @@ public class ListItemsController implements Initializable {
 
     private void setStoreSales() {
 
+        flowPaneProducts.getChildren().clear();
         if (purchaseSet != null) {
 
             for (PurchaseDTO sale : purchaseSet) {

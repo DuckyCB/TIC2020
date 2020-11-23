@@ -53,5 +53,6 @@ insert into store_user (store, id)
     values (2, 6);
 
 
-update hibernate_sequence set next_val= 10 where next_val=2;
+update hibernate_sequence set next_val= 10 where next_val=1;
 
+select next_val as id_val from hibernate_sequence;

@@ -83,7 +83,7 @@ public class StockQuerySpecification implements Specification<Stock> {
         }
 
         if (clothSubtype != null)
-            predicates.add(criteriaBuilder.equal(stockSizeAndColorJoin.get("subcategory"), clothSubtype));
+            predicates.add(criteriaBuilder.equal(stockProductJoin.get("subcategory"), clothSubtype));
 
 
         if (desiredStock != null)

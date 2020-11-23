@@ -121,4 +121,14 @@ public abstract class ProductDTO {
     }
 
     public abstract List<String> allSizes();
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductDTO that = (ProductDTO) o;
+        return Objects.equals(id, that.id);
+    }
+
+
 }

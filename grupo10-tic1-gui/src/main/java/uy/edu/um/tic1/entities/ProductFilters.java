@@ -60,7 +60,7 @@ public class ProductFilters {
             query += "type=" + type + "&";
 
         if (subtype != null)
-            query += "subcategory=" + subtype + "&";
+            query += "subtype=" + subtype + "&";
 
 
         if (hasStock != null)
