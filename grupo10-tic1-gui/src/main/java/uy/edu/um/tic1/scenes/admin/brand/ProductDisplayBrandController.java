@@ -52,6 +52,7 @@ public class ProductDisplayBrandController implements Initializable {
 
     public static ProductDTO tempProduct;
     private Character genre;
+    private String selectedCategory;
 
     @FXML
     private Button inicio;
@@ -81,6 +82,10 @@ public class ProductDisplayBrandController implements Initializable {
     private Label labelCategory;
     @FXML
     private Label labelSubcategory;
+    @FXML
+    private StackPane errorMessage;
+    @FXML
+    private Button deleteProduct;
 
     // ****************************************************************************************************************
     //                  INITIALIZE
@@ -88,6 +93,11 @@ public class ProductDisplayBrandController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        BrandUserDTO brandUserDTO = (BrandUserDTO) storeApplication.getAppUser();
+        productBrand.setText(brandUserDTO.getBrand().getName());
+
+        errorMessage.setVisible(false);
 
         labelGenre.setText("");
         labelCategory.setText("");
@@ -111,26 +121,52 @@ public class ProductDisplayBrandController implements Initializable {
     @FXML
     void pressedUploadImage(ActionEvent event) {
 
-        FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(StoreApplication.getPrimaryStage());
-        if (file != null) {
-            byte[] bytes;
-            try {
-                bytes = Files.readAllBytes(file.toPath());
-                productImage.setImage(getImage(bytes));
-                tempProduct.setImage(bytes);
-            } catch (IOException e) {
-                System.out.println("Error en la imagen");
+        if (tempProduct != null) {
+
+            FileChooser fileChooser = new FileChooser();
+            File file = fileChooser.showOpenDialog(StoreApplication.getPrimaryStage());
+            if (file != null) {
+                byte[] bytes;
+                try {
+                    bytes = Files.readAllBytes(file.toPath());
+                    productImage.setImage(getImage(bytes));
+                    tempProduct.setImage(bytes);
+                } catch (IOException e) {
+                    System.out.println("Error en la imagen");
+                }
+
             }
 
-        }
+        } else errorMessage.setVisible(true);
 
     }
 
     @FXML
     void pressedSave(ActionEvent event) {
 
-        productRestController.saveProduct(tempProduct);
+        if (tempProduct != null) {
+
+            if (!productTitle.getText().isEmpty()) tempProduct.setName(productTitle.getText());
+            if (!productPrice.getText().isEmpty()) {
+                double price = 0d;
+                try {
+                    price = Double.parseDouble(productPrice.getText());
+                    tempProduct.setPrice(price);
+                } catch (NumberFormatException e) {
+                    System.out.println("El valor no es un número");
+                }
+            }
+
+            productRestController.saveProduct(tempProduct);
+        }
+        else errorMessage.setVisible(true);
+
+    }
+
+    @FXML
+    void pressedDeleteProduct(ActionEvent event) {
+
+        if (tempProduct != null) productRestController.deleteProduct(tempProduct);
 
     }
 
@@ -141,7 +177,6 @@ public class ProductDisplayBrandController implements Initializable {
     private void setPage() {
 
         productTitle.setText(tempProduct.getName());
-        productBrand.setText(tempProduct.getBrand().getName());
         productPrice.setText(String.valueOf(tempProduct.getPrice()));
         productTitle.setText(tempProduct.getName());
         byte[] image = tempProduct.getImage();
@@ -211,7 +246,7 @@ public class ProductDisplayBrandController implements Initializable {
 
     private void initSizeAndColors() {
 
-
+        flowPaneColors.getChildren().clear();
 
         for (String color: ProductDTO.getColors()) {
 
@@ -324,7 +359,6 @@ public class ProductDisplayBrandController implements Initializable {
                 menuButtonCategory.setStyle("-fx-background-color: #CDCDCD");
                 labelGenre.setText(Character.toString(string.charAt(0)));
                 labelCategory.setText("");
-                //tempProduct.setGender(string.charAt(0));
                 genre = string.charAt(0);
                 setCategory();
             });
@@ -342,20 +376,47 @@ public class ProductDisplayBrandController implements Initializable {
 
             MenuItem item = new MenuItem(string);
             item.setOnAction(event -> {
+
                 menuButtonCategory.setStyle("-fx-background-color: #E2E2E2");
+                menuButtonSubcategory.setStyle("-fx-background-color: #CDCDCD");
                 labelCategory.setText(string);
                 String category = Categories.castCategory(string);
+                selectedCategory = category;
 
-                initNewProduct(category);
+                if (tempProduct == null) tempProduct = initNewProduct(category);
+                else {
+                    ProductDTO newProduct = initNewProduct(string);
+                    if (newProduct.getClass() != tempProduct.getClass() ) {
+                        cloneToNewProduct(newProduct);
+                    }
+                }
+                errorMessage.setVisible(false);
 
-//                tempProduct.setSubcategory(Categories.getIntSubcategory(string));
-                //ProductDTO newProduct = getNewProduct(string);
-//                if (newProduct.getClass() != tempProduct.getClass() ) {
-//                    cloneToNewProduct(newProduct);
-//                }
+                setSubcategory();
                 initSizeAndColors();
             });
             menuButtonCategory.getItems().add(item);
+
+        }
+
+    }
+
+    private void setSubcategory() {
+
+        menuButtonSubcategory.getItems().clear();
+
+        for (String string : Categories.getSubCategory(genre.toString(), selectedCategory)) {
+
+            MenuItem item = new MenuItem(string);
+            item.setOnAction(event -> {
+
+                menuButtonSubcategory.setStyle("-fx-background-color: #E2E2E2");
+                labelSubcategory.setText(string);
+                tempProduct.setSubcategory(Categories.getIntSubcategory(string));
+                initSizeAndColors();
+
+            });
+            menuButtonSubcategory.getItems().add(item);
 
         }
 
@@ -365,37 +426,31 @@ public class ProductDisplayBrandController implements Initializable {
     //                  Producto
     // ****************************************************************************************************************
 
-    private void initNewProduct(String category) {
-
-
+    private ProductDTO initNewProduct(String category) {
 
         BrandUserDTO brandUserDTO = (BrandUserDTO) storeApplication.getAppUser();
         BrandDTO brand = brandUserDTO.getBrand();
 
+        ProductDTO product;
         switch (category) {
             case "hoodie":
-                tempProduct = HoodieDTO.builder().build();
+                product = HoodieDTO.builder().build();
                 break;
             case "trousers":
-                tempProduct = TrousersDTO.builder().build();
+                product = TrousersDTO.builder().build();
                 break;
             case "shirt":
-                tempProduct = ShirtDTO.builder().build();
+                product = ShirtDTO.builder().build();
                 break;
+            default:
+                product = ShirtDTO.builder().build();
         }
 
-        if(productTitle != null){
-            tempProduct.setName(productTitle.getText());
-        }
+        product.setGender(genre);
+        product.setSizeAndColor(new LinkedHashSet<>());
+        product.setBrand(brand);
 
-        if(productPrice != null){
-            tempProduct.setPrice(Double.valueOf(productPrice.getText()));
-        }
-
-        tempProduct.setGender(genre);
-        tempProduct.setSizeAndColor(new LinkedHashSet<>());
-        tempProduct.setBrand(brand);
-
+        return product;
 
     }
 

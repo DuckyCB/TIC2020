@@ -10,6 +10,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uy.edu.um.tic1.scenes.admin.brand.ProductDisplayBrandController">
@@ -87,6 +88,20 @@
                         <Font name="Cambria" size="16.0" />
                      </font>
                   </Label>
+                  <StackPane fx:id="errorMessage" layoutX="408.0" layoutY="296.0" prefHeight="61.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;">
+                     <children>
+                        <Label text="Debe agregar género y categoría antes de guardar otros datos" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="Cambria Bold Italic" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </StackPane>
+                  <Button fx:id="deleteProduct" layoutX="453.0" layoutY="593.0" mnemonicParsing="false" onAction="#pressedDeleteProduct" style="-fx-background-color: e74c3c;" text="Eliminar producto">
+                     <font>
+                        <Font name="Cambria Bold" size="12.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
          </children>

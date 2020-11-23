@@ -156,7 +156,7 @@ public class MainController implements Initializable {
         });
         menuButton.getItems().add(store);
 
-        MenuItem store1 = new MenuItem("Store 1");
+        MenuItem store1 = new MenuItem("Store 2");
         store1.setOnAction(event -> {
             logOut();
             String user = "tienda2";

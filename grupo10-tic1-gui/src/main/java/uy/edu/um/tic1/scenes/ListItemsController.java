@@ -30,6 +30,7 @@ import uy.edu.um.tic1.entitites.users.StoreUserDTO;
 import uy.edu.um.tic1.requests.CartRestController;
 import uy.edu.um.tic1.requests.ProductRestController;
 import uy.edu.um.tic1.requests.StoreRestController;
+import uy.edu.um.tic1.requests.UserRestController;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
@@ -50,6 +51,8 @@ public class ListItemsController implements Initializable {
     private ProductRestController productRestController;
     @Autowired
     private StoreRestController storeRestController;
+    @Autowired
+    private UserRestController userRestController;
 
     private AppUserDTO user;
     private StoreDTO store;
@@ -126,20 +129,18 @@ public class ListItemsController implements Initializable {
 
     private void setUserPurchases() {
 
-        ClientDTO client = (ClientDTO) storeApplication.getAppUser();
+        List<PurchaseDTO> purchases = userRestController.clientPurchases();
 
-        // TODO: Recuperar compras de usuario
-        List<CartItemDTO> items = null;
+        if (purchases != null) {
 
-        /*if (items != null) {
-
-            for (CartItemDTO item : items) {
+            for (PurchaseDTO purchase : purchases) {
 
                 Pane paneProduct = new Pane();
                 paneProduct.setPrefSize(685, 150);
                 paneProduct.setStyle("-fx-background-color: #E2E2E2");
+
                 // ID:
-                Label labelId = new Label("Id: " + item.getId());
+                Label labelId = new Label("Id: " + purchase.getId());
                 labelId.setFont(Font.font("Cambria", FontWeight.BOLD, 18));
                 labelId.setLayoutX(20);
                 labelId.setLayoutY(14);
@@ -147,38 +148,39 @@ public class ListItemsController implements Initializable {
 
                 // PRICE
                 int price = 0;
-                for (PurchaseItemDTO item: sale.getPurchaseItems()) price += item.getPrice();
+                for (PurchaseItemDTO item: purchase.getPurchaseItems()) price += item.getPrice();
                 Label labelPrice = new Label("Precio total: " + price + "$");
                 labelPrice.setFont(Font.font("Cambria", FontWeight.BOLD, 26));
                 labelPrice.setLayoutX(241);
                 labelPrice.setLayoutY(16);
                 paneProduct.getChildren().add(labelPrice);
+
                 // SEE PRODUCTS
                 Button viewProducts = new Button("Ver productos");
                 viewProducts.setFont(Font.font("Cambria", FontWeight.BOLD, 12));
                 viewProducts.setLayoutX(295);
                 viewProducts.setLayoutY(52);
                 viewProducts.setOnAction( event -> {
-                    setProducts(Objects.requireNonNull(sale.getPurchaseItems()).toArray());
+                    setProducts(Objects.requireNonNull(purchase.getPurchaseItems()).toArray());
                 });
                 paneProduct.getChildren().add(viewProducts);
+
                 // ACCEPT PURCHASE
-                if (!sale.getDelivered()) {
-                    Button acceptPurchase = new Button("Aceptar Compra");
-                    acceptPurchase.setFont(Font.font("Cambria", FontWeight.BOLD, 12));
-                    acceptPurchase.setLayoutX(519);
-                    acceptPurchase.setLayoutY(60);
-                    acceptPurchase.setOnAction(event -> {
-                        sale.setDelivered(true);
-                        sale.setDeliveryDate(LocalDate.now());
-                        sale.setDeliveryTime(LocalTime.now());
-                        acceptPurchase.setVisible(false);
-                    });
-                    paneProduct.getChildren().add(acceptPurchase);
-                } else setPurchaseDelivered(paneProduct, sale);
+                if (!purchase.getDelivered()) {
+
+                    Label labelDelivered = new Label("NO CONFIRMADA");
+                    labelDelivered.setFont(Font.font("Cambria", FontWeight.BOLD, 12));
+                    labelDelivered.setLayoutX(525);
+                    labelDelivered.setLayoutY(62);
+                    paneProduct.getChildren().add(labelDelivered);
+
+                } else setPurchaseDelivered(paneProduct, purchase);
+
                 flowPaneProducts.getChildren().add(paneProduct);
+
             }
-        } else flowPaneProducts.getChildren().add(getNoMesaggesPane("No hay compras"));*/
+
+        } else flowPaneProducts.getChildren().add(getNoMesaggesPane("No hay compras"));
 
     }
 

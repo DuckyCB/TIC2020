@@ -119,7 +119,7 @@ public class RegisterController implements Initializable {
             Label newUserError = new Label("El campo no puede ser vacío");
             errorC.getChildren().add(newUserError);
         } else {
-            // TODO: Chequea si el nombre de usuario ya se uso y lo guarda en userNameUsed
+            userNameUsed = userRestController.checkUsername(userName);
             if (userNameUsed) {
                 errorC.setVisible(true);
                 Label newUserError = new Label("Nombre de usuario ya usado");
