@@ -76,8 +76,10 @@ public class Store {
 
     public void updateStock(Product product, Integer quantity) {
 
+
         stockSet.stream().forEach(stock -> {
             if (stock.getProduct().equals(product)){
+
                 stock.setStock(stock.getStock()+quantity);
             }
         });

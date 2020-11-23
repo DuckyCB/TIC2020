@@ -148,6 +148,7 @@ public class MainController implements Initializable {
         else if (user instanceof StoreUserDTO) {
             buttonFilters.setVisible(false);
             setButtonsStore();
+            setProducts(storeRestController.getStoreProducts(true));
         }
         else {
             setButtonsDefault();
@@ -245,8 +246,8 @@ public class MainController implements Initializable {
         newProduct.setStyle("-fx-background-color: #ffffff");
         newProduct.setOnAction(event -> {
 
-            // TODO: De alguna forma hacer que guarde en todos los productos que puede agregar el store
-            List<ProductDTO> list = null;
+
+            List<ProductDTO> list = storeRestController.getStoreProducts(false);
             setProducts(list);
 
         });

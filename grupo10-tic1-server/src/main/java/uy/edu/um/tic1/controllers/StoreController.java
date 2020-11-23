@@ -154,8 +154,11 @@ public class StoreController {
                 HashMap<Integer, ProductDTO> productsHash = new LinkedHashMap<>();
 
                 storeUser.getStore().getStockSet().stream().forEach(stock -> {
-                            ProductDTO productDTO = stock.getProduct().toDTO();
-                            productsHash.put(productDTO.getId(), productDTO);
+                            if(stock.getStock() > 0){
+                                ProductDTO productDTO = stock.getProduct().toDTO();
+                                productsHash.put(productDTO.getId(), productDTO);
+                            }
+
                         });
                 return productsHash.values().stream().collect(Collectors.toList());
             }
