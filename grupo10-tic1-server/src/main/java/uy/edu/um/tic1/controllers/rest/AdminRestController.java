@@ -63,4 +63,10 @@ public class AdminRestController {
         adminController.registerStore(newStore);
     }
 
+
+    @GetMapping("/check-username/")
+    public Boolean checkUsername(@RequestParam(name="username",required = true) String username){
+        return adminController.checkAvailableUsername(username);
+    }
+
 }

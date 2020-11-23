@@ -2,6 +2,7 @@ package uy.edu.um.tic1.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uy.edu.um.tic1.entities.users.*;
@@ -66,5 +67,17 @@ public class AdminController {
 
     public void registerStore(StoreUser newStore) {
         applicationUserService.save(newStore);
+    }
+
+    public Boolean checkAvailableUsername(String username){
+
+        try {
+            applicationUserService.loadUserByUsername(username);
+            return false;
+        } catch (UsernameNotFoundException error){
+            return true;
+        }
+
+
     }
 }

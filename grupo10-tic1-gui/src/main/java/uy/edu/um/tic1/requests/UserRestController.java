@@ -86,4 +86,17 @@ public class UserRestController {
         return response.getBody();
     }
 
+
+    public Boolean checkUsername(String username){
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<Boolean> response
+                = restTemplate.exchange("http://localhost:8080/admin/check-username/?username=" + username,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Boolean>(){});
+
+        return response.getBody();
+    }
+
 }
