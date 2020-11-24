@@ -56,15 +56,12 @@ public class Categories {
             case "Unisex":
                 switch (category) {
                     case "Remeras":
-                        return shirts;
                     case "shirt":
                         return shirts;
                     case "Buzos":
-                        return coat;
                     case "hoodie":
                         return coat;
                     case "Pantalones":
-                        return pants;
                     case "trousers":
                         return pants;
                     case "Ropa interior":
@@ -75,17 +72,14 @@ public class Categories {
             case "Niña":
                 switch (category) {
                     case "Remeras":
-                        return shirts;
                     case "shirt":
                         return shirts;
                     case "Buzos":
-                        return coat;
                     case "hoodie":
                         return coat;
                     case "Vestidos":
                         return dresses;
                     case "Pantalones":
-                        return pants;
                     case "trousers":
                         return pants;
                     case "Polleras":

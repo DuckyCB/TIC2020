@@ -86,6 +86,8 @@ public class ProductDisplayBrandController implements Initializable {
     private StackPane errorMessage;
     @FXML
     private Button deleteProduct;
+    @FXML
+    private TextField productDescription;
 
     // ****************************************************************************************************************
     //                  INITIALIZE
@@ -156,6 +158,7 @@ public class ProductDisplayBrandController implements Initializable {
                     System.out.println("El valor no es un número");
                 }
             }
+            if (!productDescription.getText().isEmpty()) tempProduct.setDescription(productDescription.getText());
 
             productRestController.saveProduct(tempProduct);
         }
@@ -182,6 +185,7 @@ public class ProductDisplayBrandController implements Initializable {
         byte[] image = tempProduct.getImage();
         Image productImg = getImage(image);
         productImage.setImage(productImg);
+        productDescription.setText(tempProduct.getDescription());
 
         labelGenre.setText(tempProduct.getGender().toString());
         labelCategory.setText(Categories.getCategoryFromInt(tempProduct.getSubcategory()));

@@ -33,7 +33,6 @@ import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.StoreApplication;
 import uy.edu.um.tic1.requests.StoreRestController;
 
-import javax.swing.colorchooser.ColorChooserComponentFactory;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;

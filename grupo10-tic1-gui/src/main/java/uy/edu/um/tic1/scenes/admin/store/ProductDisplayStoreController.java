@@ -64,6 +64,8 @@ public class ProductDisplayStoreController implements Initializable {
     private Label labelGenre;
     @FXML
     private Label labelCategory;
+    @FXML
+    private Label labelDescription;
 
     // ****************************************************************************************************************
     //                  INITIALIZE
@@ -80,6 +82,7 @@ public class ProductDisplayStoreController implements Initializable {
             labelGenre.setText(product.getGender().toString());
             labelCategory.setText(Categories.getCategoryFromInt(product.getSubcategory()));
             productImage.setImage(getImage(product.getImage()));
+            labelDescription.setText(product.getDescription());
             initSizeAndColors();
 
         }

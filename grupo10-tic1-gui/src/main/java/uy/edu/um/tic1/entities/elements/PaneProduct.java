@@ -33,26 +33,6 @@ public class PaneProduct {
         paneProduct.setMinSize(500, 320);
         paneProduct.setMaxSize(500, 320);
         paneProduct.setStyle("-fx-background-color: #e2e2e2");
-
-        // IMAGE
-//        ByteArrayInputStream bis = new ByteArrayInputStream(image);
-//        Iterator<?> readers = ImageIO.getImageReadersByFormatName("jpg");
-//        ImageReader reader = (ImageReader) readers.next();
-//        Object source = bis;
-//        ImageInputStream iis = null;
-//        try {
-//            iis = ImageIO.createImageInputStream(source);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        reader.setInput(iis, true);
-//        ImageReadParam param = reader.getDefaultReadParam();
-//        Image imageFile = null;
-//        try {
-//            imageFile = reader.read(0, param);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 //
 //        ImageView productImage = new ImageView(imageFile);
         ImageView  productImage = null;
@@ -101,7 +81,7 @@ public class PaneProduct {
         FlowPane flowPaneSize = new FlowPane();
         flowPaneSize.setPrefSize(235, 35);
         flowPaneSize.setLayoutX(250);
-        flowPaneSize.setLayoutY(177);
+        flowPaneSize.setLayoutY(165);
         flowPaneSize.setVgap(5);
         flowPaneSize.setHgap(5);
         flowPaneSize.setPadding(new Insets(3, 3, 3, 3));
