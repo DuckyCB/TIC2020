@@ -21,6 +21,7 @@ import uy.edu.um.tic1.requests.CartRestController;
 import uy.edu.um.tic1.requests.UserRestController;
 
 import java.net.URL;
+import java.util.LinkedHashSet;
 import java.util.ResourceBundle;
 
 @Component
@@ -197,6 +198,7 @@ public class RegisterController implements Initializable {
                     .password(newUserPassword)
                     .address(AddressDTO.builder().street(street).doorNumber(streetNumber).optional(aditional).zipCode(Integer.valueOf(zip)).build())
                     .telephoneNumber(TelephoneNumberDTO.builder().number(Integer.valueOf(phone)).build())
+                    .currentCart(CartDTO.builder().items(new LinkedHashSet<>()).build())
                     .build();
 
             userRestController.registerClient(newClient);
@@ -204,18 +206,23 @@ public class RegisterController implements Initializable {
             AppUserDTO userEntity = userRestController.getUser(newUserUserName, newUserPassword);
             storeApplication.setAppUser(userEntity);
             storeApplication.setPassword(newUserPassword);
+
             CartDTO userCart = cartRestController.getCurrentCart();
             CartDTO savedCart = storeApplication.getCart();
-            if(userCart == null || userCart.getItems().isEmpty()){
-                if(userCart == null){
-                    ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
-                    cartRestController.saveCurrentCart(storeApplication.getCart());
-                } else if (!savedCart.getItems().isEmpty()){
-                    ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
-                    cartRestController.saveCurrentCart(storeApplication.getCart());
+
+            if(userCart == null){
+                ((ClientDTO) userEntity).setCurrentCart(savedCart);
+                storeApplication.setCart(savedCart);
+            } else {
+                if (! savedCart.getItems().isEmpty()) {
+                    savedCart.getItems().stream().forEach(item -> {
+                        userCart.addItem(item);
+                    });
                 }
+                storeApplication.setCart(userCart);
             }
-            storeApplication.setCart(cartRestController.getCurrentCart());
+
+//            storeApplication.setCart(cartRestController.getCurrentCart());
             storeApplication.sceneMain();
         }
 

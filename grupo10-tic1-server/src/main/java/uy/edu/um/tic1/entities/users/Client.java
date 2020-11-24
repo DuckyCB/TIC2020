@@ -40,7 +40,7 @@ public class Client extends AppUser{
     @Embedded
     private Email email;
 
-    @OneToOne(cascade = CascadeType.MERGE)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "current_cart",
             foreignKey = @ForeignKey(name = "fk_client_cart")
     )

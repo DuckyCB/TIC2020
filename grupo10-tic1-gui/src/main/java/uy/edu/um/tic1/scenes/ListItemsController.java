@@ -63,6 +63,8 @@ public class ListItemsController implements Initializable {
 
     public static Boolean isCart;
 
+    public static Boolean showCheckBox;
+
     private Boolean showAll;
 
     @FXML
@@ -71,7 +73,7 @@ public class ListItemsController implements Initializable {
     private Button inicio;
 
     @FXML
-    private Button entregado;
+    private CheckBox entregado;
 
     @FXML
     void entregadoPressed(ActionEvent event) {
@@ -88,16 +90,26 @@ public class ListItemsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        if (isCart == null){
+            isCart = false;
+        }
+
+        if(showCheckBox){
+            entregado.setVisible(true);
+        } else{
+            entregado.setVisible(false);
+        }
 
         setUp();
 
     }
 
     public void setUp(){
-        entregado = new Button("Entregado");
+        entregado = new CheckBox("Entregado");
         if (showAll == null){
             showAll = false;
         }
+
 
 
         user = storeApplication.getAppUser();
@@ -187,6 +199,7 @@ public class ListItemsController implements Initializable {
                 viewProducts.setLayoutX(295);
                 viewProducts.setLayoutY(52);
                 viewProducts.setOnAction( event -> {
+                    isCart = false;
                     setProducts(Objects.requireNonNull(purchase.getPurchaseItems()).toArray());
                 });
                 paneProduct.getChildren().add(viewProducts);
@@ -277,6 +290,7 @@ public class ListItemsController implements Initializable {
                 viewProducts.setLayoutX(295);
                 viewProducts.setLayoutY(52);
                 viewProducts.setOnAction( event -> {
+                    isCart = false;
                     setProducts(Objects.requireNonNull(sale.getPurchaseItems()).toArray());
                 });
                 paneProduct.getChildren().add(viewProducts);
@@ -452,6 +466,13 @@ public class ListItemsController implements Initializable {
             buy.setFont(Font.font("Cambria", FontWeight.BOLD, 20));
             buy.setLayoutX(282);
             buy.setLayoutY(98);
+
+            if(isCart){
+                buy.setVisible(true);
+            } else{
+                buy.setVisible(false);
+            }
+
             buy.setOnMouseClicked(event -> {
 
                 if (!cartItemSet.isEmpty()) {
@@ -460,8 +481,28 @@ public class ListItemsController implements Initializable {
                     storeApplication.setCart(CartDTO.builder().items(new LinkedHashSet<>()).build());
                     ((ClientDTO) storeApplication.getAppUser()).setCurrentCart(storeApplication.getCart());
                     cartRestController.saveCurrentCart(storeApplication.getCart());
-                    System.out.println("Carro comprado");
-                    storeApplication.sceneMain();
+
+
+                    Label boughtCart = new Label("¡Compra procesada con éxito!");
+                    boughtCart.setFont(Font.font("Cambria", FontWeight.THIN, 14));
+                    boughtCart.setLayoutX(262);
+                    boughtCart.setLayoutY(130);
+
+                    buy.setVisible(false);
+
+                    Button continuar = new Button();
+                    continuar.setText("Continuar Comprando");
+                    continuar.setFont(Font.font("Cambria", FontWeight.BOLD, 20));
+                    continuar.setLayoutX(232);
+                    continuar.setLayoutY(88);
+
+                    continuar.setOnMouseClicked(event1 -> {
+                        storeApplication.sceneMain();
+                    });
+
+                    paneProduct.getChildren().add(boughtCart);
+                    paneProduct.getChildren().add(continuar);
+
 
                 }
 

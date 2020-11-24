@@ -19,6 +19,7 @@ import uy.edu.um.tic1.entitites.product.ProductDTO;
 import uy.edu.um.tic1.entitites.users.AppUserDTO;
 import uy.edu.um.tic1.entitites.users.ClientDTO;
 import uy.edu.um.tic1.requests.CartRestController;
+import uy.edu.um.tic1.requests.UserRestController;
 import uy.edu.um.tic1.scenes.*;
 import uy.edu.um.tic1.scenes.admin.brand.ProductDisplayBrandController;
 import uy.edu.um.tic1.scenes.admin.store.ProductDisplayStoreController;
@@ -36,6 +37,8 @@ public class StoreApplication extends Application {
     private ConfigurableApplicationContext applicationContext;
     @Autowired
     private CartRestController cartRestController;
+    @Autowired
+    private UserRestController userRestController;
 
     // USER
     private AppUserDTO appUser;
@@ -75,6 +78,8 @@ public class StoreApplication extends Application {
         this.cart = cart;
         if (this.appUser != null && this.appUser instanceof ClientDTO && this.cart != null){
             cartRestController.saveCurrentCart(this.cart);
+            this.appUser = userRestController.getUser(appUser.getUsername(), this.password);
+            this.cart = ((ClientDTO) appUser).getCurrentCart();
         }
     }
 
@@ -187,6 +192,7 @@ public class StoreApplication extends Application {
     public void sceneCart() {
 
         ListItemsController.isCart = true;
+        ListItemsController.showCheckBox = false;
 
         if (getAppUser() != null && getAppUser() instanceof ClientDTO) {
 

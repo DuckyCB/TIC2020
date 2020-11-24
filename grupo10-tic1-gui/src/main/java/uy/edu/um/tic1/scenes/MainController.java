@@ -315,6 +315,7 @@ public class MainController implements Initializable {
         Button seePurchases = new Button("Ver compras");
         seePurchases.setStyle("-fx-background-color: #ffffff");
         seePurchases.setOnMouseClicked(event -> {
+            ListItemsController.showCheckBox = true;
             ListItemsController.isCart = false;
             storeApplication.sceneListItems("Lista de compras");
         });
@@ -322,7 +323,8 @@ public class MainController implements Initializable {
 
         Button cart = new Button("Carrito");
         cart.setStyle("-fx-background-color: #ffffff");
-        cart.setOnMouseClicked(event -> storeApplication.sceneCart());
+        cart.setOnMouseClicked(event ->
+                storeApplication.sceneCart());
         flowPaneButtons.getChildren().add(cart);
 
         Button logOut = new Button("Cerrar sesión");
@@ -360,7 +362,11 @@ public class MainController implements Initializable {
 
         Button sales = new Button("Ventas");
         sales.setStyle("-fx-background-color: #ffffff");
-        sales.setOnAction(event -> storeApplication.sceneListItems("Ventas"));
+        sales.setOnAction(event ->{
+                ListItemsController.isCart = false;
+                ListItemsController.showCheckBox = true;
+                storeApplication.sceneListItems("Ventas");
+                });
         flowPaneButtons.getChildren().add(sales);
 
         Button newProduct = new Button("Agregar producto");
