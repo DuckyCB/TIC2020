@@ -87,7 +87,7 @@ public class ProductDisplayBrandController implements Initializable {
     @FXML
     private Button deleteProduct;
     @FXML
-    private TextField productDescription;
+    private TextArea productDescription;
 
     // ****************************************************************************************************************
     //                  INITIALIZE
@@ -160,7 +160,13 @@ public class ProductDisplayBrandController implements Initializable {
             }
             if (!productDescription.getText().isEmpty()) tempProduct.setDescription(productDescription.getText());
 
-            productRestController.saveProduct(tempProduct);
+            if (hasAttributeNull()) {
+                errorMessage.setVisible(true);
+            } else {
+                productRestController.saveProduct(tempProduct);
+                storeApplication.sceneMain();
+            }
+
         }
         else errorMessage.setVisible(true);
 
@@ -470,6 +476,13 @@ public class ProductDisplayBrandController implements Initializable {
         newProduct.setSizeAndColor(tempProduct.getSizeAndColor());
 
         tempProduct = newProduct;
+
+    }
+
+    private Boolean hasAttributeNull() {
+
+        return tempProduct.getName().isEmpty() || tempProduct.getDescription().isEmpty() ||
+                tempProduct.getSubcategory().toString().isEmpty() || tempProduct.getPrice().toString().isEmpty();
 
     }
 
