@@ -294,7 +294,10 @@ public class MainController implements Initializable {
 
         Button cart = new Button("Carrito");
         cart.setStyle("-fx-background-color: #ffffff");
-        cart.setOnAction(event -> storeApplication.sceneCart());
+        cart.setOnAction(event -> {
+                ListItemsController.showCheckBox = false;
+                    storeApplication.sceneCart();
+                });
         flowPaneButtons.getChildren().add(cart);
 
         Button login = new Button("Ingresar");
@@ -322,8 +325,10 @@ public class MainController implements Initializable {
 
         Button cart = new Button("Carrito");
         cart.setStyle("-fx-background-color: #ffffff");
-        cart.setOnMouseClicked(event ->
-                storeApplication.sceneCart());
+        cart.setOnMouseClicked(event -> {
+                    ListItemsController.showCheckBox = false;
+                    storeApplication.sceneCart();
+                });
         flowPaneButtons.getChildren().add(cart);
 
         Button logOut = new Button("Cerrar sesión");

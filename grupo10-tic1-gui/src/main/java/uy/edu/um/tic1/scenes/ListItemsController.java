@@ -90,12 +90,11 @@ public class ListItemsController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if (isCart == null){
-            isCart = false;
-        }
+
 
         entregado = new CheckBox("Entregado");
         entregado.setSelected(true);
+
         if(showCheckBox){
             entregado.setVisible(true);
         } else{
@@ -120,19 +119,17 @@ public class ListItemsController implements Initializable {
         if (user instanceof ClientDTO) {
 
             if (isCart) {
-                entregado.setVisible(false);
                 cartItemSet = requestCartList();
                 setProducts(cartItemSet.toArray());
 
             } else {
-                entregado.setVisible(true);
                 setUserPurchases();
 
             }
 
         }
         else if (user instanceof StoreUserDTO) {
-            entregado.setVisible(true);
+
             store = storeRestController.getStore();
             purchaseSet = storeRestController.getPurchases(showAll).stream().collect(Collectors.toList());
             setStoreSales();
@@ -388,6 +385,7 @@ public class ListItemsController implements Initializable {
 
             float finalPrice = 0.0f;
 
+
             for (Object newItem : itemSet) {
 
                 ProductDTO product;
@@ -461,6 +459,12 @@ public class ListItemsController implements Initializable {
                         pane.getChildren().add(close);
 
                     }
+                    if( user ==null || user instanceof ClientDTO){
+                        pane.setOnMouseClicked(event -> {
+                            storeApplication.sceneProductDisplay(product);
+                        });
+                    }
+
 
                     flowPaneProducts.getChildren().add(pane);
 
@@ -500,6 +504,7 @@ public class ListItemsController implements Initializable {
 
             if(isCart){
                 buy.setVisible(true);
+
             } else{
                 buy.setVisible(false);
             }

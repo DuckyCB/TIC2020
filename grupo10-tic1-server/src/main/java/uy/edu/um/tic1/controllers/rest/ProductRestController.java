@@ -59,7 +59,7 @@ public class ProductRestController {
     @PutMapping(value = "/insert/")
     @PreAuthorize("hasAuthority('product:write')")
     public void insert(@RequestBody Product product){
-        System.out.println(product);
+        //System.out.println(product);
         productController.save(product);
     }
 
