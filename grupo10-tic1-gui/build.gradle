@@ -9,6 +9,7 @@ plugins {
 group = 'uy.edu.um'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+mainClassName = 'uy.edu.um.tic1.ApplicationGui'
 
 configurations {
     compileOnly {
@@ -65,4 +66,13 @@ javafx {
     version = '11.0.2'
 }
 
-mainClassName = 'uy.edu.um.JavaFxApplication'
+
+
+jar {
+    manifest {
+        attributes "Main-Class": "$mainClassName"
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

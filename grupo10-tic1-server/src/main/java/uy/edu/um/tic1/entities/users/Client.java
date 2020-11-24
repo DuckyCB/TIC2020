@@ -111,6 +111,10 @@ public class Client extends AppUser{
     public void buyCart(Cart cart, Boolean toDeliver) {
 
         if (cart != null){
+
+
+            //TODO: FACTURAR IMPORTE --> Se va a facturar importe redireccionando la factura a un medio de pago online
+
             cart.processCart(this, toDeliver);
             cart.setClient(this);
         }
