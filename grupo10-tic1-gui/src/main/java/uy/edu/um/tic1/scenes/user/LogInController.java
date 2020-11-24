@@ -133,7 +133,6 @@ public class LogInController implements Initializable {
                         storeApplication.setCart(userCart);
                     }
 
-
                 } else if (userEntity instanceof StoreUserDTO)
                     storeApplication.setPurchases(storeRestController.getStore().getPurchaseSet());
 
