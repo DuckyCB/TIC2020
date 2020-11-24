@@ -60,12 +60,12 @@
                      <image>
                         <Image url="@../../../images/no_image.jpg" />
                      </image></ImageView>
-                  <Button fx:id="save" layoutX="459.0" layoutY="534.0" mnemonicParsing="false" onAction="#pressedSave" style="-fx-background-color: BBBBBB;" text="Guardar">
+                  <Button fx:id="save" layoutX="444.0" layoutY="534.0" mnemonicParsing="false" onAction="#pressedSave" style="-fx-background-color: BBBBBB;" text="Guardar">
                      <font>
                         <Font name="Cambria Bold" size="20.0" />
                      </font>
                   </Button>
-                  <Button fx:id="uploadImage" layoutX="431.0" layoutY="384.0" mnemonicParsing="false" onAction="#pressedUploadImage" style="-fx-background-color: CDCDCD;" text="Cargar imagen">
+                  <Button fx:id="uploadImage" layoutX="421.0" layoutY="353.0" mnemonicParsing="false" onAction="#pressedUploadImage" style="-fx-background-color: CDCDCD;" text="Cargar imagen">
                      <font>
                         <Font name="Cambria" size="20.0" />
                      </font>
@@ -88,7 +88,7 @@
                         <Font name="Cambria" size="16.0" />
                      </font>
                   </Label>
-                  <StackPane fx:id="errorMessage" layoutX="408.0" layoutY="296.0" prefHeight="61.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;">
+                  <StackPane fx:id="errorMessage" layoutX="397.0" layoutY="289.0" prefHeight="61.0" prefWidth="200.0" style="-fx-background-color: #e74c3c;">
                      <children>
                         <Label text="Debe agregar género y categoría antes de guardar otros datos" textAlignment="CENTER" wrapText="true">
                            <font>
@@ -97,11 +97,16 @@
                         </Label>
                      </children>
                   </StackPane>
-                  <Button fx:id="deleteProduct" layoutX="453.0" layoutY="593.0" mnemonicParsing="false" onAction="#pressedDeleteProduct" style="-fx-background-color: e74c3c;" text="Eliminar producto">
+                  <Button fx:id="deleteProduct" layoutX="438.0" layoutY="591.0" mnemonicParsing="false" onAction="#pressedDeleteProduct" style="-fx-background-color: e74c3c;" text="Eliminar producto">
                      <font>
                         <Font name="Cambria Bold" size="12.0" />
                      </font>
                   </Button>
+                  <TextField fx:id="productDescription" layoutX="364.0" layoutY="426.0" prefHeight="95.0" prefWidth="265.0" promptText="Descripción">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </TextField>
                </children>
             </AnchorPane>
          </children>

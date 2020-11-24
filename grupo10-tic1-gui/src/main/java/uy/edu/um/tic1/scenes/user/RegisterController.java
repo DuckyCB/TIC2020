@@ -158,12 +158,25 @@ public class RegisterController implements Initializable {
     @FXML
     void pressedCreate(ActionEvent event) {
 
+        boolean isNumber = false;
+        int phonen = 0;
         String phone = String.valueOf(a.getCharacters());
         if (phone.isEmpty()) {
             errorA.setVisible(true);
             Label newPhoneError = new Label("El campo no puede ser vacío");
             errorA.getChildren().add(newPhoneError);
-        } else errorA.setVisible(false);
+        } else {
+            try {
+                isNumber = true;
+                phonen = Integer.parseInt(phone);
+                errorA.setVisible(false);
+            } catch (NumberFormatException e) {
+                isNumber = false;
+                errorA.setVisible(true);
+                Label newPhoneError = new Label("El campo debe ser un número");
+                errorA.getChildren().add(newPhoneError);
+            }
+        }
 
         String zip = String.valueOf(b.getCharacters());
         if (zip.isEmpty()) {
@@ -188,7 +201,7 @@ public class RegisterController implements Initializable {
 
         String aditional = String.valueOf(e.getCharacters());
 
-        if (!phone.isEmpty() && !zip.isEmpty() && !street.isEmpty() && !streetNumber.isEmpty()) {
+        if (!phone.isEmpty() && isNumber && !zip.isEmpty() && !street.isEmpty() && !streetNumber.isEmpty()) {
 
 
             ClientDTO newClient = ClientDTO.builder()
@@ -197,7 +210,7 @@ public class RegisterController implements Initializable {
                     .lastName(newUserLastName)
                     .password(newUserPassword)
                     .address(AddressDTO.builder().street(street).doorNumber(streetNumber).optional(aditional).zipCode(Integer.valueOf(zip)).build())
-                    .telephoneNumber(TelephoneNumberDTO.builder().number(Integer.valueOf(phone)).build())
+                    .telephoneNumber(TelephoneNumberDTO.builder().number(phonen).build())
                     .currentCart(CartDTO.builder().items(new LinkedHashSet<>()).build())
                     .build();
 

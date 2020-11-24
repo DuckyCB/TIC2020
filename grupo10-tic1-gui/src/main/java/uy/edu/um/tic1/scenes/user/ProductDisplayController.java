@@ -19,8 +19,6 @@ import uy.edu.um.tic1.entitites.SizeAndColorDTO;
 import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.cart.CartItemDTO;
 import uy.edu.um.tic1.entitites.product.ProductDTO;
-import uy.edu.um.tic1.entitites.product.TrousersDTO;
-import uy.edu.um.tic1.requests.CartRestController;
 import uy.edu.um.tic1.requests.ProductRestController;
 
 import java.io.ByteArrayInputStream;
@@ -37,8 +35,6 @@ public class ProductDisplayController implements Initializable {
 
     @Autowired
     StoreApplication storeApplication;
-    @Autowired
-    private CartRestController cartRestController;
     @Autowired
     private ProductRestController productRestController;
 
@@ -78,6 +74,8 @@ public class ProductDisplayController implements Initializable {
     private Button inicio;
     @FXML
     private Button carrito;
+    @FXML
+    private Label labelDescription;
 
     // ****************************************************************************************************************
     //                  INITIALIZE
@@ -96,7 +94,8 @@ public class ProductDisplayController implements Initializable {
         productImage.setImage(productImg);
         productName.setText(product.getName());
         productBrand.setText(product.getBrand().getName());
-        productPrice.setText(product.getPrice().toString());
+        productPrice.setText(product.getPrice().toString() + "$");
+        labelDescription.setText("Descripción: " + product.getDescription());
 
         circleColor.setVisible(false);
         labelSize.setVisible(false);
@@ -256,7 +255,7 @@ public class ProductDisplayController implements Initializable {
 
     public Integer checkStock(ProductDTO product, String size, String color){
 
-        Integer max_stock = 0;
+        int max_stock = 0;
 
         ProductFilters productFilters = new ProductFilters();
         productFilters.setId(product.getId());

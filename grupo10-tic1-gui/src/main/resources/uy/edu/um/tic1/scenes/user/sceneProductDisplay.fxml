@@ -31,7 +31,7 @@
                         </StackPane>
                         <ImageView fx:id="productImage" fitHeight="600.0" fitWidth="450.0" layoutX="88.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="88.0" AnchorPane.topAnchor="35.0">
                             <image>
-                                <Image url="@../../images/Men/Jean/black.jpg" />
+                                <Image url="@../../images/no_image.jpg" />
                             </image></ImageView>
                         <StackPane alignment="CENTER_LEFT" layoutX="588.0" layoutY="35.0" prefHeight="145.0" prefWidth="650.0" AnchorPane.rightAnchor="42.0" AnchorPane.topAnchor="35.0">
                             <children>
@@ -95,6 +95,11 @@
                      </children>
                   </StackPane>
                   <Circle fx:id="circleColor" fill="DODGERBLUE" layoutX="970.0" layoutY="272.0" radius="13.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label fx:id="labelDescription" layoutX="609.0" layoutY="577.0" prefHeight="76.0" prefWidth="600.0" text="Label" wrapText="true">
+                     <font>
+                        <Font name="Cambria Italic" size="13.0" />
+                     </font>
+                  </Label>
                     </children>
                 </AnchorPane>
             </children>
