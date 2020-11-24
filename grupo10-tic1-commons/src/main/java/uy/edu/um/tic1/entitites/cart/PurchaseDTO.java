@@ -26,6 +26,10 @@ public class PurchaseDTO {
 
     private LocalDate deliveryDate;
 
+    private LocalTime purchaseTime;
+
+    private LocalDate purchaseDate;
+
     private ClientDTO client;
 
     private Set<PurchaseItemDTO> purchaseItems;

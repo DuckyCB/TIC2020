@@ -89,6 +89,8 @@ public class Cart {
                 purchase.addPurchaseItem(item.toPurchaseItem());
             } else{
                 purchase = Purchase.builder().delivered(false).purchaseItems(new LinkedHashSet<>()).client(this.client).build();
+                purchase.setPurchaseDate(this.date);
+                purchase.setPurchaseTime(this.time);
                 purchase.setClient(client);
                 purchase.addPurchaseItem(item.toPurchaseItem());
                 purchases.put(store, purchase);

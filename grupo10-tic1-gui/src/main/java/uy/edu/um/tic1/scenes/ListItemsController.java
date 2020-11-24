@@ -58,8 +58,8 @@ public class ListItemsController implements Initializable {
     private AppUserDTO user;
     private StoreDTO store;
 
-    private Set<PurchaseDTO> purchaseSet;
-    private Set<CartItemDTO> cartItemSet;
+    private List<PurchaseDTO> purchaseSet;
+    private List<CartItemDTO> cartItemSet;
 
     public static Boolean isCart;
 
@@ -94,21 +94,25 @@ public class ListItemsController implements Initializable {
             isCart = false;
         }
 
+        entregado = new CheckBox("Entregado");
+        entregado.setSelected(true);
         if(showCheckBox){
             entregado.setVisible(true);
         } else{
             entregado.setVisible(false);
         }
 
+        showAll = false;
+
+
+
         setUp();
 
     }
 
     public void setUp(){
-        entregado = new CheckBox("Entregado");
-        if (showAll == null){
-            showAll = false;
-        }
+
+
 
 
 
@@ -130,7 +134,7 @@ public class ListItemsController implements Initializable {
         else if (user instanceof StoreUserDTO) {
             entregado.setVisible(true);
             store = storeRestController.getStore();
-            purchaseSet = storeRestController.getPurchases(showAll).stream().collect(Collectors.toSet());
+            purchaseSet = storeRestController.getPurchases(showAll).stream().collect(Collectors.toList());
             setStoreSales();
         }
 
@@ -178,7 +182,7 @@ public class ListItemsController implements Initializable {
                 paneProduct.setStyle("-fx-background-color: #E2E2E2");
 
                 // ID:
-                Label labelId = new Label("Nro. de Compra: " + purchase.getId());
+                Label labelId = new Label("Nro. de Compra: #" + purchase.getId());
                 labelId.setFont(Font.font("Cambria", FontWeight.BOLD, 18));
                 labelId.setLayoutX(20);
                 labelId.setLayoutY(14);
@@ -189,20 +193,24 @@ public class ListItemsController implements Initializable {
                 for (PurchaseItemDTO item: purchase.getPurchaseItems()) price += item.getPrice();
                 Label labelPrice = new Label("Precio total: $" + price);
                 labelPrice.setFont(Font.font("Cambria", FontWeight.BOLD, 26));
-                labelPrice.setLayoutX(241);
-                labelPrice.setLayoutY(46);
+                labelPrice.setLayoutX(251);
+                labelPrice.setLayoutY(45);
                 paneProduct.getChildren().add(labelPrice);
 
                 // SEE PRODUCTS
                 Button viewProducts = new Button("Ver productos");
                 viewProducts.setFont(Font.font("Cambria", FontWeight.BOLD, 12));
-                viewProducts.setLayoutX(295);
-                viewProducts.setLayoutY(52);
+                viewProducts.setLayoutX(305);
+                viewProducts.setLayoutY(100);
                 viewProducts.setOnAction( event -> {
                     isCart = false;
                     setProducts(Objects.requireNonNull(purchase.getPurchaseItems()).toArray());
                 });
                 paneProduct.getChildren().add(viewProducts);
+
+                //PURCHASE DATE
+                setPurchasedDate(paneProduct, purchase);
+
 
                 // ACCEPT PURCHASE
                 if (!purchase.getDelivered()) {
@@ -228,11 +236,11 @@ public class ListItemsController implements Initializable {
      * Si no hay usuario, toma los productos en ram.
      * @return products Lista de productos dentro del carrito
      */
-    private Set<CartItemDTO> requestCartList() {
+    private List<CartItemDTO> requestCartList() {
 
         CartDTO cart = storeApplication.getCart();
         if (cart != null)
-            return cart.getItems();
+            return cart.getItems().stream().collect(Collectors.toList());
         else return null;
 
     }
@@ -325,24 +333,47 @@ public class ListItemsController implements Initializable {
         // DELIVERED
         Label labelDelivered = new Label("ENTREGADO");
         labelDelivered.setFont(Font.font("Cambria", FontWeight.BOLD, 20));
-        labelDelivered.setLayoutX(500);
-        labelDelivered.setLayoutY(17);
+        labelDelivered.setLayoutX(515);
+        labelDelivered.setLayoutY(27);
         paneProduct.getChildren().add(labelDelivered);
 
         // DATE
         Label labelDate = new Label("Fecha: " + sale.getDeliveryDate());
         labelDate.setFont(Font.font("Cambria", FontPosture.ITALIC, 15));
-        labelDate.setLayoutX(500);
-        labelDate.setLayoutY(48);
+        labelDate.setLayoutX(515);
+        labelDate.setLayoutY(58);
         paneProduct.getChildren().add(labelDate);
 
         // TIME
         Label labelTime = new Label("Hora: " + sale.getDeliveryTime());
         labelTime.setFont(Font.font("Cambria", FontPosture.ITALIC, 15));
-        labelTime.setLayoutX(500);
-        labelTime.setLayoutY(76);
+        labelTime.setLayoutX(515);
+        labelTime.setLayoutY(86);
         paneProduct.getChildren().add(labelTime);
 
+    }
+
+    public void setPurchasedDate(Pane paneProduct, PurchaseDTO sale){
+        // DELIVERED
+        Label labelDelivered = new Label("Fecha de Compra");
+        labelDelivered.setFont(Font.font("Cambria", FontWeight.BOLD, 20));
+        labelDelivered.setLayoutX(30);
+        labelDelivered.setLayoutY(50);
+        paneProduct.getChildren().add(labelDelivered);
+
+        // DATE
+        Label labelDate = new Label("Fecha: " + sale.getPurchaseDate());
+        labelDate.setFont(Font.font("Cambria", FontPosture.ITALIC, 15));
+        labelDate.setLayoutX(30);
+        labelDate.setLayoutY(80);
+        paneProduct.getChildren().add(labelDate);
+
+        // TIME
+        Label labelTime = new Label("Hora: " + sale.getPurchaseTime());
+        labelTime.setFont(Font.font("Cambria", FontPosture.ITALIC, 15));
+        labelTime.setLayoutX(30);
+        labelTime.setLayoutY(108);
+        paneProduct.getChildren().add(labelTime);
     }
 
     // ****************************************************************************************************************

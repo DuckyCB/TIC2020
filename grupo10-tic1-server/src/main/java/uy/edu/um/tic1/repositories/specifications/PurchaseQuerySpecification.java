@@ -22,6 +22,8 @@ public class PurchaseQuerySpecification implements Specification<Purchase> {
     private Boolean delivered;
     private LocalTime deliveryTime;
     private LocalDate deliveryDate;
+    private LocalTime purchaseTime;
+    private LocalDate purchaseDate;
     private Client client;
     private CartItem cartItem;
 
@@ -44,8 +46,12 @@ public class PurchaseQuerySpecification implements Specification<Purchase> {
 
         order.add(criteriaBuilder.desc(root.get("deliveryDate")));
         order.add(criteriaBuilder.desc(root.get("deliveryTime")));
+        order.add(criteriaBuilder.desc(root.get("purchaseDate")));
+        order.add(criteriaBuilder.desc(root.get("purchaseTime")));
 
         query.orderBy(order);
+
+
 
 
 

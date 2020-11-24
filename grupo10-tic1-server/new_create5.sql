@@ -128,6 +128,8 @@ use  proyecto_tic1v2;
         delivered bit,
         delivery_date date,
         delivery_time time,
+        purchase_date date,
+        purchase_time time,
         client integer,
         store integer,
         primary key (id)

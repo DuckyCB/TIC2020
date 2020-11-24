@@ -34,6 +34,11 @@ public class Purchase {
     @Basic
     private LocalDate deliveryDate;
 
+    @Basic
+    private LocalTime purchaseTime;
+    @Basic
+    private LocalDate purchaseDate;
+
 
     @ManyToOne
     @JoinColumn(name = "client",
@@ -57,6 +62,8 @@ public class Purchase {
                 .delivered(this.delivered)
                 .deliveryDate(this.deliveryDate)
                 .deliveryTime(this.deliveryTime)
+                .purchaseDate(this.purchaseDate)
+                .purchaseTime(this.purchaseTime)
                 .build();
 
     }
