@@ -109,108 +109,108 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        showUsers();
+//        showUsers();
         showMainPage();
 
     }
 
-    //TODO: Borrar esto cuando se entrega
-    private void showUsers() {
-
-        MenuButton menuButton = new MenuButton("Usuario");
-        menuButton.setLayoutX(373);
-        menuButton.setLayoutY(8);
-
-        MenuItem client = new MenuItem("Client");
-        client.setOnAction(event -> {
-            logOut();
-            String user = "cliente";
-            String password = "cliente";
-            AppUserDTO userEntity = userRestController.getUser(user, password);
-            storeApplication.setAppUser(userEntity);
-            storeApplication.setPassword(password);
-            CartDTO userCart = cartRestController.getCurrentCart();
-            CartDTO savedCart = storeApplication.getCart();
-            if(userCart == null || userCart.getItems().isEmpty()){
-                if(userCart == null){
-                    ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
-                    cartRestController.saveCurrentCart(storeApplication.getCart());
-                } else if (!savedCart.getItems().isEmpty()){
-                    ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
-                    cartRestController.saveCurrentCart(storeApplication.getCart());
-                }
-            }
-            storeApplication.setCart(cartRestController.getCurrentCart());
-            storeApplication.sceneMain();
-
-        });
-        menuButton.getItems().add(client);
-
-        MenuItem store = new MenuItem("Store 1");
-        store.setOnAction(event -> {
-            logOut();
-            String user = "tienda1";
-            String password = "tienda1";
-            AppUserDTO userEntity = userRestController.getUser(user, password);
-            storeApplication.setAppUser(userEntity);
-            storeApplication.setPassword(password);
-            storeApplication.setPurchases(storeRestController.getStore().getPurchaseSet());
-            storeApplication.sceneMain();
-        });
-        menuButton.getItems().add(store);
-
-        MenuItem store1 = new MenuItem("Store 2");
-        store1.setOnAction(event -> {
-            logOut();
-            String user = "tienda2";
-            String password = "tienda2";
-            AppUserDTO userEntity = userRestController.getUser(user, password);
-            storeApplication.setAppUser(userEntity);
-            storeApplication.setPassword(password);
-            storeApplication.setPurchases(storeRestController.getStore().getPurchaseSet());
-            storeApplication.sceneMain();
-        });
-        menuButton.getItems().add(store1);
-
-        MenuItem brandTommys = new MenuItem("Brand Tommy");
-        brandTommys.setOnAction(event -> {
-            logOut();
-            String user = "tommy";
-            String password = "tommy";
-            AppUserDTO userEntity = userRestController.getUser(user, password);
-            storeApplication.setAppUser(userEntity);
-            storeApplication.setPassword(password);
-            storeApplication.sceneMain();
-        });
-        menuButton.getItems().add(brandTommys);
-
-        MenuItem brandLevis = new MenuItem("Brand Levis");
-        brandLevis.setOnAction(event -> {
-            logOut();
-            String user = "levis";
-            String password = "levis";
-            AppUserDTO userEntity = userRestController.getUser(user, password);
-            storeApplication.setAppUser(userEntity);
-            storeApplication.setPassword(password);
-            storeApplication.sceneMain();
-        });
-        menuButton.getItems().add(brandLevis);
-
-        MenuItem brandPolo = new MenuItem("Brand Polo");
-        brandPolo.setOnAction(event -> {
-            logOut();
-            String user = "polo";
-            String password = "polo";
-            AppUserDTO userEntity = userRestController.getUser(user, password);
-            storeApplication.setAppUser(userEntity);
-            storeApplication.setPassword(password);
-            storeApplication.sceneMain();
-        });
-        menuButton.getItems().add(brandPolo);
-
-        paneMenuBar.getChildren().add(menuButton);
-
-    }
+//    //TODO: Borrar esto cuando se entrega
+//    private void showUsers() {
+//
+//        MenuButton menuButton = new MenuButton("Usuario");
+//        menuButton.setLayoutX(373);
+//        menuButton.setLayoutY(8);
+//
+//        MenuItem client = new MenuItem("Client");
+//        client.setOnAction(event -> {
+//            logOut();
+//            String user = "cliente";
+//            String password = "cliente";
+//            AppUserDTO userEntity = userRestController.getUser(user, password);
+//            storeApplication.setAppUser(userEntity);
+//            storeApplication.setPassword(password);
+//            CartDTO userCart = cartRestController.getCurrentCart();
+//            CartDTO savedCart = storeApplication.getCart();
+//            if(userCart == null || userCart.getItems().isEmpty()){
+//                if(userCart == null){
+//                    ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
+//                    cartRestController.saveCurrentCart(storeApplication.getCart());
+//                } else if (!savedCart.getItems().isEmpty()){
+//                    ((ClientDTO) userEntity).setCurrentCart(storeApplication.getCart());
+//                    cartRestController.saveCurrentCart(storeApplication.getCart());
+//                }
+//            }
+//            storeApplication.setCart(cartRestController.getCurrentCart());
+//            storeApplication.sceneMain();
+//
+//        });
+//        menuButton.getItems().add(client);
+//
+//        MenuItem store = new MenuItem("Store 1");
+//        store.setOnAction(event -> {
+//            logOut();
+//            String user = "tienda1";
+//            String password = "tienda1";
+//            AppUserDTO userEntity = userRestController.getUser(user, password);
+//            storeApplication.setAppUser(userEntity);
+//            storeApplication.setPassword(password);
+//            storeApplication.setPurchases(storeRestController.getStore().getPurchaseSet());
+//            storeApplication.sceneMain();
+//        });
+//        menuButton.getItems().add(store);
+//
+//        MenuItem store1 = new MenuItem("Store 2");
+//        store1.setOnAction(event -> {
+//            logOut();
+//            String user = "tienda2";
+//            String password = "tienda2";
+//            AppUserDTO userEntity = userRestController.getUser(user, password);
+//            storeApplication.setAppUser(userEntity);
+//            storeApplication.setPassword(password);
+//            storeApplication.setPurchases(storeRestController.getStore().getPurchaseSet());
+//            storeApplication.sceneMain();
+//        });
+//        menuButton.getItems().add(store1);
+//
+//        MenuItem brandTommys = new MenuItem("Brand Tommy");
+//        brandTommys.setOnAction(event -> {
+//            logOut();
+//            String user = "tommy";
+//            String password = "tommy";
+//            AppUserDTO userEntity = userRestController.getUser(user, password);
+//            storeApplication.setAppUser(userEntity);
+//            storeApplication.setPassword(password);
+//            storeApplication.sceneMain();
+//        });
+//        menuButton.getItems().add(brandTommys);
+//
+//        MenuItem brandLevis = new MenuItem("Brand Levis");
+//        brandLevis.setOnAction(event -> {
+//            logOut();
+//            String user = "levis";
+//            String password = "levis";
+//            AppUserDTO userEntity = userRestController.getUser(user, password);
+//            storeApplication.setAppUser(userEntity);
+//            storeApplication.setPassword(password);
+//            storeApplication.sceneMain();
+//        });
+//        menuButton.getItems().add(brandLevis);
+//
+//        MenuItem brandPolo = new MenuItem("Brand Polo");
+//        brandPolo.setOnAction(event -> {
+//            logOut();
+//            String user = "polo";
+//            String password = "polo";
+//            AppUserDTO userEntity = userRestController.getUser(user, password);
+//            storeApplication.setAppUser(userEntity);
+//            storeApplication.setPassword(password);
+//            storeApplication.sceneMain();
+//        });
+//        menuButton.getItems().add(brandPolo);
+//
+//        paneMenuBar.getChildren().add(menuButton);
+//
+//    }
 
     // ****************************************************************************************************************
     //                  PÁGINA DE INICIO
