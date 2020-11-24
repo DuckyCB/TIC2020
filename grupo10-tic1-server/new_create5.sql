@@ -113,6 +113,7 @@ use  proyecto_tic1v2;
         price double precision,
         subcategory integer,
         brand_id integer,
+        description varchar(255),
         primary key (id)
     ) engine=InnoDB;
 

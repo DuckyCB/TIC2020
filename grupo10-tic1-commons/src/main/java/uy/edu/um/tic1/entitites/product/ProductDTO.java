@@ -59,6 +59,7 @@ public abstract class ProductDTO {
 
     private byte[] image;
 
+    private String description;
 
 
     public void removeSizeAndColorBySize(String size){

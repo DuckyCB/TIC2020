@@ -8,13 +8,11 @@ import uy.edu.um.tic1.entities.cart.Purchase;
 import uy.edu.um.tic1.entities.users.Client;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Builder
@@ -42,7 +40,12 @@ public class PurchaseQuerySpecification implements Specification<Purchase> {
             predicates.add(criteriaBuilder.equal(root.get("client"), client));
 
 
-        query.orderBy(criteriaBuilder.desc(root.get("deliveryDate")));
+        List<Order> order = new LinkedList<>();
+
+        order.add(criteriaBuilder.desc(root.get("deliveryDate")));
+        order.add(criteriaBuilder.desc(root.get("deliveryTime")));
+
+        query.orderBy(order);
 
 
 

@@ -83,6 +83,10 @@ public abstract class Product {
     private byte[] image;
 
 
+    @Column (length = 255)
+    private String description;
+
+
    public abstract ProductDTO toDTO();
 
 

@@ -40,6 +40,7 @@ public class Shirt extends Product {
                 .price(this.getPrice())
                 .sizeAndColor(this.getSizeAndColor().stream().map(SizeAndColor::toDTO).collect(Collectors.toSet()))
                 .image(this.getImage())
+                .description(this.getDescription())
                 .build();
 
     }

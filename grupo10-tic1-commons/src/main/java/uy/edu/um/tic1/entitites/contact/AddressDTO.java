@@ -17,4 +17,10 @@ public class AddressDTO {
     private String optional;
 
 
+    @Override
+    public String toString() {
+        return street.toString() + " " + doorNumber.toString() + " " + optional.toString() + "\n" +
+                "Código Zip: " + zipCode.toString();
+    }
+
 }

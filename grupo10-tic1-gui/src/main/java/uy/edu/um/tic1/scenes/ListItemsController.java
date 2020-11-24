@@ -178,7 +178,7 @@ public class ListItemsController implements Initializable {
                 paneProduct.setStyle("-fx-background-color: #E2E2E2");
 
                 // ID:
-                Label labelId = new Label("Id: " + purchase.getId());
+                Label labelId = new Label("Nro. de Compra: " + purchase.getId());
                 labelId.setFont(Font.font("Cambria", FontWeight.BOLD, 18));
                 labelId.setLayoutX(20);
                 labelId.setLayoutY(14);
@@ -187,10 +187,10 @@ public class ListItemsController implements Initializable {
                 // PRICE
                 int price = 0;
                 for (PurchaseItemDTO item: purchase.getPurchaseItems()) price += item.getPrice();
-                Label labelPrice = new Label("Precio total: " + price + "$");
+                Label labelPrice = new Label("Precio total: $" + price);
                 labelPrice.setFont(Font.font("Cambria", FontWeight.BOLD, 26));
                 labelPrice.setLayoutX(241);
-                labelPrice.setLayoutY(16);
+                labelPrice.setLayoutY(46);
                 paneProduct.getChildren().add(labelPrice);
 
                 // SEE PRODUCTS
