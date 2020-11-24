@@ -17,6 +17,7 @@ Grupo.:
 ## Requisitos
 
 - MySQL 8
+> Debe estar corriendo en el puerto 3306
 - Java RE 11
 
 ## Iniciar el servidor
