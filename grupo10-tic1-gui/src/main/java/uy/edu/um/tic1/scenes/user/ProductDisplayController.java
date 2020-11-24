@@ -95,7 +95,8 @@ public class ProductDisplayController implements Initializable {
         productName.setText(product.getName());
         productBrand.setText(product.getBrand().getName());
         productPrice.setText(product.getPrice().toString() + "$");
-        labelDescription.setText("Descripción: " + product.getDescription());
+        if (product.getDescription() == null) labelDescription.setText("No hay descripción para este producto");
+        else labelDescription.setText("Descripción: " + product.getDescription());
 
         circleColor.setVisible(false);
         labelSize.setVisible(false);

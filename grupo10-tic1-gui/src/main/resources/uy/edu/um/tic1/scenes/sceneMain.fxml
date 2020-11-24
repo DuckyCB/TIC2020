@@ -40,7 +40,7 @@
       </AnchorPane>
       <AnchorPane fx:id="paneFiltersLeft" prefHeight="640.0" prefWidth="200.0" style="-fx-background-color: #ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="80.0">
          <children>
-            <ScrollPane hbarPolicy="NEVER" maxWidth="200.0" prefHeight="640.0" prefWidth="200.0" vbarPolicy="NEVER">
+            <ScrollPane hbarPolicy="NEVER" maxWidth="200.0" prefHeight="640.0" prefWidth="200.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <content>
                   <FlowPane prefWidth="200.0">
                      <children>

@@ -71,7 +71,6 @@ public class ListItemsController implements Initializable {
     private FlowPane flowPaneProducts;
     @FXML
     private Button inicio;
-
     @FXML
     private CheckBox entregado;
 
@@ -91,19 +90,11 @@ public class ListItemsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-
-        entregado = new CheckBox("Entregado");
+        entregado.setText("Entregado");
         entregado.setSelected(true);
-
-        if(showCheckBox){
-            entregado.setVisible(true);
-        } else{
-            entregado.setVisible(false);
-        }
+        entregado.setVisible(showCheckBox);
 
         showAll = false;
-
-
 
         setUp();
 
@@ -111,35 +102,29 @@ public class ListItemsController implements Initializable {
 
     public void setUp(){
 
-
-
-
-
         user = storeApplication.getAppUser();
+
         if (user instanceof ClientDTO) {
 
             if (isCart) {
+
                 cartItemSet = requestCartList();
                 setProducts(cartItemSet.toArray());
 
-            } else {
-                setUserPurchases();
+            } else setUserPurchases();
 
-            }
-
-        }
-        else if (user instanceof StoreUserDTO) {
+        } else if (user instanceof StoreUserDTO) {
 
             store = storeRestController.getStore();
             purchaseSet = storeRestController.getPurchases(showAll).stream().collect(Collectors.toList());
             setStoreSales();
-        }
 
-        else {
+        } else {
 
             setProducts(Objects.requireNonNull(requestCartList()).toArray());
 
         }
+
     }
 
     private Label getQuantityLabel(String quantity) {

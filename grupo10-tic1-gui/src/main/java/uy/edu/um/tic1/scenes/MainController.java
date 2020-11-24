@@ -16,7 +16,6 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import uy.edu.um.tic1.entities.elements.PaneFilter;
-import uy.edu.um.tic1.entitites.cart.CartDTO;
 import uy.edu.um.tic1.entitites.product.HoodieDTO;
 import uy.edu.um.tic1.entitites.product.ShirtDTO;
 import uy.edu.um.tic1.entitites.product.TrousersDTO;
@@ -50,10 +49,10 @@ public class MainController implements Initializable {
     @Autowired
     private StoreRestController storeRestController;
     //TODO: Borrar esto para la entrega
-    @Autowired
+    /*@Autowired
     private UserRestController userRestController;
     @Autowired
-    private CartRestController cartRestController;
+    private CartRestController cartRestController;*/
 
     private Boolean filters = Boolean.FALSE;
 
@@ -295,9 +294,9 @@ public class MainController implements Initializable {
         Button cart = new Button("Carrito");
         cart.setStyle("-fx-background-color: #ffffff");
         cart.setOnAction(event -> {
-                ListItemsController.showCheckBox = false;
-                    storeApplication.sceneCart();
-                });
+            ListItemsController.showCheckBox = false;
+            storeApplication.sceneCart();
+        });
         flowPaneButtons.getChildren().add(cart);
 
         Button login = new Button("Ingresar");
@@ -326,9 +325,9 @@ public class MainController implements Initializable {
         Button cart = new Button("Carrito");
         cart.setStyle("-fx-background-color: #ffffff");
         cart.setOnMouseClicked(event -> {
-                    ListItemsController.showCheckBox = false;
-                    storeApplication.sceneCart();
-                });
+            ListItemsController.showCheckBox = false;
+            storeApplication.sceneCart();
+        });
         flowPaneButtons.getChildren().add(cart);
 
         Button logOut = new Button("Cerrar sesión");
